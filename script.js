@@ -6,10 +6,10 @@ let appState = {
         cpf: ''
     },
     products: [],
-    selectedDate: null,
-    entryOption: null,
+    selectedDate: null, // { date: Date object, day: number, daysUntil: number }
+    entryOption: null, // 'none' or 'with'
     entryPercent: 0,
-    selectedInstallment: null,
+    selectedInstallment: null, // { count: number, value: number }
     totalValue: 0,
     entryValue: 0,
     financedValue: 0
@@ -82,33 +82,53 @@ function initializeApp() {
         maskCPF(e);
         validateStep1();
     });
-    
+
     document.getElementById('productName').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             addProduct();
         }
     });
-    
-    document.getElementById('productValue').addEventListener('keypress', function(e) {
+
+    const productValueInput = document.getElementById('productValue');
+    productValueInput.addEventListener('input', function(e) {
+        maskCurrency(e);
+    });
+    productValueInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             addProduct();
         }
     });
-    
+
     document.getElementById('entryPercent').addEventListener('input', validateStep4);
-    
+
     generateDateOptions();
     showStep(1);
+
+    // Initial product examples (se houver, manter aqui ou carregar via JSON/API)
+    // Se você usa o script do index.html para popular, certifique-se que o initializeApp()
+    // rode ANTES daquele trecho no HTML.
+
+    // Apenas para testes, se não estiver vindo do index.html
+    if (appState.products.length === 0) {
+        appState.products.push(
+            { id: Date.now() + 1, name: 'Mesa', value: 450.00 },
+            { id: Date.now() + 2, name: 'Cadeira', value: 180.00 },
+            { id: Date.now() + 3, name: 'Cozinha Compacta', value: 1800.00 },
+            { id: Date.now() + 4, name: 'Máquina de Lavar', value: 2500.00 }
+        );
+        updateProductsList();
+        validateStep2(); // Valida o step 2 após adicionar produtos iniciais
+    }
 }
 
 // Validação de CPF
 function isValidCPF(cpf) {
     cpf = cpf.replace(/[^\d]/g, '');
-    
+
     if (cpf.length !== 11 || /^(.)\1{10}$/.test(cpf)) {
         return false;
     }
-    
+
     let sum = 0;
     for (let i = 0; i < 9; i++) {
         sum += parseInt(cpf.charAt(i)) * (10 - i);
@@ -116,7 +136,7 @@ function isValidCPF(cpf) {
     let remainder = (sum * 10) % 11;
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(cpf.charAt(9))) return false;
-    
+
     sum = 0;
     for (let i = 0; i < 10; i++) {
         sum += parseInt(cpf.charAt(i)) * (11 - i);
@@ -124,7 +144,7 @@ function isValidCPF(cpf) {
     remainder = (sum * 10) % 11;
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(cpf.charAt(10))) return false;
-    
+
     return true;
 }
 
@@ -137,30 +157,46 @@ function maskCPF(e) {
     e.target.value = value;
 }
 
+// Máscara de Moeda
+function maskCurrency(e) {
+    let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+    value = (parseInt(value) / 100).toFixed(2); // Divide por 100 e formata para 2 casas decimais
+    value = value.replace('.', ','); // Troca ponto por vírgula para formato BR
+    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // Adiciona pontos para milhares
+    e.target.value = value;
+}
+
+
 // Validações por step
 function validateStep1() {
     const name = document.getElementById('clientName').value.trim();
-    const cpf = document.getElementById('clientCpf').value;
+    const cpfInput = document.getElementById('clientCpf');
+    const cpf = cpfInput.value;
+    const cleanCpf = cpf.replace(/[^\d]/g, ''); // CPF sem máscara
     const cpfError = document.getElementById('cpfError');
-    
-    let isValid = true;
-    
-    if (cpf.length > 0 && !isValidCPF(cpf)) {
-        cpfError.textContent = 'CPF inválido';
+
+    let isCpfValid = true;
+
+    if (cleanCpf.length > 0 && cleanCpf.length !== 11) {
+        cpfError.textContent = 'CPF deve ter 11 dígitos.';
         cpfError.classList.add('show');
-        isValid = false;
+        isCpfValid = false;
+    } else if (cleanCpf.length === 11 && !isValidCPF(cleanCpf)) {
+        cpfError.textContent = 'CPF inválido.';
+        cpfError.classList.add('show');
+        isCpfValid = false;
     } else {
         cpfError.classList.remove('show');
     }
-    
-    const isFormValid = name.length >= 3 && cpf.length === 14 && isValid;
+
+    const isFormValid = name.length >= 3 && cleanCpf.length === 11 && isCpfValid;
     document.getElementById('nextBtn1').disabled = !isFormValid;
-    
+
     if (isFormValid) {
         appState.client.name = name;
-        appState.client.cpf = cpf;
+        appState.client.cpf = cpf; // Armazena o CPF com máscara
     }
-    
+
     return isFormValid;
 }
 
@@ -178,18 +214,25 @@ function validateStep3() {
 
 function validateStep4() {
     let isValid = false;
-    
+
     if (appState.entryOption === 'none') {
         isValid = true;
+        appState.entryPercent = 0; // Garante que o percentual seja 0
+        generateInstallments(); // Regenera as parcelas para 'sem entrada'
     } else if (appState.entryOption === 'with') {
-        const percent = parseInt(document.getElementById('entryPercent').value);
-        isValid = percent >= 1 && percent <= 56;
-        if (isValid) {
+        const entryPercentInput = document.getElementById('entryPercent');
+        const percent = parseInt(entryPercentInput.value);
+        if (!isNaN(percent) && percent >= 1 && percent <= 56) {
+            isValid = true;
             appState.entryPercent = percent;
+            generateInstallments(); // Regenera as parcelas para 'com entrada'
+        } else {
+            // Se o valor estiver fora do range, desabilita
+            document.getElementById('installmentsGrid').innerHTML = '<p class="instruction">Percentual de entrada inválido (1% a 56%).</p>';
         }
     }
-    
-    document.getElementById('nextBtn4').disabled = !isValid;
+
+    document.getElementById('nextBtn4').disabled = !isValid || appState.selectedInstallment === null;
     return isValid;
 }
 
@@ -199,23 +242,37 @@ function showStep(step) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
     });
-    
+
     // Mostrar tela atual
     document.getElementById(`screen${step}`).classList.add('active');
     appState.currentStep = step;
-    
+
+    // Atualizar barra de progresso (opcional, mas bom para UX)
+    document.querySelectorAll('.progress').forEach(el => el.textContent = `${step}/5`);
+
     // Executar ações específicas do step
     if (step === 3) {
         generateDateOptions();
+        // Re-validar step 3 caso o usuário volte
+        validateStep3();
+    } else if (step === 4) {
+        // Assegurar que as parcelas sejam geradas ou instrução seja mostrada
+        if (appState.entryOption) {
+            generateInstallments();
+        } else {
+            document.getElementById('installmentsGrid').innerHTML = '<p class="instruction">Selecione uma opção de entrada para ver as parcelas.</p>';
+        }
+        validateStep4(); // Re-validar step 4 caso o usuário volte
     } else if (step === 5) {
-        generateInstallments();
         updateSummary();
+        // Garante que o botão de avançar para o step 5 só esteja ativo se uma parcela for selecionada
+        document.getElementById('nextBtn4').disabled = appState.selectedInstallment === null;
     }
 }
 
 function nextStep(currentStep) {
     let canProceed = false;
-    
+
     switch(currentStep) {
         case 1:
             canProceed = validateStep1();
@@ -227,10 +284,11 @@ function nextStep(currentStep) {
             canProceed = validateStep3();
             break;
         case 4:
-            canProceed = validateStep4();
+            // Para o step 4, também precisamos garantir que uma parcela foi selecionada
+            canProceed = validateStep4() && appState.selectedInstallment !== null;
             break;
     }
-    
+
     if (canProceed && currentStep < 5) {
         showStep(currentStep + 1);
     }
@@ -246,34 +304,35 @@ function prevStep(currentStep) {
 function addProduct() {
     const nameInput = document.getElementById('productName');
     const valueInput = document.getElementById('productValue');
-    
+
     const name = nameInput.value.trim();
-    const value = parseFloat(valueInput.value);
-    
-    if (!name || !value || value <= 0) {
+    // Converter o valor de BRL para float
+    const value = parseFloat(valueInput.value.replace('.', '').replace(',', '.'));
+
+    if (!name || isNaN(value) || value <= 0) {
         alert('Por favor, preencha o nome e valor do produto corretamente.');
         return;
     }
-    
+
     if (appState.products.length >= 10) {
         alert('Máximo de 10 produtos permitidos.');
         return;
     }
-    
+
     const product = {
         id: Date.now(),
         name: name,
         value: value
     };
-    
+
     appState.products.push(product);
     updateProductsList();
-    
+
     // Limpar campos
     nameInput.value = '';
     valueInput.value = '';
     nameInput.focus();
-    
+
     validateStep2();
 }
 
@@ -286,14 +345,14 @@ function removeProduct(id) {
 function updateProductsList() {
     const container = document.getElementById('productsContainer');
     const visorTotal = document.getElementById('visorTotal');
-    
+
     if (appState.products.length === 0) {
         container.innerHTML = '<p class="no-products">Nenhum produto adicionado</p>';
         appState.totalValue = 0;
     } else {
         let html = '';
         appState.totalValue = 0;
-        
+
         appState.products.forEach(product => {
             appState.totalValue += product.value;
             html += `
@@ -308,7 +367,7 @@ function updateProductsList() {
                 </div>
             `;
         });
-        
+
         container.innerHTML = html;
     }
     visorTotal.textContent = `Total: R$ ${appState.totalValue.toFixed(2).replace(".", ",")}`;
@@ -318,9 +377,10 @@ function updateProductsList() {
 function generateDateOptions() {
     const container = document.getElementById('dateOptions');
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Zera a hora para comparação
     const availableDays = [5, 10, 15, 20, 25, 30];
     let html = '';
-    
+
     // Clear previous options
     container.innerHTML = '';
 
@@ -332,6 +392,7 @@ function generateDateOptions() {
     for (let i = 0; i < 2; i++) { // Current month and next month
         availableDays.forEach(day => {
             let date = new Date(currentYear, currentMonth + i, day);
+            date.setHours(0, 0, 0, 0); // Zera a hora da data gerada também
             if (date > today) {
                 generatedDates.push(date);
             }
@@ -341,96 +402,101 @@ function generateDateOptions() {
     // Sort and filter to get up to 20 unique dates within 35 days
     generatedDates = generatedDates.sort((a, b) => a - b)
                                    .filter(date => {
-                                       const diffTime = Math.abs(date - today);
+                                       const diffTime = Math.abs(date.getTime() - today.getTime()); // Usar getTime para evitar problemas de timezone
                                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                                       return diffDays <= 35;
+                                       return diffDays >= 1 && diffDays <= 35; // A data deve ser no mínimo amanhã
                                    })
                                    .slice(0, 20); // Take only the first 20
 
-    generatedDates.forEach(date => {
-        const daysUntil = Math.ceil((date - today) / (1000 * 60 * 60 * 24));
-        let className = 'date-option';
-        let daysClass = '';
+    if (generatedDates.length === 0) {
+        container.innerHTML = '<p class="instruction">Nenhuma data disponível nos próximos 35 dias.</p>';
+    } else {
+        generatedDates.forEach(date => {
+            const diffTime = Math.abs(date.getTime() - today.getTime());
+            const daysUntil = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            let className = 'date-option';
+            let daysClass = '';
 
-        if (daysUntil <= 7) {
-            daysClass = 'danger'; // Vermelho
-        } else if (daysUntil <= 15) {
-            daysClass = 'warning'; // Laranja
-        } else if (daysUntil <= 21) {
-            daysClass = 'info'; // Amarelo (using info for yellow)
-        } else if (daysUntil <= 35) {
-            daysClass = 'success'; // Verde
+            if (daysUntil <= 7) {
+                daysClass = 'danger'; // Vermelho: 1-7 dias
+            } else if (daysUntil <= 15) {
+                daysClass = 'warning'; // Laranja: 8-15 dias
+            } else if (daysUntil <= 21) {
+                daysClass = 'info'; // Amarelo: 16-21 dias
+            } else { // daysUntil <= 35
+                daysClass = 'success'; // Verde: 22-35 dias
+            }
+
+            // Marca a opção selecionada se já existir
+            const isSelected = appState.selectedDate && appState.selectedDate.date.toISOString() === date.toISOString();
+            if (isSelected) className += ' selected';
+
+            html += `
+                <div class="${className}" onclick="selectDate(event, '${date.toISOString()}', ${date.getDate()}, ${daysUntil})">
+                    <div>Dia ${date.getDate()}</div>
+                    <div style="font-size: 12px; color: #666;">
+                        ${date.toLocaleDateString('pt-BR')}
+                    </div>
+                    <div style="font-size: 10px; color: #999;">
+                        ${daysUntil} dias
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+        // Atualiza a exibição da data selecionada se já houver uma
+        if (appState.selectedDate) {
+            updateSelectedDateDisplay(appState.selectedDate.date.toISOString(), appState.selectedDate.daysUntil);
         }
-        
-        html += `
-            <div class="${className} ${daysClass}" onclick="selectDate('${date.toISOString()}', ${date.getDate()}, ${daysUntil})">
-                <div>Dia ${date.getDate()}</div>
-                <div style="font-size: 12px; color: #666;">
-                    ${date.toLocaleDateString('pt-BR')}
-                </div>
-                <div style="font-size: 10px; color: #999;">
-                    ${daysUntil} dias
-                </div>
-            </div>
-        `;
-    });
-    
-    container.innerHTML = html;
-}
-
-function getNextAvailableDate(day) {
-    const today = new Date();
-    const currentMonth = today.getMonth();
-    const currentYear = today.getFullYear();
-    
-    // Tentar no mês atual
-    let nextDate = new Date(currentYear, currentMonth, day);
-    
-    // Se a data já passou ou é hoje, ir para o próximo mês
-    if (nextDate <= today) {
-        nextDate = new Date(currentYear, currentMonth + 1, day);
     }
-    
-    return nextDate;
 }
 
-function selectDate(dateString, day, daysUntil) {
+
+function selectDate(event, dateString, day, daysUntil) {
     // Remover seleção anterior
     document.querySelectorAll('.date-option').forEach(option => {
         option.classList.remove('selected');
     });
-    
+
     // Selecionar nova opção
+    // event.target pode ser um span dentro do div, então find the closest .date-option
     event.target.closest('.date-option').classList.add('selected');
-    
+
     appState.selectedDate = {
         date: new Date(dateString),
         day: day,
         daysUntil: daysUntil
     };
-    
+
+    updateSelectedDateDisplay(dateString, daysUntil);
+    validateStep3();
+}
+
+function updateSelectedDateDisplay(dateString, daysUntil) {
     // Mostrar informações
     const dateInfo = document.getElementById('dateInfo');
     const selectedDateSpan = document.getElementById('selectedDate');
     const daysInfoSpan = document.getElementById('daysInfo');
-    
+
     selectedDateSpan.textContent = new Date(dateString).toLocaleDateString('pt-BR');
-    
+
     let daysClass = 'success';
-    let daysText = `${daysUntil} dias até a primeira cobrança`;
-    
-    if (daysUntil <= 5) {
+    if (daysUntil <= 7) {
         daysClass = 'danger';
     } else if (daysUntil <= 15) {
         daysClass = 'warning';
+    } else if (daysUntil <= 21) {
+        daysClass = 'info'; // Usando a nova classe 'info'
     }
-    
-    daysInfoSpan.textContent = daysText;
+
+    daysInfoSpan.textContent = `${daysUntil} dias até a primeira cobrança`;
     daysInfoSpan.className = `days-info ${daysClass}`;
-    
+
     dateInfo.style.display = 'block';
-    validateStep3();
 }
+
 
 // Sistema de entrada
 function selectEntryOption(option) {
@@ -438,24 +504,32 @@ function selectEntryOption(option) {
     document.querySelectorAll('.option-card').forEach(card => {
         card.classList.remove('selected');
     });
-    
+
     // Selecionar nova opção
-    event.target.closest('.option-card').classList.add('selected');
-    
+    // event.target pode ser um input ou label, encontrar o .option-card pai
+    const targetCard = event.target.closest('.option-card');
+    if (targetCard) {
+        targetCard.classList.add('selected');
+    }
+
     appState.entryOption = option;
-    
+
     const entryPercentage = document.getElementById('entryPercentage');
-    
+
     if (option === 'with') {
         entryPercentage.style.display = 'block';
         document.getElementById('entryPercent').focus();
     } else {
         entryPercentage.style.display = 'none';
+        document.getElementById('entryPercent').value = ''; // Limpa o campo ao selecionar "sem entrada"
         appState.entryPercent = 0;
     }
-    
+
+    // Limpa a seleção de parcela anterior ao mudar a opção de entrada
+    appState.selectedInstallment = null;
+    document.getElementById('nextBtn4').disabled = true; // Desabilita o botão até uma nova parcela ser selecionada
+
     validateStep4();
-    generateInstallments(); // Recalculate installments when entry option changes
 }
 
 // Cálculo de parcelas
@@ -468,15 +542,16 @@ function getInterestRate(installments, entryPercent) {
         return interestRates.noEntry[22];
     } else {
         let entryRange;
-        if (entryPercent <= 10) entryRange = 1;
-        else if (entryPercent <= 20) entryRange = 11;
-        else if (entryPercent <= 30) entryRange = 21;
-        else if (entryPercent <= 40) entryRange = 31;
-        else if (entryPercent <= 50) entryRange = 41;
-        else entryRange = 51;
-        
+        if (entryPercent >= 1 && entryPercent <= 10) entryRange = 1;
+        else if (entryPercent >= 11 && entryPercent <= 20) entryRange = 11;
+        else if (entryPercent >= 21 && entryPercent <= 30) entryRange = 21;
+        else if (entryPercent >= 31 && entryPercent <= 40) entryRange = 31;
+        else if (entryPercent >= 41 && entryPercent <= 50) entryRange = 41;
+        else if (entryPercent >= 51 && entryPercent <= 56) entryRange = 51;
+        else return 0; // Entrada fora do range definido, retorna 0% ou lida com erro
+
         const rates = interestRates.withEntry[entryRange];
-        
+
         if (installments <= 6) return rates[1];
         if (installments <= 12) return rates[7];
         if (installments <= 18) return rates[13];
@@ -487,49 +562,165 @@ function getInterestRate(installments, entryPercent) {
 
 function roundToHalf(value) {
     // Arredondar para terminar em ,00 ou ,50
-    const integerPart = Math.floor(value);
-    const decimalPart = value - integerPart;
-    
-    if (decimalPart < 0.25) {
-        return integerPart;
-    } else if (decimalPart < 0.75) {
-        return integerPart + 0.5;
-    } else {
-        return integerPart + 1;
-    }
+    // Multiplica por 2, arredonda para o inteiro mais próximo e divide por 2
+    return Math.round(value * 2) / 2;
 }
 
 function calculateInstallment(principal, rate, installments) {
     if (installments === 0) return 0; // Handle 0 installments case
+    if (principal <= 0) return 0; // Se não há valor a financiar
+
+    // Se for 1 parcela, não aplica juros compostos
     if (installments === 1) {
-        return roundToHalf(principal);
+        return roundToHalf(principal * (1 + rate)); // Aplica juros simples para 1 parcela
     }
-    
-    const monthlyRate = rate / 12;
-    const installmentValue = principal * (monthlyRate * Math.pow(1 + monthlyRate, installments)) / 
+
+    // Fórmula da Tabela Price (PMT)
+    const monthlyRate = rate / 12; // A taxa é anual, precisamos da mensal
+    if (monthlyRate === 0) { // Evita divisão por zero se a taxa for 0
+        return roundToHalf(principal / installments);
+    }
+    const installmentValue = principal * (monthlyRate * Math.pow(1 + monthlyRate, installments)) /
                             (Math.pow(1 + monthlyRate, installments) - 1);
-    
+
     return roundToHalf(installmentValue);
 }
 
 function generateInstallments() {
     const container = document.getElementById('installmentsGrid');
-    
+    container.innerHTML = ''; // Limpa as parcelas existentes
+
+    // Se nenhuma opção de entrada foi selecionada, não gera as parcelas
+    if (appState.entryOption === null) {
+        container.innerHTML = '<p class="instruction">Selecione uma opção de entrada para ver as parcelas.</p>';
+        document.getElementById('nextBtn4').disabled = true;
+        return;
+    }
+
     // Calcular valores
-    appState.entryValue = appState.entryOption === 'with' ? 
+    appState.entryValue = appState.entryOption === 'with' ?
         (appState.totalValue * appState.entryPercent / 100) : 0;
     appState.financedValue = appState.totalValue - appState.entryValue;
-    
-    let htmlLeft = '';
-    let htmlRight = '';
-    
+
+    if (appState.financedValue <= 0 && appState.entryOption === 'with') {
+        container.innerHTML = '<p class="instruction">O valor da entrada cobre ou excede o total dos produtos. Não há parcelas a serem financiadas.</p>';
+        appState.selectedInstallment = null; // Reseta a seleção de parcela
+        document.getElementById('nextBtn4').disabled = true;
+        return;
+    } else if (appState.financedValue <= 0 && appState.entryOption === 'none') {
+         container.innerHTML = '<p class="instruction">Não há produtos ou o valor total é zero. Não há parcelas a serem financiadas.</p>';
+        appState.selectedInstallment = null; // Reseta a seleção de parcela
+        document.getElementById('nextBtn4').disabled = true;
+        return;
+    }
+
+    let html = '';
+
     for (let i = 1; i <= 24; i++) {
         const rate = getInterestRate(i, appState.entryPercent);
+        // O valor total financiado já inclui os juros se a taxa anual for aplicada ao principal
+        // A função calculateInstallment já aplica os juros mensais.
         const installmentValue = calculateInstallment(appState.financedValue, rate, i);
-        
-        const cardHtml = `
-            <div class="installment-card ${i % 2 === 0 ? 'blue-card' : 'pink-card'}" onclick="selectInstallment(${i}, ${installmentValue})">
-                <div class="installment-nu
-(Content truncated due to size limit. Use page ranges or line ranges to read remaining content)
+        const totalPaidWithInstallments = installmentValue * i; // Soma simples das parcelas
+        const totalFinal = appState.entryValue + totalPaidWithInstallments; // Total geral
+        const totalJuros = totalFinal - appState.totalValue;
+
+        // Se uma parcela já foi selecionada, adiciona a classe 'selected'
+        const isSelected = appState.selectedInstallment && appState.selectedInstallment.count === i;
+        const cardClass = isSelected ? 'installment-card selected' : 'installment-card';
+
+        html += `
+            <div class="${cardClass}" onclick="selectInstallment(${i}, ${installmentValue.toFixed(2)})">
+                <div class="installment-number">${i}x</div>
+                <div class="installment-value">R$ ${installmentValue.toFixed(2).replace(".", ",")}</div>
+                <div style="font-size: 12px; color: #666;">Total c/ juros: R$ ${totalPaidWithInstallments.toFixed(2).replace(".", ",")}</div>
+                <div style="font-size: 10px; color: #999;">Juros: R$ ${totalJuros.toFixed(2).replace(".", ",")}</div>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+    // Re-validar o passo 4 após a geração das parcelas
+    validateStep4();
+}
+
+function selectInstallment(count, value) {
+    // Remover seleção anterior
+    document.querySelectorAll('.installment-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+
+    // Selecionar nova opção
+    // event.target pode ser um span dentro do div, então find the closest .installment-card
+    event.target.closest('.installment-card').classList.add('selected');
+
+    appState.selectedInstallment = {
+        count: count,
+        value: value
+    };
+
+    // Habilita o botão "Avançar"
+    document.getElementById('nextBtn4').disabled = false;
+}
+
+// Resumo
+function updateSummary() {
+    document.getElementById('summaryClientName').textContent = appState.client.name;
+    document.getElementById('summaryClientCpf').textContent = appState.client.cpf;
+    document.getElementById('summaryBudgetDate').textContent = new Date().toLocaleDateString('pt-BR');
+
+    const summaryProductsList = document.getElementById('summaryProducts');
+    summaryProductsList.innerHTML = '';
+    appState.products.forEach(product => {
+        const li = document.createElement('li');
+        li.textContent = `${product.name}: R$ ${product.value.toFixed(2).replace(".", ",")}`;
+        summaryProductsList.appendChild(li);
+    });
+
+    document.getElementById('summaryEntryType').textContent = appState.entryOption === 'none' ? 'Sem Entrada' : 'Com Entrada';
+    document.getElementById('summaryEntryValue').textContent = `R$ ${appState.entryValue.toFixed(2).replace(".", ",")}`;
+
+    if (appState.selectedInstallment) {
+        const firstInstallmentDate = new Date(appState.selectedDate.date);
+        document.getElementById('summaryFirstInstallmentDate').textContent = firstInstallmentDate.toLocaleDateString('pt-BR');
+
+        const lastInstallmentDate = new Date(firstInstallmentDate);
+        lastInstallmentDate.setMonth(lastInstallmentDate.getMonth() + appState.selectedInstallment.count - 1); // Subtrai 1 porque a primeira parcela já está incluída
+        document.getElementById('summaryLastInstallmentDate').textContent = lastInstallmentDate.toLocaleDateString('pt-BR');
+
+        document.getElementById('summaryInstallmentCount').textContent = appState.selectedInstallment.count;
+        document.getElementById('summaryInstallmentValue').textContent = `R$ ${appState.selectedInstallment.value.toFixed(2).replace(".", ",")}`;
+    } else {
+        document.getElementById('summaryFirstInstallmentDate').textContent = 'N/A';
+        document.getElementById('summaryLastInstallmentDate').textContent = 'N/A';
+        document.getElementById('summaryInstallmentCount').textContent = 'N/A';
+        document.getElementById('summaryInstallmentValue').textContent = 'N/A';
+    }
+}
 
 
+// Ações finais
+function resetCalculator() {
+    // Reinicializa o estado da aplicação
+    appState = {
+        currentStep: 1,
+        client: { name: '', cpf: '' },
+        products: [],
+        selectedDate: null,
+        entryOption: null,
+        entryPercent: 0,
+        selectedInstallment: null,
+        totalValue: 0,
+        entryValue: 0,
+        financedValue: 0
+    };
+
+    // Limpa campos do formulário
+    document.getElementById('clientName').value = '';
+    document.getElementById('clientCpf').value = '';
+    document.getElementById('productName').value = '';
+    document.getElementById('productValue').value = '';
+    document.getElementById('entryPercent').value = '';
+
+    // Limpa exibições e seleções
+    document.getElementById('cpfError').classList
