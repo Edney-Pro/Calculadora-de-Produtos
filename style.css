@@ -214,6 +214,9 @@ body {
     margin-bottom: 15px;
     color: #333;
     font-size: 16px;
+    display: flex; /* Para alinhar o ícone */
+    align-items: center; /* Para alinhar o ícone */
+    gap: 8px; /* Espaçamento entre o ícone e o texto */
 }
 
 .product-item {
