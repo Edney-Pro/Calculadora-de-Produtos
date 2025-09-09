@@ -2,8 +2,7 @@
 let appState = {
     currentStep: 1,
     client: {
-        name: 
-            '',
+        name: '',
         cpf: ''
     },
     products: [],
@@ -72,31 +71,31 @@ const interestRates = {
 };
 
 // Inicialização
-document.addEventListener(\'DOMContentLoaded\', function() {
+document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
 
 function initializeApp() {
     // Event listeners para validação em tempo real
-    document.getElementById(\'clientName\').addEventListener(\'input\', validateStep1);
-    document.getElementById(\'clientCpf\').addEventListener(\'input\', function(e) {
+    document.getElementById('clientName').addEventListener('input', validateStep1);
+    document.getElementById('clientCpf').addEventListener('input', function(e) {
         maskCPF(e);
         validateStep1();
     });
     
-    document.getElementById(\'productName\').addEventListener(\'keypress\', function(e) {
-        if (e.key === \'Enter\') {
+    document.getElementById('productName').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
             addProduct();
         }
     });
     
-    document.getElementById(\'productValue\').addEventListener(\'keypress\', function(e) {
-        if (e.key === \'Enter\') {
+    document.getElementById('productValue').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
             addProduct();
         }
     });
     
-    document.getElementById(\'entryPercent\').addEventListener(\'input\', validateStep4);
+    document.getElementById('entryPercent').addEventListener('input', validateStep4);
     
     generateDateOptions();
     showStep(1);
@@ -104,9 +103,9 @@ function initializeApp() {
 
 // Validação de CPF
 function isValidCPF(cpf) {
-    cpf = cpf.replace(/[^\\d]/g, \'\');
+    cpf = cpf.replace(/[^\d]/g, '');
     
-    if (cpf.length !== 11 || /^(.)\\1{10}$/.test(cpf)) {
+    if (cpf.length !== 11 || /^(.)\1{10}$/.test(cpf)) {
         return false;
     }
     
@@ -131,31 +130,31 @@ function isValidCPF(cpf) {
 
 // Máscara de CPF
 function maskCPF(e) {
-    let value = e.target.value.replace(/\\D/g, \'\');
-    value = value.replace(/(\\d{3})(\\d)/, \'$1.$2\');
-    value = value.replace(/(\\d{3})(\\d)/, \'$1.$2\');
-    value = value.replace(/(\\d{3})(\\d{1,2})$/, \'$1-$2\');
+    let value = e.target.value.replace(/\D/g, '');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
     e.target.value = value;
 }
 
 // Validações por step
 function validateStep1() {
-    const name = document.getElementById(\'clientName\').value.trim();
-    const cpf = document.getElementById(\'clientCpf\').value;
-    const cpfError = document.getElementById(\'cpfError\');
+    const name = document.getElementById('clientName').value.trim();
+    const cpf = document.getElementById('clientCpf').value;
+    const cpfError = document.getElementById('cpfError');
     
     let isValid = true;
     
-        if (cpf.length > 0 && !isValidCPF(cpf)) {
-        cpfError.textContent = \'CPF inválido\';
-        cpfError.classList.add(\'show\');
+    if (cpf.length > 0 && !isValidCPF(cpf)) {
+        cpfError.textContent = 'CPF inválido';
+        cpfError.classList.add('show');
         isValid = false;
     } else {
-        cpfError.classList.remove(\'show\');
+        cpfError.classList.remove('show');
     }
     
     const isFormValid = name.length >= 3 && cpf.length === 14 && isValid;
-    document.getElementById(\'nextBtn1\').disabled = !isFormValid;
+    document.getElementById('nextBtn1').disabled = !isFormValid;
     
     if (isFormValid) {
         appState.client.name = name;
@@ -167,42 +166,42 @@ function validateStep1() {
 
 function validateStep2() {
     const isValid = appState.products.length > 0;
-    document.getElementById(\'nextBtn2\').disabled = !isValid;
+    document.getElementById('nextBtn2').disabled = !isValid;
     return isValid;
 }
 
 function validateStep3() {
     const isValid = appState.selectedDate !== null;
-    document.getElementById(\'nextBtn3\').disabled = !isValid;
+    document.getElementById('nextBtn3').disabled = !isValid;
     return isValid;
 }
 
 function validateStep4() {
     let isValid = false;
     
-    if (appState.entryOption === \'none\') {
+    if (appState.entryOption === 'none') {
         isValid = true;
-    } else if (appState.entryOption === \'with\') {
-        const percent = parseInt(document.getElementById(\'entryPercent\').value);
+    } else if (appState.entryOption === 'with') {
+        const percent = parseInt(document.getElementById('entryPercent').value);
         isValid = percent >= 1 && percent <= 56;
         if (isValid) {
             appState.entryPercent = percent;
         }
     }
     
-    document.getElementById(\'nextBtn4\').disabled = !isValid;
+    document.getElementById('nextBtn4').disabled = !isValid;
     return isValid;
 }
 
 // Navegação entre steps
 function showStep(step) {
     // Esconder todas as telas
-    document.querySelectorAll(\'\.screen\').forEach(screen => {
-        screen.classList.remove(\'active\');
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
     });
     
     // Mostrar tela atual
-    document.getElementById(`screen${step}`).classList.add(\'active\');
+    document.getElementById(`screen${step}`).classList.add('active');
     appState.currentStep = step;
     
     // Executar ações específicas do step
@@ -245,19 +244,19 @@ function prevStep(currentStep) {
 
 // Gerenciamento de produtos
 function addProduct() {
-    const nameInput = document.getElementById(\'productName\');
-    const valueInput = document.getElementById(\'productValue\');
+    const nameInput = document.getElementById('productName');
+    const valueInput = document.getElementById('productValue');
     
     const name = nameInput.value.trim();
     const value = parseFloat(valueInput.value);
     
     if (!name || !value || value <= 0) {
-        alert(\'Por favor, preencha o nome e valor do produto corretamente.\');
+        alert('Por favor, preencha o nome e valor do produto corretamente.');
         return;
     }
     
     if (appState.products.length >= 10) {
-        alert(\'Máximo de 10 produtos permitidos.\');
+        alert('Máximo de 10 produtos permitidos.');
         return;
     }
     
@@ -271,8 +270,8 @@ function addProduct() {
     updateProductsList();
     
     // Limpar campos
-    nameInput.value = \'\';
-    valueInput.value = \'\';
+    nameInput.value = '';
+    valueInput.value = '';
     nameInput.focus();
     
     validateStep2();
@@ -285,14 +284,14 @@ function removeProduct(id) {
 }
 
 function updateProductsList() {
-    const container = document.getElementById(\'productsContainer\');
-    const visorTotal = document.getElementById(\'visorTotal\');
+    const container = document.getElementById('productsContainer');
+    const visorTotal = document.getElementById('visorTotal');
     
     if (appState.products.length === 0) {
-        container.innerHTML = \'<p class="no-products">Nenhum produto adicionado</p>\';
+        container.innerHTML = '<p class="no-products">Nenhum produto adicionado</p>';
         appState.totalValue = 0;
     } else {
-        let html = \'\';
+        let html = '';
         appState.totalValue = 0;
         
         appState.products.forEach(product => {
@@ -301,7 +300,7 @@ function updateProductsList() {
                 <div class="product-item">
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
-                        <div class="product-value">R$ ${product.value.toFixed(2).replace(\".\", \",\")}</div>
+                        <div class="product-value">R$ ${product.value.toFixed(2).replace(".", ",")}</div>
                     </div>
                     <button class="remove-btn" onclick="removeProduct(${product.id})">
                         <i class="fas fa-times"></i>
@@ -312,18 +311,18 @@ function updateProductsList() {
         
         container.innerHTML = html;
     }
-    visorTotal.textContent = `Total: R$ ${appState.totalValue.toFixed(2).replace(\".\", \",\")}`;
+    visorTotal.textContent = `Total: R$ ${appState.totalValue.toFixed(2).replace(".", ",")}`;
 }
 
 // Sistema de datas
 function generateDateOptions() {
-    const container = document.getElementById(\'dateOptions\');
+    const container = document.getElementById('dateOptions');
     const today = new Date();
     const availableDays = [5, 10, 15, 20, 25, 30];
-    let html = \'\';
+    let html = '';
     
     // Clear previous options
-    container.innerHTML = \'\';
+    container.innerHTML = '';
 
     let generatedDates = [];
     let currentMonth = today.getMonth();
@@ -350,24 +349,24 @@ function generateDateOptions() {
 
     generatedDates.forEach(date => {
         const daysUntil = Math.ceil((date - today) / (1000 * 60 * 60 * 24));
-        let className = \'date-option\';
-        let daysClass = \'\';
+        let className = 'date-option';
+        let daysClass = '';
 
         if (daysUntil <= 7) {
-            daysClass = \'danger\'; // Vermelho
+            daysClass = 'danger'; // Vermelho
         } else if (daysUntil <= 15) {
-            daysClass = \'warning\'; // Laranja
+            daysClass = 'warning'; // Laranja
         } else if (daysUntil <= 21) {
-            daysClass = \'info\'; // Amarelo (using info for yellow)
+            daysClass = 'info'; // Amarelo (using info for yellow)
         } else if (daysUntil <= 35) {
-            daysClass = \'success\'; // Verde
+            daysClass = 'success'; // Verde
         }
         
         html += `
-            <div class="${className} ${daysClass}" onclick="selectDate(\'${date.toISOString()}\', ${date.getDate()}, ${daysUntil})">
+            <div class="${className} ${daysClass}" onclick="selectDate('${date.toISOString()}', ${date.getDate()}, ${daysUntil})">
                 <div>Dia ${date.getDate()}</div>
                 <div style="font-size: 12px; color: #666;">
-                    ${date.toLocaleDateString(\'pt-BR\')}
+                    ${date.toLocaleDateString('pt-BR')}
                 </div>
                 <div style="font-size: 10px; color: #999;">
                     ${daysUntil} dias
@@ -397,12 +396,12 @@ function getNextAvailableDate(day) {
 
 function selectDate(dateString, day, daysUntil) {
     // Remover seleção anterior
-    document.querySelectorAll(\'\.date-option\').forEach(option => {
-        option.classList.remove(\'selected\');
+    document.querySelectorAll('.date-option').forEach(option => {
+        option.classList.remove('selected');
     });
     
     // Selecionar nova opção
-    event.target.closest(\'\.date-option\').classList.add(\'selected\');
+    event.target.closest('.date-option').classList.add('selected');
     
     appState.selectedDate = {
         date: new Date(dateString),
@@ -411,47 +410,47 @@ function selectDate(dateString, day, daysUntil) {
     };
     
     // Mostrar informações
-    const dateInfo = document.getElementById(\'dateInfo\');
-    const selectedDateSpan = document.getElementById(\'selectedDate\');
-    const daysInfoSpan = document.getElementById(\'daysInfo\');
+    const dateInfo = document.getElementById('dateInfo');
+    const selectedDateSpan = document.getElementById('selectedDate');
+    const daysInfoSpan = document.getElementById('daysInfo');
     
-    selectedDateSpan.textContent = new Date(dateString).toLocaleDateString(\'pt-BR\');
+    selectedDateSpan.textContent = new Date(dateString).toLocaleDateString('pt-BR');
     
-    let daysClass = \'success\';
+    let daysClass = 'success';
     let daysText = `${daysUntil} dias até a primeira cobrança`;
     
     if (daysUntil <= 5) {
-        daysClass = \'danger\';
+        daysClass = 'danger';
     } else if (daysUntil <= 15) {
-        daysClass = \'warning\';
+        daysClass = 'warning';
     }
     
     daysInfoSpan.textContent = daysText;
     daysInfoSpan.className = `days-info ${daysClass}`;
     
-    dateInfo.style.display = \'block\';
+    dateInfo.style.display = 'block';
     validateStep3();
 }
 
 // Sistema de entrada
 function selectEntryOption(option) {
     // Remover seleção anterior
-    document.querySelectorAll(\'\.option-card\').forEach(card => {
-        card.classList.remove(\'selected\');
+    document.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('selected');
     });
     
     // Selecionar nova opção
-    event.target.closest(\'\.option-card\').classList.add(\'selected\');
+    event.target.closest('.option-card').classList.add('selected');
     
     appState.entryOption = option;
     
-    const entryPercentage = document.getElementById(\'entryPercentage\');
+    const entryPercentage = document.getElementById('entryPercentage');
     
-    if (option === \'with\') {
-        entryPercentage.style.display = \'block\';
-        document.getElementById(\'entryPercent\').focus();
+    if (option === 'with') {
+        entryPercentage.style.display = 'block';
+        document.getElementById('entryPercent').focus();
     } else {
-        entryPercentage.style.display = \'none\';
+        entryPercentage.style.display = 'none';
         appState.entryPercent = 0;
     }
     
@@ -461,7 +460,7 @@ function selectEntryOption(option) {
 
 // Cálculo de parcelas
 function getInterestRate(installments, entryPercent) {
-    if (appState.entryOption === \'none\') {
+    if (appState.entryOption === 'none') {
         if (installments <= 6) return interestRates.noEntry[1];
         if (installments <= 12) return interestRates.noEntry[7];
         if (installments <= 18) return interestRates.noEntry[13];
@@ -514,165 +513,23 @@ function calculateInstallment(principal, rate, installments) {
 }
 
 function generateInstallments() {
-    const container = document.getElementById(\'installmentsGrid\');
+    const container = document.getElementById('installmentsGrid');
     
     // Calcular valores
-    appState.entryValue = appState.entryOption === \'with\' ? 
+    appState.entryValue = appState.entryOption === 'with' ? 
         (appState.totalValue * appState.entryPercent / 100) : 0;
     appState.financedValue = appState.totalValue - appState.entryValue;
     
-    let htmlLeft = \'\';
-    let htmlRight = \'\';
+    let htmlLeft = '';
+    let htmlRight = '';
     
     for (let i = 1; i <= 24; i++) {
         const rate = getInterestRate(i, appState.entryPercent);
         const installmentValue = calculateInstallment(appState.financedValue, rate, i);
         
         const cardHtml = `
-            <div class="installment-card ${i % 2 === 0 ? \'blue-card\' : \'pink-card\'}" onclick="selectInstallment(${i}, ${installmentValue})">
-                <div class="installment-number">${i}x</div>
-                <div class="installment-value">R$ ${installmentValue.toFixed(2).replace(\".\", \",\")}</div>
-            </div>
-        `;
-
-        if (i <= 12) {
-            htmlLeft += cardHtml;
-        } else {
-            htmlRight += cardHtml;
-        }
-    }
-    
-    container.innerHTML = `
-        <div>${htmlLeft}</div>
-        <div>${htmlRight}</div>
-    `;
-}
-
-function selectInstallment(installments, value) {
-    document.querySelectorAll(\'\.installment-card\').forEach(card => {
-        card.classList.remove(\'selected\');
-    });
-    event.target.closest(\'\.installment-card\').classList.add(\'selected\');
-
-    appState.selectedInstallment = {
-        count: installments,
-        value: value
-    };
-    updateSummary();
-}
-
-function updateSummary() {
-    document.getElementById(\'summaryClientName\').textContent = appState.client.name;
-    document.getElementById(\'summaryClientCpf\').textContent = appState.client.cpf;
-    document.getElementById(\'summaryBudgetDate\').textContent = new Date().toLocaleDateString(\'pt-BR\');
-
-    const productsList = document.getElementById(\'summaryProducts\');
-    productsList.innerHTML = \'\';
-    appState.products.forEach(product => {
-        const li = document.createElement(\'li\');
-        li.textContent = `${product.name}: R$ ${product.value.toFixed(2).replace(\".\", \",\")}`;
-        productsList.appendChild(li);
-    });
-
-    document.getElementById(\'summaryEntryType\').textContent = appState.entryOption === \'with\' ? \'Com Entrada\' : \'Sem Entrada\';
-    document.getElementById(\'summaryEntryValue\').textContent = `R$ ${appState.entryValue.toFixed(2).replace(\".\", \",\")}`;
-
-    if (appState.selectedDate) {
-        document.getElementById(\'summaryFirstInstallmentDate\').textContent = appState.selectedDate.date.toLocaleDateString(\'pt-BR\');
-        
-        const lastInstallmentDate = addMonthsSafe(appState.selectedDate.date, appState.selectedInstallment.count - 1);
-        document.getElementById(\'summaryLastInstallmentDate\').textContent = lastInstallmentDate.toLocaleDateString(\'pt-BR\');
-    }
-
-    if (appState.selectedInstallment) {
-        document.getElementById(\'summaryInstallmentCount\').textContent = appState.selectedInstallment.count;
-        document.getElementById(\'summaryInstallmentValue\').textContent = `R$ ${appState.selectedInstallment.value.toFixed(2).replace(\".\", \",\")}`;
-    }
-}
-
-function addMonthsSafe(date, months) {
-    const d = new Date(date);
-    d.setMonth(d.getMonth() + months);
-    return d;
-}
-
-function resetCalculator() {
-    appState = {
-        currentStep: 1,
-        client: {
-            name: \'\',
-            cpf: \'\'
-        },
-        products: [],
-        selectedDate: null,
-        entryOption: null,
-        entryPercent: 0,
-        selectedInstallment: null,
-        totalValue: 0,
-        entryValue: 0,
-        financedValue: 0
-    };
-    document.getElementById(\'clientName\').value = \'\';
-    document.getElementById(\'clientCpf\').value = \'\';
-    document.getElementById(\'cpfError\').classList.remove(\'show\');
-    updateProductsList();
-    generateDateOptions();
-    showStep(1);
-}
-
-function sendProposal() {
-    let message = `Proposta de Orçamento:\n\n`;
-    message += `Nome: ${appState.client.name}\n`;
-    message += `CPF: ${appState.client.cpf}\n`;
-    message += `Data do Orçamento: ${new Date().toLocaleDateString(\'pt-BR\')}\n\n`;
-    message += `Produtos:\n`;
-    appState.products.forEach(product => {
-        message += `- ${product.name}: R$ ${product.value.toFixed(2).replace(\".\", \",\")}\n`;
-    });
-    message += `\n`;
-    message += `Tipo de Entrada: ${appState.entryOption === \'with\' ? \'Com Entrada\' : \'Sem Entrada\'}\n`;
-    if (appState.entryOption === \'with\') {
-        message += `Valor da Entrada: R$ ${appState.entryValue.toFixed(2).replace(\".\", \",\")}\n`;
-    }
-    message += `Primeira Parcela: ${appState.selectedDate ? appState.selectedDate.date.toLocaleDateString(\'pt-BR\') : \'N/A\'}\n`;
-    
-    const lastInstallmentDate = appState.selectedDate && appState.selectedInstallment ? addMonthsSafe(appState.selectedDate.date, appState.selectedInstallment.count - 1) : null;
-    message += `Última Parcela: ${lastInstallmentDate ? lastInstallmentDate.toLocaleDateString(\'pt-BR\') : \'N/A\'}\n`;
-
-    message += `Quantidade de Parcelas: ${appState.selectedInstallment ? appState.selectedInstallment.count : \'N/A\'}\n`;
-    message += `Valor da Parcela: ${appState.selectedInstallment ? `R$ ${appState.selectedInstallment.value.toFixed(2).replace(\".\", \",\")}` : \'N/A\'}\n`;
-
-    const whatsappUrl = `https://wa.me/5544998408460?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, \'_blank\');
-}
-
-// Add these to your CSS for pink and blue cards
-/*
-.pink-card {
-    background: linear-gradient(135deg, rgba(255, 192, 203, 0.1) 0%, rgba(255, 105, 180, 0.1) 100%);
-    border-color: #ff69b4;
-}
-
-.blue-card {
-    background: linear-gradient(135deg, rgba(173, 216, 230, 0.1) 0%, rgba(100, 149, 237, 0.1) 100%);
-    border-color: #6495ed;
-}
-*/
-
-// Initial product examples (moved to index.html script tag)
-// appState.products.push(
-//     { id: Date.now() + 1, name: \'Mesa\', value: 450.00 },
-//     { id: Date.now() + 2, name: \'Cadeira\', value: 180.00 },
-//     { id: Date.now() + 3, name: \'Cozinha Compacta\', value: 1800.00 },
-//     { id: Date.now() + 4, name: \'Máquina de Lavar\', value: 2500.00 }
-// );
-// updateProductsList();
-// validateStep2();
-
-// Admin mode check (moved to index.html script tag)
-// const urlParams = new URLSearchParams(window.location.search);
-// if (urlParams.get(\'admin\') === \'1\' || document.body.dataset.admin === \'true\') {
-//     document.getElementById(\'visorTotal\').style.display = \'block\';
-// }
+            <div class="installment-card ${i % 2 === 0 ? 'blue-card' : 'pink-card'}" onclick="selectInstallment(${i}, ${installmentValue})">
+                <div class="installment-nu
+(Content truncated due to size limit. Use page ranges or line ranges to read remaining content)
 
 
