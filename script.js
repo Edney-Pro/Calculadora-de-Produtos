@@ -617,4 +617,182 @@ function generateInstallments() {
     for (let i = 1; i <= 24; i++) {
         const rate = getInterestRate(i, appState.entryPercent);
         // O valor total financiado já inclui os juros se a taxa anual for aplicada ao principal
-        // A função calculateInstallment já aplica os
+        // A função calculateInstallment já aplica os juros compostos
+        const installmentValue = calculateInstallment(appState.financedValue, rate, i);
+
+        // Formatar o valor da parcela
+        const formattedValue = installmentValue.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        // Marca a parcela selecionada se já existir
+        const isSelected = appState.selectedInstallment && appState.selectedInstallment.count === i;
+        let className = 'installment-option';
+        if (isSelected) className += ' selected';
+
+        html += `
+            <div class="${className}" onclick="selectInstallment(${i}, ${installmentValue})">
+                <div class="installment-count">${i}x</div>
+                <div class="installment-value">R$ ${formattedValue}</div>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+    document.getElementById('nextBtn4').disabled = appState.selectedInstallment === null; // Atualiza o botão baseado na seleção atual
+}
+
+function selectInstallment(count, value) {
+    // Remover seleção anterior
+    document.querySelectorAll('.installment-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+
+    // Selecionar nova opção
+    event.target.closest('.installment-option').classList.add('selected');
+
+    appState.selectedInstallment = {
+        count: count,
+        value: value
+    };
+
+    document.getElementById('nextBtn4').disabled = false;
+}
+
+// Resumo
+function updateSummary() {
+    document.getElementById('summaryClientName').textContent = appState.client.name;
+    document.getElementById('summaryClientCpf').textContent = appState.client.cpf;
+    document.getElementById('summaryBudgetDate').textContent = new Date().toLocaleDateString('pt-BR');
+
+    const productsList = document.getElementById('summaryProducts');
+    productsList.innerHTML = '';
+    appState.products.forEach(product => {
+        const li = document.createElement('li');
+        li.textContent = `${product.name} - R$ ${product.value.toFixed(2).replace(".", ",")}`;
+        productsList.appendChild(li);
+    });
+
+    document.getElementById('summaryEntryType').textContent = appState.entryOption === 'none' ? 'Sem entrada' : `Com entrada (${appState.entryPercent}%)`;
+    document.getElementById('summaryEntryValue').textContent = `R$ ${appState.entryValue.toFixed(2).replace(".", ",")}`;
+
+    // Calcular datas das parcelas
+    if (appState.selectedDate && appState.selectedInstallment) {
+        const firstDate = new Date(appState.selectedDate.date);
+        document.getElementById('summaryFirstInstallmentDate').textContent = firstDate.toLocaleDateString('pt-BR');
+
+        const lastDate = new Date(firstDate);
+        lastDate.setMonth(firstDate.getMonth() + appState.selectedInstallment.count - 1);
+        document.getElementById('summaryLastInstallmentDate').textContent = lastDate.toLocaleDateString('pt-BR');
+    } else {
+        document.getElementById('summaryFirstInstallmentDate').textContent = 'N/A';
+        document.getElementById('summaryLastInstallmentDate').textContent = 'N/A';
+    }
+
+    document.getElementById('summaryInstallmentCount').textContent = appState.selectedInstallment ? `${appState.selectedInstallment.count}x` : 'N/A';
+    document.getElementById('summaryInstallmentValue').textContent = appState.selectedInstallment ? `R$ ${appState.selectedInstallment.value.toFixed(2).replace(".", ",")}` : 'N/A';
+}
+
+// Enviar proposta
+function sendProposal() {
+    // Validar se todos os dados estão preenchidos
+    if (!appState.client.name || !appState.client.cpf || appState.products.length === 0 ||
+        !appState.selectedDate || !appState.entryOption || !appState.selectedInstallment) {
+        alert('Por favor, preencha todos os campos obrigatórios antes de enviar a proposta.');
+        return;
+    }
+
+    // Formatar mensagem para WhatsApp
+    let message = `*PROPOSTA DE FINANCIAMENTO*\n\n`;
+    message += `*Cliente:* ${appState.client.name}\n`;
+    message += `*CPF:* ${appState.client.cpf}\n\n`;
+    message += `*Produtos:*\n`;
+    appState.products.forEach(product => {
+        message += `- ${product.name}: R$ ${product.value.toFixed(2).replace(".", ",")}\n`;
+    });
+    message += `*Total:* R$ ${appState.totalValue.toFixed(2).replace(".", ",")}\n\n`;
+    message += `*Entrada:* ${appState.entryOption === 'none' ? 'Sem entrada' : `${appState.entryPercent}% (R$ ${appState.entryValue.toFixed(2).replace(".", ",")})`}\n`;
+    message += `*Valor Financiado:* R$ ${appState.financedValue.toFixed(2).replace(".", ",")}\n`;
+    message += `*Parcelas:* ${appState.selectedInstallment.count}x de R$ ${appState.selectedInstallment.value.toFixed(2).replace(".", ",")}\n\n`;
+    message += `*Primeira Parcela:* ${appState.selectedDate.date.toLocaleDateString('pt-BR')}\n`;
+    
+    // Calcular data da última parcela
+    const lastDate = new Date(appState.selectedDate.date);
+    lastDate.setMonth(lastDate.getMonth() + appState.selectedInstallment.count - 1);
+    message += `*Última Parcela:* ${lastDate.toLocaleDateString('pt-BR')}\n\n`;
+    
+    message += `*Data do Orçamento:* ${new Date().toLocaleDateString('pt-BR')}\n\n`;
+    message += `_Atenção: devido à grande quantidade de pedidos, estamos pedindo um prazo de 10 a 30 dias para entrada do produto assim que confirmado o pedido._`;
+
+    // Codificar a mensagem para URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Número da empresa (substitua pelo número real)
+    const phoneNumber = "5511999999999"; // Exemplo: 11 99999-9999
+    
+    // Abrir WhatsApp
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+}
+
+// Reset da calculadora
+function resetCalculator() {
+    // Resetar estado
+    appState = {
+        currentStep: 1,
+        client: {
+            name: '',
+            cpf: ''
+        },
+        products: [],
+        selectedDate: null,
+        entryOption: null,
+        entryPercent: 0,
+        selectedInstallment: null,
+        totalValue: 0,
+        entryValue: 0,
+        financedValue: 0
+    };
+
+    // Limpar formulários
+    document.getElementById('clientName').value = '';
+    document.getElementById('clientCpf').value = '';
+    document.getElementById('productName').value = '';
+    document.getElementById('productValue').value = '';
+    document.getElementById('entryPercent').value = '';
+    
+    // Limpar seleções visuais
+    document.querySelectorAll('.date-option.selected, .option-card.selected, .installment-option.selected').forEach(el => {
+        el.classList.remove('selected');
+    });
+    
+    // Esconder elementos informativos
+    document.getElementById('dateInfo').style.display = 'none';
+    document.getElementById('entryPercentage').style.display = 'none';
+    
+    // Resetar listas
+    document.getElementById('productsContainer').innerHTML = '<p class="no-products">Nenhum produto adicionado</p>';
+    document.getElementById('visorTotal').textContent = 'Total: R$ 0,00';
+    document.getElementById('installmentsGrid').innerHTML = '<p class="instruction">Selecione uma opção de entrada para ver as parcelas.</p>';
+    
+    // Re-gerar opções de data
+    generateDateOptions();
+    
+    // Re-inicializar produtos padrão
+    appState.products.push(
+        { id: Date.now() + 1, name: 'Mesa', value: 450.00 },
+        { id: Date.now() + 2, name: 'Cadeira', value: 180.00 },
+        { id: Date.now() + 3, name: 'Cozinha Compacta', value: 1800.00 },
+        { id: Date.now() + 4, name: 'Máquina de Lavar', value: 2500.00 }
+    );
+    updateProductsList();
+    
+    // Desabilitar botões de avanço
+    document.getElementById('nextBtn1').disabled = true;
+    document.getElementById('nextBtn2').disabled = true;
+    document.getElementById('nextBtn3').disabled = true;
+    document.getElementById('nextBtn4').disabled = true;
+    
+    // Voltar para o primeiro passo
+    showStep(1);
+}
