@@ -1,467 +1,531 @@
-/* Estilos gerais */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #212529;
-    line-height: 1.6;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background: none;
     overflow: hidden;
+    height: 100vh;
+    width: 100vw;
 }
 
-header {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+.app-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Telas */
+.screen {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #ffffff;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.screen-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 30px;
-    text-align: center;
-}
-
-.logo {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 15px;
-    font-size: 28px;
-    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.logo i {
-    font-size: 36px;
-}
-
-.main-section {
-    padding: 40px;
-}
-
-h2 {
-    color: #343a40;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 26px;
-    text-align: center;
-    justify-content: center;
-}
-
-h2 i {
-    color: #007bff;
-}
-
-h3 {
+.screen-header h2 {
     font-size: 20px;
-    color: #495057;
-    margin-bottom: 20px;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-h3 i {
-    color: #17a2b8;
+.progress {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-.input-section {
-    background-color: #f8f9fa;
-    padding: 30px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    border: 2px solid #e9ecef;
+/* Conteúdo */
+.form-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.form-content.scrollable {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .form-group {
     margin-bottom: 20px;
 }
 
-label {
+.form-group label {
     display: block;
-    margin-bottom: 10px;
-    font-weight: 600;
-    color: #495057;
-    font-size: 16px;
-}
-
-input[type="number"] {
-    width: 100%;
-    padding: 15px 20px;
-    border: 2px solid #ced4da;
-    border-radius: 8px;
-    font-size: 18px;
+    margin-bottom: 8px;
     font-weight: 500;
-    transition: all 0.3s ease;
-    background-color: #fff;
+    color: #333;
+    font-size: 14px;
 }
 
-input[type="number"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
     outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-suffix {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-weight: 500;
+}
+
+.form-group {
+    position: relative;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* Botões */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-.summary-section, .installments-section, .selected-option, .actions-section {
-    margin-bottom: 30px;
-    animation: fadeInUp 0.5s ease-out;
+.btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 2px solid #e9ecef;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.btn-secondary:hover {
+    background: #e9ecef;
 }
 
-.info-box {
-    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-    border: 1px solid #bbdefb;
-    border-radius: 10px;
-    padding: 25px;
+.btn-outline {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.btn-outline:hover {
+    background: #667eea;
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Navegação */
+.navigation-buttons {
+    padding: 20px;
+    background: #f8f9fa;
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid #e9ecef;
+}
+
+.navigation-buttons .btn {
+    flex: 1;
+}
+
+/* Produtos */
+.add-product-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
     margin-bottom: 20px;
 }
 
-.info-box.selected-info {
-    background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
-    border: 2px solid #4caf50;
-}
-
-.info-box p {
-    margin-bottom: 8px;
+.products-list h3 {
+    margin-bottom: 15px;
+    color: #333;
     font-size: 16px;
 }
 
-.info-box p:last-child {
-    margin-bottom: 0;
-}
-
-.installment-options-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.installment-option-card {
+.product-item {
     background: white;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.installment-option-card:hover {
-    border-color: #007bff;
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 123, 255, 0.2);
+.product-info {
+    flex: 1;
 }
 
-.installment-option-card.selected {
-    border-color: #28a745;
-    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+.product-name {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
 }
 
-.installment-option-card .months {
-    font-size: 20px;
-    font-weight: bold;
-    color: #343a40;
-    margin-bottom: 8px;
-}
-
-.installment-option-card .value {
-    font-size: 16px;
+.product-value {
     color: #28a745;
     font-weight: 600;
 }
 
-.installment-option-card .total {
-    font-size: 14px;
-    color: #6c757d;
-    margin-top: 5px;
-}
-
-.actions-section {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn-action, .btn-restart, .btn-send, .btn-copy {
-    padding: 15px 30px;
+.remove-btn {
+    background: #dc3545;
+    color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-.btn-action {
-    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-    color: white;
-}
-
-.btn-action:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-}
-
-.btn-restart {
-    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-    color: white;
-}
-
-.btn-restart:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
-}
-
-.btn-send {
-    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-    color: white;
-}
-
-.btn-send:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-}
-
-.btn-copy {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-    color: white;
-}
-
-.btn-copy:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-}
-
-/* Modal */
-.modal {
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
     justify-content: center;
-    align-items: center;
-    animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.modal-content {
-    background-color: white;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 80vh;
-    overflow: hidden;
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.modal-header {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-    color: white;
+.no-products {
+    color: #666;
+    font-style: italic;
+    text-align: center;
     padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.modal-header h3 {
-    margin: 0;
-    color: white;
-}
-
-.close {
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close:hover {
-    color: #ccc;
-}
-
-.modal-body {
-    padding: 30px;
-}
-
-.modal-body textarea {
-    width: 100%;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    padding: 15px;
-    font-size: 14px;
-    font-family: 'Courier New', monospace;
-    resize: vertical;
+/* Opções de Entrada */
+.entry-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
-.modal-actions {
+.option-card {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.option-card.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.option-card input[type="radio"] {
+    display: none;
+}
+
+.option-card label {
+    cursor: pointer;
     display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.option-card label i {
+    font-size: 24px;
+    color: #667eea;
+}
+
+.option-card label span {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Datas */
+.date-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.date-option {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.date-option:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.date-option.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.date-option.unavailable {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f8f9fa;
+}
+
+/* Info Cards */
+.info-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.info-card.selected {
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(25, 135, 84, 0.1) 100%);
+    border-color: #28a745;
+}
+
+.info-card h3 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.days-info {
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.days-info.danger {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.days-info.warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.days-info.success {
+    background: #d1f2eb;
+    color: #0c5460;
+    border: 1px solid #c3e6cb;
+}
+
+/* Parcelas */
+.installments-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.installment-card {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.installment-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.installment-card.selected {
+    border-color: #28a745;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(25, 135, 84, 0.1) 100%);
+}
+
+.installment-number {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.installment-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #28a745;
+}
+
+/* Alertas */
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+}
+
+.alert i {
+    font-size: 18px;
+    margin-top: 2px;
+}
+
+.warning-message {
+    margin-bottom: 20px;
+}
+
+.instruction {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
-    .container {
-        margin: 10px;
-        border-radius: 10px;
-    }
-    
-    .main-section {
-        padding: 20px;
-    }
-    
-    header {
-        padding: 20px;
-    }
-    
-    .logo {
-        font-size: 24px;
-    }
-    
-    .logo i {
-        font-size: 30px;
-    }
-    
-    h2 {
-        font-size: 22px;
-        flex-direction: column;
-        gap: 8px;
-    }
-    
-    .installment-options-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 10px;
-    }
-    
-    .actions-section {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn-action, .btn-restart {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10px;
-    }
-    
-    .modal-body {
-        padding: 20px;
-    }
-    
-    .modal-actions {
-        flex-direction: column;
-    }
-    
-    .btn-send, .btn-copy {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
 @media (max-width: 480px) {
-    .input-section {
-        padding: 20px;
-    }
-    
-    .installment-options-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .installment-option-card {
+    .screen-header {
         padding: 15px;
     }
     
-    .installment-option-card .months {
+    .screen-header h2 {
         font-size: 18px;
     }
     
-    .installment-option-card .value {
-        font-size: 14px;
+    .form-content {
+        padding: 15px;
+    }
+    
+    .navigation-buttons {
+        padding: 15px;
+    }
+    
+    .entry-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .date-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .installments-grid {
+        grid-template-columns: 1fr;
     }
 }
 
-/* Animações adicionais */
-.installment-option-card {
-    animation: slideInUp 0.5s ease-out;
-    animation-fill-mode: both;
-}
-
-.installment-option-card:nth-child(1) { animation-delay: 0.1s; }
-.installment-option-card:nth-child(2) { animation-delay: 0.2s; }
-.installment-option-card:nth-child(3) { animation-delay: 0.3s; }
-.installment-option-card:nth-child(4) { animation-delay: 0.4s; }
-.installment-option-card:nth-child(5) { animation-delay: 0.5s; }
-.installment-option-card:nth-child(6) { animation-delay: 0.6s; }
-.installment-option-card:nth-child(7) { animation-delay: 0.7s; }
-.installment-option-card:nth-child(8) { animation-delay: 0.8s; }
-
-@keyframes slideInUp {
+/* Animações */
+@keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateX(100%);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+.screen.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+.screen.slide-out {
+    animation: slideOut 0.3s ease-out;
 }
 
