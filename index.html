@@ -3,85 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Financiamento Simples</title>
+    <title>Calculadora de Financiamento</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-calculator"></i>
-                <span>Calculadora de Financiamento</span>
+    <div class="app-container">
+        <!-- Etapa 1: Cadastro -->
+        <div class="screen active" id="screen1">
+            <div class="screen-header">
+                <h2><i class="fas fa-user"></i> Dados do Cliente</h2>
+                <div class="progress">1/5</div>
             </div>
-        </header>
-
-        <!-- Seção Principal -->
-        <div class="main-section">
-            <h2><i class="fas fa-money-bill-wave"></i> Digite o Valor do Produto</h2>
             
-            <div class="input-section">
+            <div class="form-content">
                 <div class="form-group">
-                    <label for="productValue">Valor do Produto (R$):</label>
-                    <input type="number" id="productValue" min="0" step="0.01" placeholder="Ex: 1500.00" oninput="calculateAll()">
+                    <label for="clientName">Nome Completo:</label>
+                    <input type="text" id="clientName" placeholder="Digite seu nome completo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientCpf">CPF:</label>
+                    <input type="text" id="clientCpf" placeholder="000.000.000-00" maxlength="14" required>
+                    <div class="error-message" id="cpfError"></div>
                 </div>
             </div>
-
-            <div class="summary-section" id="summarySection" style="display:none;">
-                <div class="info-box">
-                    <h3><i class="fas fa-info-circle"></i> Resumo dos Valores</h3>
-                    <p><strong>Valor do Produto:</strong> R$ <span id="productValueDisplay">0.00</span></p>
-                    <p><strong>Garantia Automática (5%):</strong> R$ <span id="warrantyValueDisplay">0.00</span></p>
-                    <p><strong>Total com Garantia:</strong> R$ <span id="totalWithWarrantyDisplay">0.00</span></p>
-                </div>
-            </div>
-
-            <div class="installments-section" id="installmentsSection" style="display:none;">
-                <h3><i class="fas fa-credit-card"></i> Opções de Parcelamento (até 36x)</h3>
-                <div id="installmentOptionsContainer" class="installment-options-grid">
-                    <!-- Opções de parcelamento serão geradas aqui -->
-                </div>
-            </div>
-
-            <div class="selected-option" id="selectedOption" style="display:none;">
-                <div class="info-box selected-info">
-                    <h3><i class="fas fa-check-circle"></i> Opção Selecionada</h3>
-                    <p><strong>Parcelamento:</strong> <span id="selectedInstallments">0</span>x de R$ <span id="selectedValue">0.00</span></p>
-                    <p><strong>Valor Total:</strong> R$ <span id="selectedTotal">0.00</span></p>
-                </div>
-            </div>
-
-            <div class="actions-section" id="actionsSection" style="display:none;">
-                <button type="button" class="btn-action" onclick="generateWhatsApp()">
-                    <i class="fab fa-whatsapp"></i> Gerar Mensagem WhatsApp
-                </button>
-                <button type="button" class="btn-restart" onclick="clearAll()">
-                    <i class="fas fa-redo"></i> Nova Simulação
+            
+            <div class="navigation-buttons">
+                <button class="btn btn-primary" id="nextBtn1" onclick="nextStep(1)" disabled>
+                    Próximo <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Modal para WhatsApp -->
-        <div id="whatsappModal" class="modal" style="display:none;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fab fa-whatsapp"></i> Mensagem para WhatsApp</h3>
-                    <span class="close" onclick="closeModal()">&times;</span>
+        <!-- Etapa 2: Produtos -->
+        <div class="screen" id="screen2">
+            <div class="screen-header">
+                <h2><i class="fas fa-shopping-cart"></i> Produtos</h2>
+                <div class="progress">2/5</div>
+            </div>
+            
+            <div class="form-content">
+                <div class="add-product-section">
+                    <div class="form-group">
+                        <label for="productName">Nome do Produto:</label>
+                        <input type="text" id="productName" placeholder="Ex: Smartphone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productValue">Valor (R$):</label>
+                        <input type="number" id="productValue" placeholder="0,00" step="0.01" min="0">
+                    </div>
+                    
+                    <button class="btn btn-secondary" onclick="addProduct()">
+                        <i class="fas fa-plus"></i> Adicionar Produto
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <textarea id="whatsappMessage" rows="15" readonly></textarea>
-                    <div class="modal-actions">
-                        <button type="button" class="btn-send" onclick="sendWhatsApp()">
-                            <i class="fab fa-whatsapp"></i> Enviar WhatsApp
-                        </button>
-                        <button type="button" class="btn-copy" onclick="copyMessage()">
-                            <i class="fas fa-copy"></i> Copiar Mensagem
-                        </button>
+                
+                <div class="products-list" id="productsList">
+                    <h3>Produtos Adicionados:</h3>
+                    <div id="productsContainer">
+                        <p class="no-products">Nenhum produto adicionado</p>
                     </div>
                 </div>
             </div>
+            
+            <div class="navigation-buttons">
+                <button class="btn btn-outline" onclick="prevStep(2)">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <button class="btn btn-primary" id="nextBtn2" onclick="nextStep(2)" disabled>
+                    Próximo <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Etapa 3: Data de Cobrança -->
+        <div class="screen" id="screen3">
+            <div class="screen-header">
+                <h2><i class="fas fa-calendar"></i> Data de Cobrança</h2>
+                <div class="progress">3/5</div>
+            </div>
+            
+            <div class="form-content">
+                <p class="instruction">Escolha o dia da primeira cobrança:</p>
+                
+                <div class="date-options" id="dateOptions">
+                    <!-- Opções de data serão geradas pelo JavaScript -->
+                </div>
+                
+                <div class="date-info" id="dateInfo" style="display: none;">
+                    <div class="info-card">
+                        <p><strong>Primeira cobrança:</strong> <span id="selectedDate"></span></p>
+                        <p class="days-info" id="daysInfo"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navigation-buttons">
+                <button class="btn btn-outline" onclick="prevStep(3)">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <button class="btn btn-primary" id="nextBtn3" onclick="nextStep(3)" disabled>
+                    Próximo <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Etapa 4: Entrada -->
+        <div class="screen" id="screen4">
+            <div class="screen-header">
+                <h2><i class="fas fa-money-bill"></i> Entrada</h2>
+                <div class="progress">4/5</div>
+            </div>
+            
+            <div class="form-content">
+                <div class="entry-options">
+                    <div class="option-card" onclick="selectEntryOption('none')">
+                        <input type="radio" name="entryOption" id="entryNone" value="none">
+                        <label for="entryNone">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Sem Entrada</span>
+                        </label>
+                    </div>
+                    
+                    <div class="option-card" onclick="selectEntryOption('with')">
+                        <input type="radio" name="entryOption" id="entryWith" value="with">
+                        <label for="entryWith">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Com Entrada</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="entry-percentage" id="entryPercentage" style="display: none;">
+                    <div class="form-group">
+                        <label for="entryPercent">Percentual de Entrada (1% a 56%):</label>
+                        <input type="number" id="entryPercent" min="1" max="56" placeholder="Ex: 20">
+                        <span class="input-suffix">%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navigation-buttons">
+                <button class="btn btn-outline" onclick="prevStep(4)">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <button class="btn btn-primary" id="nextBtn4" onclick="nextStep(4)" disabled>
+                    Ver Parcelas <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Etapa 5: Parcelas -->
+        <div class="screen" id="screen5">
+            <div class="screen-header">
+                <h2><i class="fas fa-credit-card"></i> Parcelas</h2>
+                <div class="progress">5/5</div>
+            </div>
+            
+            <div class="form-content scrollable">
+                <div class="installments-grid" id="installmentsGrid">
+                    <!-- Parcelas serão geradas pelo JavaScript -->
+                </div>
+            </div>
+            
+            <div class="selected-installment" id="selectedInstallment" style="display: none;">
+                <div class="info-card selected">
+                    <h3><i class="fas fa-check"></i> Opção Selecionada</h3>
+                    <p><span id="selectedInstallmentText"></span></p>
+                </div>
+            </div>
+            
+            <div class="warning-message">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>Atenção:</strong> devido à grande quantidade de pedidos, estamos pedindo um prazo de 10 a 30 dias para entrada do produto assim que confirmado o pedido.</p>
+                </div>
+            </div>
+            
+            <div class="navigation-buttons">
+                <button class="btn btn-outline" onclick="prevStep(5)">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <button class="btn btn-success" id="finalizeBtn" onclick="finalizeSimulation()" disabled>
+                    <i class="fab fa-whatsapp"></i> Enviar WhatsApp
+                </button>
+            </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
