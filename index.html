@@ -50,7 +50,7 @@
                     <button class="btn btn-success" onclick="addProduct()">Adicionar Produto <i class="fas fa-plus"></i></button>
                 </div>
                 <div class="products-list">
-                    <h3><i class="fas fa-list-alt"></i> Itens Adicionados:</h3> <!-- Adicionado ícone e título aqui -->
+                    <h3>Itens Adicionados:</h3>
                     <div id="productsContainer">
                         <p class="no-products">Nenhum produto adicionado</p>
                     </div>
@@ -97,11 +97,11 @@
             </div>
             <div class="form-content">
                 <div class="entry-options">
-                    <div class="option-card" onclick="selectEntryOption('none', event)"> <!-- Adicionado event aqui -->
+                    <div class="option-card" onclick="selectEntryOption('none')">
                         <input type="radio" name="entryOption" id="noEntry" value="none">
                         <label for="noEntry"><i class="fas fa-times-circle"></i> <span>Sem Entrada</span></label>
                     </div>
-                    <div class="option-card" onclick="selectEntryOption('with', event)"> <!-- Adicionado event aqui -->
+                    <div class="option-card" onclick="selectEntryOption('with')">
                         <input type="radio" name="entryOption" id="withEntry" value="with">
                         <label for="withEntry"><i class="fas fa-check-circle"></i> <span>Com Entrada</span></label>
                     </div>
@@ -154,14 +154,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        // Inicializa o aplicativo quando o DOM estiver completamente carregado
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeApp();
-        });
-
-        // Removido o preenchimento inicial de produtos.
-        // A lista de produtos agora começa vazia e o botão "Avançar" do Step 2 estará desabilitado.
-    </script>
 </body>
 </html>
