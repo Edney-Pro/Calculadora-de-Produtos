@@ -229,6 +229,7 @@ body {
 
 .product-info {
     flex: 1;
+    text-align: left;
 }
 
 .product-name {
@@ -260,6 +261,18 @@ body {
     font-style: italic;
     text-align: center;
     padding: 20px;
+}
+
+.visor-total {
+    background: #e6eefc;
+    border: 1px solid #b3d4ff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: right;
 }
 
 /* Opções de Entrada */
@@ -375,6 +388,7 @@ body {
     padding: 8px 12px;
     border-radius: 6px;
     margin-top: 10px;
+    display: inline-block; /* Para que o padding e borda funcionem bem */
 }
 
 .days-info.danger {
@@ -387,6 +401,12 @@ body {
     background: #fff3cd;
     color: #856404;
     border: 1px solid #ffeaa7;
+}
+
+.days-info.info { /* Novo estilo para info/amarelo */
+    background: #ffeeba;
+    color: #856404;
+    border: 1px solid #ffda6e;
 }
 
 .days-info.success {
@@ -465,6 +485,7 @@ body {
     color: #666;
     margin-bottom: 20px;
     font-size: 14px;
+    text-align: center;
 }
 
 /* Responsividade */
@@ -497,6 +518,3 @@ body {
         grid-template-columns: 1fr;
     }
 }
-
-
-
