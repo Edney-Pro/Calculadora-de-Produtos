@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Empréstimo com Garantia - Encomenda Palotina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --magalu-blue: #007bff;
+            --magalu-dark-blue: #0056b3;
+            --magalu-light-blue: #e3f2fd;
+            --success: #28a745;
+            --warning: #ffc107;
+            --light-yellow: #fff3cd;
+        }
+        * { -webkit-tap-highlight-color: transparent; }
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden;
+        }
+        .calculator-container { width: 100%; min-height: 100vh; background: white; margin: 0; border-radius: 0; }
+        .calculator-header { background: linear-gradient(135deg, var(--magalu-blue), var(--magalu-dark-blue)); color: white; padding: 1.5rem 1rem; position: relative; }
+        .installment-display { font-size: 2.2rem; font-weight: bold; color: var(--magalu-blue); text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); border: none; font-weight: 600; border-radius: 8px; color: white; }
+        .btn-primary { background: var(--magalu-blue); border-color: var(--magalu-blue); font-weight: 600; border-radius: 8px; }
+        .section-title { color: var(--magalu-blue); border-left: 4px solid var(--magalu-blue); padding-left: 12px; margin-bottom: 1rem; font-weight: 600; font-size: 1.1rem; }
+        .footer-actions { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 1rem; border-top: 2px solid #e9ecef; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .content-area { padding-bottom: 140px; }
+        .hidden { display: none !important; }
+        .alert-analysis { background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 1rem; margin: 1rem 0; color: #856404; }
+        .alert-guarantee { background: #e8f5e8; border: 2px solid #28a745; border-radius: 10px; padding: 1rem; margin: 1rem 0; color: #155724; }
+        .custom-slider { width: 100%; height: 6px; background: #dee2e6; border-radius: 3px; border: none; outline: none; margin: 20px 0; -webkit-appearance: none; appearance: none; }
+        .custom-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--magalu-blue); border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer; }
+        .custom-slider::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--magalu-blue); border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer; }
+        .referral-field { margin-top: 0.5rem; padding: 0.5rem; border-radius: 5px; border: 1px solid #ddd; }
+        .guarantee-info { background: var(--magalu-light-blue); border-radius: 10px; padding: 1rem; margin: 1rem 0; border-left: 4px solid var(--magalu-blue); }
+        @media (max-width:768px){ .installment-display { font-size: 1.6rem; } }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="calculator-header text-center">
+            <h1 style="font-size:1.4rem;margin:0;"><i class="bi bi-shield-check me-2"></i>Empréstimo com Garantia</h1>
+            <p style="margin:0.4rem 0 0 0; font-size:0.9rem; opacity:0.95;">Encomenda Palotina — Garantia real do produto</p>
+        </div>
+
+        <div class="content-area">
+            <div class="p-3">
+                <!-- Informações sobre Garantia -->
+                <div class="guarantee-info">
+                    <h6 class="fw-bold mb-2"><i class="bi bi-info-circle me-2"></i>Como funciona o empréstimo com garantia:</h6>
+                    <div class="small">
+                        • <strong>Valor do produto deve ser o DOBRO</strong> do empréstimo<br>
+                        • Exemplo: Empréstimo R$ 500 → Produto vale R$ 1.000<br>
+                        • Aceitamos produtos com <strong>nota fiscal</strong><br>
+                        • Todos os produtos ficam <strong>empenhados</strong><br>
+                        • Cliente assina <strong>contrato formal</strong>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="section-title"><i class="bi bi-person-badge me-2"></i>Seus Dados</h4>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="clientName" placeholder="Nome completo">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="clientCPF" placeholder="CPF (000.000.000-00)">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="clientPix" placeholder="Chave PIX">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="clientBank" placeholder="Banco">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="section-title"><i class="bi bi-people me-2"></i>É cliente?</h4>
+                    <div class="d-flex gap-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="isClient" id="isClientYes" value="yes" checked onchange="onClientStatusChange()">
+                            <label class="form-check-label" for="isClientYes">Já sou cliente</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="isClient" id="isClientNo" value="no" onchange="onClientStatusChange()">
+                            <label class="form-check-label" for="isClientNo">Não sou cliente</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-3" id="clientStatusOptions">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inArrears" id="inArrearsNo" value="no" checked>
+                            <label class="form-check-label" for="inArrearsNo">Com parcelas em dia</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inArrears" id="inArrearsYes" value="yes">
+                            <label class="form-check-label" for="inArrearsYes">Possui parcelas em atraso</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOVA SEÇÃO: COMO FICOU SABENDO? -->
+                <div class="mb-4" id="howDidYouHearSection">
+                    <h4 class="section-title"><i class="bi bi-megaphone me-2"></i>Como ficou sabendo?</h4>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="howDidYouHear" id="hearFacebook" value="Facebook">
+                                <label class="form-check-label" for="hearFacebook">
+                                    <i class="bi bi-facebook text-primary me-1"></i>Facebook
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="howDidYouHear" id="hearInstagram" value="Instagram">
+                                <label class="form-check-label" for="hearInstagram">
+                                    <i class="bi bi-instagram text-danger me-1"></i>Instagram
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="howDidYouHear" id="hearWhatsApp" value="WhatsApp">
+                                <label class="form-check-label" for="hearWhatsApp">
+                                    <i class="bi bi-whatsapp text-success me-1"></i>WhatsApp
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="howDidYouHear" id="hearIndicated" value="Indicado" onchange="toggleReferralField()">
+                                <label class="form-check-label" for="hearIndicated">
+                                    <i class="bi bi-person-check me-1"></i>Foi indicado
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="referralField" class="hidden mt-2">
+                        <input type="text" class="form-control referral-field" id="referralName" placeholder="Quem indicou?">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="section-title"><i class="bi bi-currency-dollar me-2"></i>Valor do Empréstimo</h4>
+                    <div class="row g-2 align-items-center">
+                        <div class="col-8">
+                            <input type="text" id="loanAmountInput" class="form-control" placeholder="R$ 0,00" oninput="formatCurrency(this); syncLoanSliderFromInput()">
+                        </div>
+                        <div class="col-4 text-end">
+                            <small class="text-muted">Máx. R$ 15.000,00</small>
+                        </div>
+                    </div>
+
+                    <div class="slider-container mt-3">
+                        <input type="range" class="custom-slider" id="loanSlider" min="100" max="15000" step="100" value="1000" oninput="syncLoanInputFromSlider(); updateInstallmentDisplay();">
+                        <div class="d-flex justify-content-between"><small>R$ 100</small><small>R$ 15.000</small></div>
+                    </div>
+
+                    <!-- Informação do valor do produto necessário -->
+                    <div class="alert-guarantee mt-3">
+                        <strong>📦 Produto para garantia:</strong><br>
+                        <span id="productValueDisplay">Valor do produto deve ser R$ 2.000,00</span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="section-title"><i class="bi bi-calendar-range me-2"></i>Parcelas (até 36x)</h4>
+                    <div class="slider-container">
+                        <input type="range" class="custom-slider" id="installmentsRange" min="1" max="36" value="12" oninput="updateInstallmentDisplay()">
+                        <div class="d-flex justify-content-between"><span>1x</span><span>36x</span></div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <div class="installment-display" id="installmentDisplay">R$ 0,00</div>
+                        <small class="text-muted fw-semibold">
+                            <span id="installmentsValue">12</span> parcelas
+                        </small>
+                    </div>
+                </div>
+
+                <div id="analysisAlert" class="alert-analysis hidden">
+                    <strong>Atenção:</strong> como há parcelas em atraso, este orçamento seguirá para análise interna. É provável que seja necessário regularizar os pagamentos para aprovação. O cliente será orientado a atualizar o status financeiro para prosseguir.
+                </div>
+
+                <div class="summary-section hidden" id="summarySection">
+                    <h5 class="text-center mb-3"><i class="bi bi-file-text me-2"></i>Resumo da Simulação</h5>
+                    <div id="summaryContent"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <div class="row g-2">
+                <div class="col-4"><button class="btn btn-secondary w-100" onclick="resetCalculator()"><i class="bi bi-arrow-clockwise me-1"></i>Nova</button></div>
+                <div class="col-4"><button class="btn btn-primary w-100" onclick="showSummary()"><i class="bi bi-eye me-1"></i>Ver Resumo</button></div>
+                <div class="col-4"><button class="btn btn-whatsapp w-100" id="sendWhatsappBtn" onclick="sendWhatsApp()"><i class="bi bi-whatsapp me-1"></i>Enviar WhatsApp</button></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Variáveis
+        document.addEventListener('DOMContentLoaded', () => {
+            syncLoanInputFromSlider();
+            updateInstallmentDisplay();
+            setupCPFFormatting();
+            onClientStatusChange();
+            updateProductValueDisplay();
+        });
+
+        function onClientStatusChange() {
+            const isClient = document.getElementById('isClientYes').checked;
+            document.getElementById('clientStatusOptions').style.display = isClient ? 'block' : 'none';
+            document.getElementById('howDidYouHearSection').style.display = isClient ? 'none' : 'block';
+            document.getElementById('analysisAlert').classList.add('hidden');
+        }
+
+        function toggleReferralField() {
+            const isIndicated = document.getElementById('hearIndicated').checked;
+            document.getElementById('referralField').classList.toggle('hidden', !isIndicated);
+        }
+
+        // SISTEMA DE TAXA DECRESCENTE COM GARANTIA (16% a 8%)
+        function getTaxRate(installments) {
+            // Taxa decrescente: 16% para 1 parcela até 8% para 36 parcelas
+            const maxTax = 0.16;  // 16%
+            const minTax = 0.08;  // 8%
+            const maxInstallments = 36;
+            
+            // Fórmula linear decrescente
+            const taxRate = maxTax - ((maxTax - minTax) * (installments - 1) / (maxInstallments - 1));
+            return Math.max(minTax, Math.min(maxTax, taxRate));
+        }
+
+        // Cálculo da parcela COM JUROS (INTERNO)
+        function calculateInstallment(amount, installments) {
+            if (installments === 1) return amount;
+            
+            const taxRate = getTaxRate(installments);
+            const numerator = taxRate * Math.pow(1 + taxRate, installments);
+            const denominator = Math.pow(1 + taxRate, installments) - 1;
+            
+            return amount * (numerator / denominator);
+        }
+
+        // Atualiza display do valor do produto necessário
+        function updateProductValueDisplay() {
+            const amount = getCurrencyValue(document.getElementById('loanAmountInput').value) || Number(document.getElementById('loanSlider').value);
+            const productValue = amount * 2; // Produto deve valer o DOBRO
+            document.getElementById('productValueDisplay').textContent = 
+                `Valor do produto deve ser ${productValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+        }
+
+        // Formatação de moeda e sincronização
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g,'');
+            if (value === '') { input.value = ''; return; }
+            let number = parseInt(value) / 100;
+            input.value = number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            updateProductValueDisplay();
+        }
+
+        function getCurrencyValue(currencyString) {
+            if (!currencyString) return 0;
+            let value = currencyString.replace('R$','').replace(/\./g,'').replace(',','.').trim();
+            return parseFloat(value) || 0;
+        }
+
+        function syncLoanInputFromSlider() {
+            const slider = document.getElementById('loanSlider');
+            const input = document.getElementById('loanAmountInput');
+            input.value = Number(slider.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            updateInstallmentDisplay();
+            updateProductValueDisplay();
+        }
+
+        function syncLoanSliderFromInput() {
+            const input = document.getElementById('loanAmountInput');
+            const slider = document.getElementById('loanSlider');
+            const val = getCurrencyValue(input.value);
+            if (isNaN(val)) return;
+            const clamped = Math.max(100, Math.min(15000, Math.round(val / 100) * 100));
+            slider.value = clamped;
+            input.value = Number(clamped).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            updateInstallmentDisplay();
+            updateProductValueDisplay();
+        }
+
+        // Atualiza display das parcelas (CLIENTE SÓ VÊ O VALOR FINAL)
+        function updateInstallmentDisplay() {
+            const amount = getCurrencyValue(document.getElementById('loanAmountInput').value) || Number(document.getElementById('loanSlider').value);
+            const installments = parseInt(document.getElementById('installmentsRange').value);
+            
+            document.getElementById('installmentsValue').textContent = installments;
+
+            if (installments <= 0) return;
+            
+            // Calcula parcela com taxa (internamente)
+            const installmentValue = calculateInstallment(amount, installments);
+            
+            // Atualiza display (APENAS VALOR FINAL - SEM TAXA VISÍVEL)
+            document.getElementById('installmentDisplay').textContent = installmentValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Validações e resumo
+        function showSummary() {
+            const clientName = document.getElementById('clientName').value.trim();
+            const clientCPF = document.getElementById('clientCPF').value.trim();
+            const clientPix = document.getElementById('clientPix').value.trim();
+            const clientBank = document.getElementById('clientBank').value.trim();
+            const amount = getCurrencyValue(document.getElementById('loanAmountInput').value);
+            const installments = parseInt(document.getElementById('installmentsRange').value);
+            const isClient = document.getElementById('isClientYes').checked;
+            const inArrears = document.getElementById('inArrearsYes') && document.getElementById('inArrearsYes').checked;
+            
+            // Novos campos
+            const howDidYouHear = document.querySelector('input[name="howDidYouHear"]:checked')?.value || '';
+            const referralName = document.getElementById('referralName')?.value.trim() || '';
+
+            if (!clientName) { alert('Informe o nome do cliente.'); return; }
+            if (!clientCPF || clientCPF.replace(/\D/g,'').length !== 11) { alert('Informe um CPF válido.'); return; }
+            if (!clientPix) { alert('Informe uma chave PIX para contato.'); return; }
+            if (!clientBank) { alert('Informe o banco para transferência.'); return; }
+            if (!amount || amount < 100) { alert('Informe um valor de empréstimo entre R$100 e R$15.000.'); return; }
+            if (!isClient && !howDidYouHear) { alert('Informe como ficou sabendo do empréstimo.'); return; }
+            if (howDidYouHear === 'Indicado' && !referralName) { alert('Informe quem indicou o empréstimo.'); return; }
+
+            // Monta resumo (SEM TAXAS VISÍVEIS)
+            const today = new Date();
+            const firstPayment = new Date(today); firstPayment.setMonth(firstPayment.getMonth() + 1);
+            const lastPayment = new Date(firstPayment); lastPayment.setMonth(lastPayment.getMonth() + installments - 1);
+            const installmentValue = calculateInstallment(amount, installments);
+            const productValue = amount * 2;
+
+            let summaryHTML = `
+                <div class="mb-2"><strong>Data:</strong> ${today.toLocaleDateString('pt-BR')}</div>
+                <div class="mb-2">
+                    <strong>Cliente:</strong> ${clientName}<br>
+                    <strong>CPF:</strong> ${clientCPF}<br>
+                    <strong>Chave PIX:</strong> ${clientPix}<br>
+                    <strong>Banco:</strong> ${clientBank}
+                </div>
+                <div class="mb-2"><strong>Valor solicitado:</strong> ${amount.toLocaleString('pt-BR', {style:'currency',currency:'BRL'})}</div>
+                <div class="mb-2"><strong>Condição:</strong> ${installments}x de ${installmentValue.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</div>
+                <div class="mb-2"><strong>Produto para garantia:</strong> ${productValue.toLocaleString('pt-BR', {style:'currency',currency:'BRL'})}</div>
+                <div class="mb-2"><strong>1ª Parcela:</strong> ${firstPayment.toLocaleDateString('pt-BR')}<br><strong>Última Parcela:</strong> ${lastPayment.toLocaleDateString('pt-BR')}</div>
+            `;
+
+            // Adiciona informação de como ficou sabendo (apenas para não clientes)
+            if (!isClient) {
+                let hearInfo = `<strong>Como ficou sabendo:</strong> ${howDidYouHear}`;
+                if (howDidYouHear === 'Indicado' && referralName) {
+                    hearInfo += ` (Indicado por: ${referralName})`;
+                }
+                summaryHTML += `<div class="mb-2">${hearInfo}</div>`;
+            }
+
+            document.getElementById('summaryContent').innerHTML = summaryHTML;
+            document.getElementById('summarySection').classList.remove('hidden');
+
+            // Se for cliente com atraso, exibe alerta de análise
+            if (isClient && inArrears) {
+                document.getElementById('analysisAlert').classList.remove('hidden');
+            } else {
+                document.getElementById('analysisAlert').classList.add('hidden');
+            }
+
+            document.getElementById('summarySection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Enviar para WhatsApp (com todas as informações da garantia)
+        function sendWhatsApp() {
+            const clientName = document.getElementById('clientName').value.trim();
+            const clientCPF = document.getElementById('clientCPF').value.trim();
+            const clientPix = document.getElementById('clientPix').value.trim();
+            const clientBank = document.getElementById('clientBank').value.trim();
+            const amount = getCurrencyValue(document.getElementById('loanAmountInput').value);
+            const installments = parseInt(document.getElementById('installmentsRange').value);
+            const isClient = document.getElementById('isClientYes').checked;
+            const inArrears = document.getElementById('inArrearsYes') && document.getElementById('inArrearsYes').checked;
+            const howDidYouHear = document.querySelector('input[name="howDidYouHear"]:checked')?.value || '';
+            const referralName = document.getElementById('referralName')?.value.trim() || '';
+
+            if (!clientName || !clientCPF || !clientPix || !clientBank || !amount) { 
+                alert('Preencha todos os dados e gere o resumo antes de enviar.'); 
+                return; 
+            }
+
+            const installmentValue = calculateInstallment(amount, installments);
+            const productValue = amount * 2;
+
+            let note = '';
+            if (isClient && inArrears) {
+                note = '\n\n*🔴 ATENÇÃO - CLIENTE COM PARCELAS EM ATRASO*\n' +
+                       '• Orçamento enviado para análise interna\n' +
+                       '• 90% de chance de reprovação devido ao histórico\n' +
+                       '• Cliente deve regularizar situação para prosseguir';
+            }
+
+            // Informação de como ficou sabendo
+            let hearInfo = '';
+            if (!isClient) {
+                hearInfo = `\n*Como ficou sabendo:* ${howDidYouHear}`;
+                if (howDidYouHear === 'Indicado' && referralName) {
+                    hearInfo += ` (Indicado por: ${referralName})`;
+                }
+            }
+
+            const message = `*🛡️ ORÇAMENTO - EMPRÉSTIMO COM GARANTIA*\n\n` +
+                            `*Data:* ${new Date().toLocaleDateString('pt-BR')}\n` +
+                            `*Cliente:* ${clientName}\n` +
+                            `*CPF:* ${clientCPF}\n` +
+                            `*PIX:* ${clientPix}\n` +
+                            `*Banco:* ${clientBank}\n` +
+                            `*Status:* ${isClient ? 'Cliente' : 'Novo cliente'}${hearInfo}\n\n` +
+                            `*VALOR SOLICITADO:* ${amount.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}\n` +
+                            `*PARCELAS:* ${installments}x de ${installmentValue.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}\n` +
+                            `*PRODUTO GARANTIA:* ${productValue.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}\n\n` +
+                            `*📋 CONDIÇÕES DA GARANTIA:*\n` +
+                            `• Produto deve valer o DOBRO do empréstimo\n` +
+                            `• Nota fiscal obrigatória\n` +
+                            `• Produto fica empenhado\n` +
+                            `• Contrato formal assinado\n` +
+                            `• Enviar fotos do produto via WhatsApp\n\n` +
+                            `${note}\n\n` +
+                            `_*Enviar fotos do produto com nota fiscal para análise*_\n` +
+                            `📞 *Encomenda Palotina*`;
+
+            const encoded = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/554498408460?text=${encoded}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Reset
+        function resetCalculator() {
+            if (!confirm('Deseja começar uma nova simulação?')) return;
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientCPF').value = '';
+            document.getElementById('clientPix').value = '';
+            document.getElementById('clientBank').value = '';
+            document.getElementById('loanSlider').value = 1000;
+            syncLoanInputFromSlider();
+            document.getElementById('installmentsRange').value = 12;
+            document.getElementById('referralName').value = '';
+            document.querySelector('input[name="howDidYouHear"][value="Facebook"]').checked = true;
+            updateInstallmentDisplay();
+            document.getElementById('summarySection').classList.add('hidden');
+            document.getElementById('analysisAlert').classList.add('hidden');
+            document.getElementById('isClientYes').checked = true;
+            onClientStatusChange();
+            toggleReferralField();
+        }
+
+        // Formatação CPF
+        function setupCPFFormatting() {
+            const cpfEl = document.getElementById('clientCPF');
+            cpfEl.addEventListener('input', function(e){
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.substring(0,11);
+                if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                if (value.length > 7) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+                if (value.length > 11) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+                e.target.value = value;
+            });
+        }
+    </script>
+</body>
+</html>
