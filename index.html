@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Parcelas - Encomenda Palotina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --magalu-blue: #007bff;
+            --magalu-dark-blue: #0056b3;
+            --magalu-light-blue: #e3f2fd;
+            --success: #28a745;
+            --warning: #ffc107;
+            --light-yellow: #fff3cd;
+        }
+        
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .calculator-container {
+            width: 100%;
+            min-height: 100vh;
+            background: white;
+            margin: 0;
+            border-radius: 0;
+        }
+        
+        .calculator-header {
+            background: linear-gradient(135deg, var(--magalu-blue), var(--magalu-dark-blue));
+            color: white;
+            padding: 1.5rem 1rem;
+            position: relative;
+            text-align: center;
+        }
+        
+        .category-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--magalu-blue);
+        }
+        
+        .section-title {
+            color: var(--magalu-blue);
+            border-left: 4px solid var(--magalu-blue);
+            padding-left: 12px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .module-card {
+            background: var(--magalu-light-blue);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--magalu-blue);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .module-card.disabled {
+            opacity: 0.6;
+            background: #f8f9fa;
+            border-left: 4px solid #6c757d;
+        }
+        
+        .module-card.disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .module-icon {
+            font-size: 2rem;
+            color: var(--magalu-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .module-card.disabled .module-icon {
+            color: #6c757d;
+        }
+        
+        .btn-primary {
+            background: var(--magalu-blue);
+            border-color: var(--magalu-blue);
+            font-weight: 600;
+            border-radius: 8px;
+        }
+        
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border: none;
+            font-weight: 600;
+            border-radius: 8px;
+            color: white;
+        }
+        
+        .btn-reset {
+            background: var(--light-yellow);
+            border: 2px solid #ffc107;
+            color: #856404;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+        
+        .btn-back {
+            background: #6c757d;
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+        
+        .instagram { background: #E4405F; }
+        .facebook { background: #1877F2; }
+        .whatsapp { background: #25D366; }
+        .email { background: #EA4335; }
+        
+        .footer-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            border-top: 2px solid #e9ecef;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .content-area {
+            padding-bottom: 120px;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--magalu-light-blue);
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            color: var(--magalu-blue);
+            margin-right: 1rem;
+        }
+        
+        .category-title {
+            color: var(--magalu-blue);
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .module-name {
+            font-weight: 600;
+            color: var(--magalu-dark-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .module-description {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            min-height: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-header {
+                padding: 1rem;
+            }
+            
+            .category-section {
+                padding: 1rem;
+                margin: 0.5rem 0;
+            }
+            
+            .module-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <!-- Header -->
+        <div class="calculator-header">
+            <h1 style="font-size: 1.5rem; margin: 0;"><i class="bi bi-calculator me-2"></i>Calculadora de Parcelas</h1>
+            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Encomenda Palotina - Sistema Completo</p>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="content-area">
+            <div class="p-3">
+
+                <!-- Seção 1: PRODUTOS -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="bi bi-cart-check-fill"></i>
+                        </div>
+                        <h2 class="category-title">PRODUTOS</h2>
+                    </div>
+                    <div class="row g-3">
+                        <!-- Produtos Novos -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card position-relative">
+                                <span class="badge bg-success status-badge">ATIVO</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-box-seam"></i>
+                                </div>
+                                <h6 class="module-name text-center">Produtos Novos</h6>
+                                <p class="module-description text-center">Cálculo com/sem entrada<br>Até 36 parcelas</p>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" onclick="openModule('produtos-novos')">
+                                        <i class="bi bi-play-fill me-1"></i>Acessar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Produtos Usados -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-recycle"></i>
+                                </div>
+                                <h6 class="module-name text-center">Produtos Usados</h6>
+                                <p class="module-description text-center">Cálculo para produtos<br>de segunda mão</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 2: MÓVEIS -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="bi bi-house-door-fill"></i>
+                        </div>
+                        <h2 class="category-title">MÓVEIS</h2>
+                    </div>
+                    <div class="row g-3">
+                        <!-- Móveis com Montagem -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card position-relative">
+                                <span class="badge bg-success status-badge">ATIVO</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-tools"></i>
+                                </div>
+                                <h6 class="module-name text-center">Com Montagem</h6>
+                                <p class="module-description text-center">Móveis com serviço<br>de instalação inclusa</p>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" onclick="openModule('moveis-com-montagem')">
+                                        <i class="bi bi-play-fill me-1"></i>Acessar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Móveis sem Montagem -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-box"></i>
+                                </div>
+                                <h6 class="module-name text-center">Sem Montagem</h6>
+                                <p class="module-description text-center">Apenas o móvel<br>sem instalação</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 3: EMPRÉSTIMOS -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="bi bi-bank2"></i>
+                        </div>
+                        <h2 class="category-title">EMPRÉSTIMOS</h2>
+                    </div>
+                    <div class="row g-3">
+                        <!-- Sem Garantia -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-cash"></i>
+                                </div>
+                                <h6 class="module-name text-center">Sem Garantia</h6>
+                                <p class="module-description text-center">Empréstimo pessoal<br>sem garantias</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Com Garantia -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <h6 class="module-name text-center">Com Garantia</h6>
+                                <p class="module-description text-center">Empréstimo com<br>garantia real</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Diário -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-calendar-day"></i>
+                                </div>
+                                <h6 class="module-name text-center">Empréstimo Diário</h6>
+                                <p class="module-description text-center">Para pagamento<br>em até 31 dias</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 4: VEÍCULOS AUTOMOTORES -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="bi bi-truck-front-fill"></i>
+                        </div>
+                        <h2 class="category-title">VEÍCULOS AUTOMOTORES</h2>
+                    </div>
+                    <div class="row g-3">
+                        <!-- Carros Usados -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-car-front"></i>
+                                </div>
+                                <h6 class="module-name text-center">Carros Usados</h6>
+                                <p class="module-description text-center">Financiamento de<br>carros usados</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Motos Usadas -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-bicycle"></i>
+                                </div>
+                                <h6 class="module-name text-center">Motos Usadas</h6>
+                                <p class="module-description text-center">Financiamento de<br>motos usadas</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Acessórios -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-gear-wide-connected"></i>
+                                </div>
+                                <h6 class="module-name text-center">Acessórios</h6>
+                                <p class="module-description text-center">Pneus, carenagem<br>e outros</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 5: VEÍCULOS ELÉTRICOS -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+                        <h2 class="category-title">VEÍCULOS ELÉTRICOS</h2>
+                    </div>
+                    <div class="row g-3">
+                        <!-- Bicicleta Elétrica -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-bicycle"></i>
+                                </div>
+                                <h6 class="module-name text-center">Bicicleta Elétrica</h6>
+                                <p class="module-description text-center">Nova e usada<br>até 48 parcelas</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Patinete Elétrico -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-scooter"></i>
+                                </div>
+                                <h6 class="module-name text-center">Patinete Elétrico</h6>
+                                <p class="module-description text-center">Novo e usado<br>até 48 parcelas</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Acessórios Elétricos -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-battery-charging"></i>
+                                </div>
+                                <h6 class="module-name text-center">Acessórios Elétricos</h6>
+                                <p class="module-description text-center">Baterias, carregadores<br>e peças</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 6: RENEGOCIAÇÃO -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </div>
+                        <h2 class="category-title">RENEGOCIAÇÃO DE DÍVIDAS</h2>
+                    </div>
+                    <div class="row g-3">
+                        <!-- Produtos Atrasados -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card position-relative">
+                                <span class="badge bg-success status-badge">ATIVO</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-clock-history"></i>
+                                </div>
+                                <h6 class="module-name text-center">Produtos Atrasados</h6>
+                                <p class="module-description text-center">Renegociação com<br>35% de entrada</p>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" onclick="openModule('produtos-atrasados')">
+                                        <i class="bi bi-play-fill me-1"></i>Acessar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Produtos a Vencer -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card position-relative">
+                                <span class="badge bg-success status-badge">ATIVO</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-calendar-check"></i>
+                                </div>
+                                <h6 class="module-name text-center">Produtos a Vencer</h6>
+                                <p class="module-description text-center">Renegociação com<br>45% de entrada</p>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" onclick="openModule('produtos-avencer')">
+                                        <i class="bi bi-play-fill me-1"></i>Acessar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Veículos Atrasados -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card position-relative">
+                                <span class="badge bg-success status-badge">ATIVO</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-car-front-fill"></i>
+                                </div>
+                                <h6 class="module-name text-center">Veículos Atrasados</h6>
+                                <p class="module-description text-center">Renegociação com<br>45% de entrada</p>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" onclick="openModule('veiculos-atrasados')">
+                                        <i class="bi bi-play-fill me-1"></i>Acessar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dívida Total -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card position-relative">
+                                <span class="badge bg-success status-badge">ATIVO</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-wallet2"></i>
+                                </div>
+                                <h6 class="module-name text-center">Dívida Total</h6>
+                                <p class="module-description text-center">Renegociação geral<br>50% entrada</p>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" onclick="openModule('divida-total')">
+                                        <i class="bi bi-play-fill me-1"></i>Acessar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 7: FERRAMENTAS GERAIS -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <h2 class="category-title">FERRAMENTAS GERAIS</h2>
+                    </div>
+                    <div class="row g-3">
+                        <!-- Contagem Dinheiro -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card position-relative">
+                                <span class="badge bg-success status-badge">ATIVO</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-cash-stack"></i>
+                                </div>
+                                <h6 class="module-name text-center">Contagem Dinheiro</h6>
+                                <p class="module-description text-center">Calculadora de<br>cédulas e moedas</p>
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-sm" onclick="openModule('contagem-dinheiro')">
+                                        <i class="bi bi-play-fill me-1"></i>Acessar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Calculadora Normal -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="module-card disabled position-relative">
+                                <span class="badge bg-secondary status-badge">EM BREVE</span>
+                                <div class="module-icon text-center">
+                                    <i class="bi bi-calculator"></i>
+                                </div>
+                                <h6 class="module-name text-center">Calculadora Normal</h6>
+                                <p class="module-description text-center">Cálculos matemáticos<br>básicos</p>
+                                <div class="text-center">
+                                    <span class="badge bg-secondary">Em Breve</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Rodapé com Ações -->
+        <div class="footer-actions">
+            <div class="row g-2">
+                <div class="col-4">
+                    <button class="btn btn-back w-100" onclick="refreshPage()">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Atualizar
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-reset w-100" onclick="showInfo()">
+                        <i class="bi bi-info-circle me-1"></i>Informações
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-whatsapp w-100" onclick="contactWhatsApp()">
+                        <i class="bi bi-whatsapp me-1"></i>Suporte
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openModule(moduleId) {
+            const modules = {
+                'produtos-novos': 'produtos-novos.html',
+                'moveis-com-montagem': 'moveis-com-montagem.html',
+                'produtos-atrasados': 'renegociacao-produtos-atrasados.html',
+                'produtos-avencer': 'renegociacao-produtos-avencer.html',
+                'veiculos-atrasados': 'renegociacao-veiculos-atrasados.html',
+                'divida-total': 'renegociacao-produtos-total.html',
+                'contagem-dinheiro': 'contagem-dinheiro.html'
+            };
+            
+            if (modules[moduleId]) {
+                window.location.href = modules[moduleId];
+            } else {
+                alert('🚧 Módulo em desenvolvimento!\n\nEsta ferramenta estará disponível em breve.');
+            }
+        }
+        
+        function refreshPage() {
+            window.location.reload();
+        }
+        
+        function showInfo() {
+            alert('📊 Sistema Encomenda Palotina\n\n• 19 ferramentas disponíveis\n• 8 módulos ativos\n• Interface padronizada\n• Cálculos precisos\n• Exportação WhatsApp\n\n✅ Módulos Ativos:\n• Produtos Novos\n• Móveis com Montagem\n• Produtos Atrasados\n• Produtos a Vencer\n• Veículos Atrasados\n• Dívida Total\n• Contagem Dinheiro');
+        }
+        
+        function contactWhatsApp() {
+            window.open('https://wa.me/554498408460', '_blank');
+        }
+    </script>
+</body>
+</html>
