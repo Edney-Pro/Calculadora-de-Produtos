@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Produtos - Encomenda Palotina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-blue: #007bff;
+            --dark-blue: #0056b3;
+            --light-blue: #e3f2fd;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+        
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .catalog-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        
+        .category-grid {
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .category-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-blue);
+        }
+        
+        .category-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .footer-actions {
+            background: white;
+            padding: 1.5rem;
+            border-top: 2px solid #e9ecef;
+            margin-top: 2rem;
+        }
+        
+        .btn-calculator {
+            background: var(--primary-blue);
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+        }
+        
+        /* Cores específicas por categoria */
+        .video { color: #ff6b6b; }
+        .utensilios { color: #4ecdc4; }
+        .transporte-eletrico { color: #45b7d1; }
+        .smartphones { color: #96ceb4; }
+        .moda { color: #feca57; }
+        .musica { color: #ff9ff3; }
+        .informatica { color: #54a0ff; }
+        .games { color: #5f27cd; }
+        .fotografia { color: #00d2d3; }
+        .ferramentas { color: #ff9f43; }
+        .esportes { color: #1dd1a1; }
+        .eletro-portateis { color: #f368e0; }
+        .eletrodomesticos { color: #ff9f43; }
+        .beleza { color: #ff6b6b; }
+        .escritorio { color: #48dbfb; }
+        .casa-moveis { color: #0abde3; }
+        .brinquedos { color: #ee5253; }
+        .automotivo { color: #222f3e; }
+        .ar-ventilacao { color: #c8d6e5; }
+        .automacao { color: #ff9ff3; }
+        .audio { color: #54a0ff; }
+
+        @media (max-width: 768px) {
+            .catalog-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .category-grid {
+                padding: 1rem;
+            }
+            
+            .category-card {
+                padding: 1rem;
+            }
+            
+            .category-icon {
+                font-size: 2.5rem;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="catalog-header">
+        <div class="container">
+            <h1 class="mb-3"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Catálogo de Produtos</h1>
+            <p class="lead mb-0">Encomenda Palotina - Navegue pelas categorias</p>
+        </div>
+    </div>
+
+    <!-- Categorias -->
+    <div class="category-grid">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Vídeo -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1SSB8iSuWf3kD8F-Dg0pVbTlAGPKbVtlE?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon video">
+                            <i class="bi bi-camera-video-fill"></i>
+                        </div>
+                        <div class="category-name">Vídeo</div>
+                        <div class="category-description">Câmeras, filmadoras e equipamentos de vídeo profissional</div>
+                    </a>
+                </div>
+
+                <!-- Utensílios Domésticos -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1BOoVLCAZ9Mm2zElEtttSIbLh9tDB9kc8?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon utensilios">
+                            <i class="bi bi-house-gear-fill"></i>
+                        </div>
+                        <div class="category-name">Utensílios Domésticos</div>
+                        <div class="category-description">Utensílios e acessórios para o lar</div>
+                    </a>
+                </div>
+
+                <!-- Transportes Elétricos -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1qE5sTMQDWZtdLodqU3vVFBLG60JypptV?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon transporte-eletrico">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+                        <div class="category-name">Transportes Elétricos</div>
+                        <div class="category-description">Bicicletas, patinetes e veículos elétricos</div>
+                    </a>
+                </div>
+
+                <!-- Smartphones e Telefones -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1jxxnEERu7-7GfuncE7WjzMBr7nCSqMRj?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon smartphones">
+                            <i class="bi bi-phone-fill"></i>
+                        </div>
+                        <div class="category-name">Smartphones e Telefones</div>
+                        <div class="category-description">Celulares, smartphones e acessórios</div>
+                    </a>
+                </div>
+
+                <!-- Moda e Acessórios -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1DXIoFgzvbSQg0Y9sXLgIKEPW45chaWBI?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon moda">
+                            <i class="bi bi-bag-fill"></i>
+                        </div>
+                        <div class="category-name">Moda e Acessórios</div>
+                        <div class="category-description">Roupas, bolsas, acessórios e moda em geral</div>
+                    </a>
+                </div>
+
+                <!-- Instrumentos Musicais -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1DL1NYseueM6am3dxOVHDBR3cGQTlb-IV?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon musica">
+                            <i class="bi bi-music-note-beamed"></i>
+                        </div>
+                        <div class="category-name">Instrumentos Musicais</div>
+                        <div class="category-description">Instrumentos e equipamentos musicais</div>
+                    </a>
+                </div>
+
+                <!-- Informática e Tecnologia -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1weO_pbm-Nfp1m4xxK5O-JVsgBI6QJ3v7?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon informatica">
+                            <i class="bi bi-laptop-fill"></i>
+                        </div>
+                        <div class="category-name">Informática e Tecnologia</div>
+                        <div class="category-description">Computadores, notebooks e tecnologia</div>
+                    </a>
+                </div>
+
+                <!-- Games -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1im5lwymbt_VtC0gjBwtEKD8BOOtw1xPW?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon games">
+                            <i class="bi bi-joystick"></i>
+                        </div>
+                        <div class="category-name">Games</div>
+                        <div class="category-description">Video games, consoles e acessórios</div>
+                    </a>
+                </div>
+
+                <!-- Fotografia e Vídeo -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1say6PKtRuwN4OUe-vdnv-ujVZUPxEqgk?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon fotografia">
+                            <i class="bi bi-camera-fill"></i>
+                        </div>
+                        <div class="category-name">Fotografia e Vídeo</div>
+                        <div class="category-description">Câmeras, lentes e equipamentos fotográficos</div>
+                    </a>
+                </div>
+
+                <!-- Ferramentas -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1lpP1tHsY77KWn6So9hHYIkhumtit38Uy?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon ferramentas">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <div class="category-name">Ferramentas</div>
+                        <div class="category-description">Ferramentas profissionais e domésticas</div>
+                    </a>
+                </div>
+
+                <!-- Esporte e Lazer -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1a0CBOitcwiWgxasn-EgszCrr8WHPKhwc?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon esportes">
+                            <i class="bi bi-bicycle"></i>
+                        </div>
+                        <div class="category-name">Esporte e Lazer</div>
+                        <div class="category-description">Equipamentos esportivos e lazer</div>
+                    </a>
+                </div>
+
+                <!-- Eletro Portáteis -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1i1YyxvQJ7CRINOhWr7TKbh6yGGRrP8O2?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon eletro-portateis">
+                            <i class="bi bi-battery-charging"></i>
+                        </div>
+                        <div class="category-name">Eletro Portáteis</div>
+                        <div class="category-description">Eletrônicos portáteis e gadgets</div>
+                    </a>
+                </div>
+
+                <!-- Eletrodomésticos -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1VXFArx2jWAEoC41Qs5gsdExFAFM2HnNL?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon eletrodomesticos">
+                            <i class="bi bi-house-check-fill"></i>
+                        </div>
+                        <div class="category-name">Eletrodomésticos</div>
+                        <div class="category-description">Eletrodomésticos para sua casa</div>
+                    </a>
+                </div>
+
+                <!-- Cuidados Pessoais -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/10nIsbDtaZ7vSjHy7hXHV4-Y8RTyw_uFF?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon beleza">
+                            <i class="bi bi-scissors"></i>
+                        </div>
+                        <div class="category-name">Cuidados Pessoais</div>
+                        <div class="category-description">Beleza, cuidados e higiene pessoal</div>
+                    </a>
+                </div>
+
+                <!-- Comércio e Escritório -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1SAb_nTi-pzsiHcVK9CwPszzPkxsK7OJf?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon escritorio">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
+                        <div class="category-name">Comércio e Escritório</div>
+                        <div class="category-description">Móveis e equipamentos para escritório</div>
+                    </a>
+                </div>
+
+                <!-- Casa, Móveis e Decoração -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1UHskb2lGqFPYuO1KEcz9h7AybUchxVV6?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon casa-moveis">
+                            <i class="bi bi-house-door-fill"></i>
+                        </div>
+                        <div class="category-name">Casa, Móveis e Decoração</div>
+                        <div class="category-description">Móveis, decoração e artigos para casa</div>
+                    </a>
+                </div>
+
+                <!-- Brinquedos e Hobbies -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1cDa_VsR3IlPzeNl7w0CaSeLV9ztiueSC?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon brinquedos">
+                            <i class="bi bi-controller"></i>
+                        </div>
+                        <div class="category-name">Brinquedos e Hobbies</div>
+                        <div class="category-description">Brinquedos, jogos e hobbies</div>
+                    </a>
+                </div>
+
+                <!-- Automotivo -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1W2Xa_SbQw_zGoabbZ0nggTEu5GksLusb?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon automotivo">
+                            <i class="bi bi-car-front-fill"></i>
+                        </div>
+                        <div class="category-name">Automotivo</div>
+                        <div class="category-description">Peças e acessórios automotivos</div>
+                    </a>
+                </div>
+
+                <!-- Ar e Ventilação -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1ST0FwQOt5XI41Dx85FbSL_mmt6ESGLjj?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon ar-ventilacao">
+                            <i class="bi bi-fan"></i>
+                        </div>
+                        <div class="category-name">Ar e Ventilação</div>
+                        <div class="category-description">Ventiladores, ar condicionado e climatização</div>
+                    </a>
+                </div>
+
+                <!-- Automação de Iluminação -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/1_JvdrLSEnoxBdrhgI7gL0A47RQxVrKmo?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon automacao">
+                            <i class="bi bi-lightbulb-fill"></i>
+                        </div>
+                        <div class="category-name">Automação de Iluminação</div>
+                        <div class="category-description">Sistemas de automação e iluminação inteligente</div>
+                    </a>
+                </div>
+
+                <!-- Áudio -->
+                <div class="col-md-4 col-lg-3">
+                    <a href="https://drive.google.com/drive/folders/13tuy41Oqs4QIwmHPSRmX73r7_7ZvW60p?usp=drive_link" 
+                       target="_blank" class="category-card">
+                        <div class="category-icon audio">
+                            <i class="bi bi-speaker-fill"></i>
+                        </div>
+                        <div class="category-name">Áudio</div>
+                        <div class="category-description">Sistemas de som, caixas e equipamentos de áudio</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-actions">
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <button class="btn btn-calculator w-100" onclick="goToCalculator()">
+                        <i class="bi bi-calculator me-2"></i>Calculadora de Parcelas
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-whatsapp w-100" onclick="contactWhatsApp()">
+                        <i class="bi bi-whatsapp me-2"></i>Falar no WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function goToCalculator() {
+            window.location.href = 'index.html';
+        }
+        
+        function contactWhatsApp() {
+            window.open('https://wa.me/554498408460', '_blank');
+        }
+        
+        // Efeito de hover suave
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.category-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
