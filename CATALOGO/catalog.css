@@ -1,0 +1,126 @@
+/* --- Variáveis de Cor --- */
+:root {
+    --primary-blue: #007bff;
+    --dark-blue: #0056b3;
+    
+    /* Tema Claro (Padrão) */
+    --bg-color: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    --body-bg: white;
+    --card-bg: white;
+    --text-color: #212529;
+    --text-muted-color: #666;
+    --card-title-color: var(--dark-blue);
+    --border-color: #e9ecef;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* Tema Escuro */
+    --dark-bg: #1a1a1a;
+    --dark-card: #2d2d2d;
+    --dark-text: #ffffff;
+    --dark-border: #404040;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --body-bg: var(--dark-bg);
+    --card-bg: var(--dark-card);
+    --text-color: var(--dark-text);
+    --text-muted-color: #a0a0a0;
+    --card-title-color: #a9cfff;
+    --border-color: var(--dark-border);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* --- Estilos Gerais --- */
+* { -webkit-tap-highlight-color: transparent; }
+
+body {
+    background: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    margin: 0; padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- Header --- */
+.catalog-header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+    color: white; padding: 2rem 1rem; text-align: center;
+}
+
+/* --- Controles de Visualização (Reutilizado da Home) --- */
+.view-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--body-bg); border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 1rem; transition: all 0.3s ease;
+}
+.control-label { font-size: 0.8rem; color: var(--text-muted-color); margin-right: 8px; }
+.grid-controls { display: flex; align-items: center; }
+.grid-controls .btn-grid {
+    background: var(--card-bg); border: 1px solid var(--border-color);
+    color: var(--text-muted-color); margin: 0 2px; border-radius: 6px;
+    width: 35px; height: 30px;
+}
+.grid-controls .btn-grid.active { background-color: var(--primary-blue); color: white; border-color: var(--primary-blue); }
+.theme-toggle .btn-theme { background: none; border: none; cursor: pointer; font-size: 1.5rem; padding: 0; }
+.theme-icon-moon { display: none; color: #8e99f3; }
+.theme-icon-sun { display: block; color: #ffca28; }
+body.dark-mode .theme-icon-moon { display: block; }
+body.dark-mode .theme-icon-sun { display: none; }
+
+/* --- Grid Dinâmico (Reutilizado da Home) --- */
+.category-grid { padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; }
+.grid-container { display: grid; gap: 1.5rem; }
+.grid-container[data-columns="2"] { grid-template-columns: repeat(2, 1fr); }
+.grid-container[data-columns="3"] { grid-template-columns: repeat(3, 1fr); }
+.grid-container[data-columns="4"] { grid-template-columns: repeat(4, 1fr); }
+.grid-container[data-columns="5"] { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1200px) { .grid-container[data-columns="5"], .grid-container[data-columns="4"] { grid-template-columns: repeat(3, 1fr) !important; } }
+@media (max-width: 992px) { .grid-container[data-columns="5"], .grid-container[data-columns="4"], .grid-container[data-columns="3"] { grid-template-columns: repeat(2, 1fr) !important; } }
+@media (max-width: 576px) { .grid-container { grid-template-columns: 1fr !important; } }
+
+/* --- Cards de Categoria --- */
+.category-card {
+    background: var(--card-bg); border-radius: 15px; padding: 1.5rem;
+    text-align: center; border: none;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: all 0.3s ease; height: 100%;
+    text-decoration: none; display: flex;
+    flex-direction: column; justify-content: center;
+}
+.category-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px var(--shadow-color); text-decoration: none; }
+.category-icon { font-size: 3rem; margin-bottom: 1rem; height: 80px; display: flex; align-items: center; justify-content: center; }
+.category-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--card-title-color); }
+.category-description { color: var(--text-muted-color); font-size: 0.9rem; line-height: 1.4; }
+
+/* --- Footer --- */
+.footer-actions {
+    background: var(--body-bg); padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 2rem; transition: all 0.3s ease;
+}
+.btn-calculator { background: var(--primary-blue); color: white; font-weight: 600; border-radius: 8px; padding: 0.75rem 1.5rem; border: none; }
+.btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: white; font-weight: 600; border-radius: 8px; padding: 0.75rem 1.5rem; border: none; }
+
+/* --- Cores dos Ícones --- */
+.video { color: #ff6b6b; }
+.utensilios { color: #4ecdc4; }
+.transporte-eletrico { color: #45b7d1; }
+.smartphones { color: #96ceb4; }
+.moda { color: #feca57; }
+.musica { color: #ff9ff3; }
+.informatica { color: #54a0ff; }
+.games { color: #5f27cd; }
+.fotografia { color: #00d2d3; }
+.ferramentas { color: #ff9f43; }
+.esportes { color: #1dd1a1; }
+.eletro-portateis { color: #f368e0; }
+.eletrodomesticos { color: #ff9f43; }
+.beleza { color: #ff6b6b; }
+.escritorio { color: #48dbfb; }
+.casa-moveis { color: #0abde3; }
+.brinquedos { color: #ee5253; }
+.automotivo { color: #576574; } /* Ajustado para melhor contraste */
+.ar-ventilacao { color: #c8d6e5; }
+.automacao { color: #ff9ff3; }
+.audio { color: #54a0ff; }

@@ -1,0 +1,310 @@
+/* --- Variáveis de Cor --- */
+:root {
+    --produtos-color: #4CAF50;
+    --moveis-color: #FF9800;
+    --emprestimos-color: #2196F3;
+    --veiculos-color: #9C27B0;
+    --eletricos-color: #00BCD4;
+    --renegociacao-color: #F44336;
+    --ferramentas-color: #607D8B;
+    --avancadas-color: #795548;
+    --catalog-color: #673AB7;
+
+    /* Tema Claro (Padrão) */
+    --bg-color: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    --body-bg: white;
+    --card-bg: white;
+    --text-color: #2c3e50;
+    --text-muted-color: #666;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.08);
+
+    /* Tema Escuro */
+    --dark-bg: #1a1a1a;
+    --dark-card: #2d2d2d;
+    --dark-text: #ffffff;
+    --dark-border: #404040;
+}
+
+/* Estilos para o Modo Escuro */
+body.dark-mode {
+    --bg-color: #121212;
+    --body-bg: var(--dark-bg);
+    --card-bg: var(--dark-card);
+    --text-color: var(--dark-text);
+    --text-muted-color: #cccccc;
+    --border-color: var(--dark-border);
+    --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+/* --- Estilos Gerais --- */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.calculator-container {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--body-bg);
+    transition: background-color 0.3s ease;
+}
+
+/* --- Header --- */
+.calculator-header {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* --- Controles de Visualização --- */
+.view-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--body-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+}
+
+.control-label {
+    font-size: 0.8rem;
+    color: var(--text-muted-color);
+    margin-right: 8px;
+}
+
+.grid-controls {
+    display: flex;
+    align-items: center;
+}
+
+.grid-controls .btn-grid {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted-color);
+    margin: 0 2px;
+    border-radius: 6px;
+    width: 35px;
+    height: 30px;
+}
+
+.grid-controls .btn-grid.active {
+    background-color: var(--catalog-color);
+    color: white;
+    border-color: var(--catalog-color);
+}
+
+.theme-toggle .btn-theme {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0;
+}
+
+.theme-icon-moon { display: none; color: #a17de0; }
+.theme-icon-sun { display: block; color: #f39c12; }
+
+body.dark-mode .theme-icon-moon { display: block; }
+body.dark-mode .theme-icon-sun { display: none; }
+
+/* --- Sistema de Grid Dinâmico --- */
+.grid-container {
+    display: grid;
+    gap: 1rem; /* Equivalente ao g-3 do Bootstrap */
+}
+
+/* JavaScript controla o valor de data-columns */
+.grid-container[data-columns="2"] { grid-template-columns: repeat(2, 1fr); }
+.grid-container[data-columns="3"] { grid-template-columns: repeat(3, 1fr); }
+.grid-container[data-columns="4"] { grid-template-columns: repeat(4, 1fr); }
+.grid-container[data-columns="5"] { grid-template-columns: repeat(5, 1fr); }
+
+@media (max-width: 1200px) {
+    .grid-container[data-columns="5"],
+    .grid-container[data-columns="4"] { grid-template-columns: repeat(3, 1fr) !important; }
+}
+
+@media (max-width: 992px) {
+    .grid-container[data-columns="5"],
+    .grid-container[data-columns="4"],
+    .grid-container[data-columns="3"] { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@media (max-width: 768px) {
+    .grid-container { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@media (max-width: 576px) {
+    .grid-container { grid-template-columns: 1fr !important; }
+}
+
+/* --- Seções e Cards --- */
+.category-section {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border-top: 5px solid;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.category-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+}
+body.dark-mode .category-section::before {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+.module-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-top: 4px solid;
+    transition: all 0.4s ease;
+    height: 100%;
+    box-shadow: 0 3px 10px var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+.module-card.disabled {
+    opacity: 0.7;
+    background: #f8f9fa;
+    border-top: 4px solid #6c757d;
+}
+body.dark-mode .module-card.disabled { background: #333; }
+
+.module-icon {
+    font-size: 2.5rem; margin-bottom: 1rem; height: 70px;
+    display: flex; align-items: center; justify-content: center;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+    transition: transform 0.3s ease;
+}
+
+.module-card:hover .module-icon { transform: scale(1.1); }
+
+/* --- Títulos e Textos --- */
+.category-header {
+    display: flex; align-items: center; margin-bottom: 1.5rem;
+    padding-bottom: 1rem; border-bottom: 2px solid var(--border-color);
+}
+.category-icon { font-size: 2.2rem; margin-right: 1rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+
+.category-title {
+    margin: 0; font-weight: 700; font-size: 1.4rem;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+body.dark-mode .category-title {
+    background: linear-gradient(135deg, #e0e0e0, #a7a7a7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.module-name {
+    color: var(--text-color);
+    font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem;
+}
+.module-description {
+    color: var(--text-muted-color);
+    font-size: 0.85rem; margin-bottom: 1rem; min-height: 40px;
+}
+
+/* --- Botões --- */
+.btn-module { font-weight: 600; border-radius: 8px; padding: 0.5rem 1rem; transition: all 0.3s ease; border: none; }
+.btn-primary-module { background: var(--produtos-color); color: white; }
+.btn-moveis { background: var(--moveis-color); color: white; }
+.btn-emprestimos { background: var(--emprestimos-color); color: white; }
+.btn-veiculos { background: var(--veiculos-color); color: white; }
+.btn-eletricos { background: var(--eletricos-color); color: white; }
+.btn-renegociacao { background: var(--renegociacao-color); color: white; }
+.btn-ferramentas { background: var(--ferramentas-color); color: white; }
+.btn-avancadas { background: var(--avancadas-color); color: white; }
+
+/* --- Badges --- */
+.status-badge { position: absolute; top: 10px; right: 10px; font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+.construction-badge { background: #ff9800; border: none; font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+.catalog-badge { position: absolute; top: 10px; right: 10px; background: var(--catalog-color); border: none; font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+
+/* --- Seções de Catálogo (Dark) --- */
+.catalog-section {
+    background: var(--dark-bg);
+    border-radius: 15px; padding: 1.5rem; margin: 1.5rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-top: 5px solid var(--catalog-color);
+}
+.catalog-header { display: flex; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--dark-border); }
+.catalog-header-icon { font-size: 2.2rem; color: var(--catalog-color); margin-right: 1rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+.catalog-header-title { color: var(--dark-text); margin: 0; font-weight: 700; font-size: 1.4rem; }
+.catalog-card, .best-seller-card {
+    background: var(--dark-card);
+    border-radius: 12px; padding: 1.5rem;
+    border-top: 4px solid var(--catalog-color);
+    transition: all 0.4s ease; height: 100%;
+    color: var(--dark-text); box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+.catalog-card:hover, .best-seller-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(111, 66, 193, 0.4); }
+.catalog-icon { font-size: 2.5rem; color: var(--catalog-color); margin-bottom: 1rem; height: 70px; display: flex; align-items: center; justify-content: center; }
+.catalog-name { font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem; font-size: 1.1rem; }
+.catalog-description { color: #cccccc; font-size: 0.85rem; margin-bottom: 1rem; min-height: 40px; }
+.btn-dark-catalog { background-color: var(--catalog-color); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; }
+
+/* --- Seção Mais Vendidas --- */
+.best-seller-card { background: linear-gradient(135deg, var(--dark-card), #3d3d3d); border: 2px solid var(--dark-border); }
+.best-seller-icon { font-size: 3.5rem; margin-bottom: 1rem; height: 80px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3)); }
+.best-seller-badge { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #ff6b6b, #ee5a24); border: none; }
+.smartphone-color { color: #4ecdc4; }
+.tv-color { color: #ff9ff3; }
+.moveis-color { color: #54a0ff; }
+
+/* --- Cores dos Ícones --- */
+.produtos-icon { color: var(--produtos-color); }
+.moveis-icon { color: var(--moveis-color); }
+.emprestimos-icon { color: var(--emprestimos-color); }
+.veiculos-icon { color: var(--veiculos-color); }
+.eletricos-icon { color: var(--eletricos-color); }
+.renegociacao-icon { color: var(--renegociacao-color); }
+.ferramentas-icon { color: var(--ferramentas-color); }
+.avancadas-icon { color: var(--avancadas-color); }
+
+/* --- Rodapé --- */
+.footer-actions {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--body-bg); padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -2px 10px var(--shadow-color);
+    z-index: 100;
+    transition: background-color 0.3s ease, border-top-color 0.3s ease;
+}
+.content-area { padding-bottom: 120px; }
+.btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); border: none; font-weight: 600; border-radius: 8px; color: white; }
+.btn-reset { background: #fff3cd; border: 1px solid #ffc107; color: #856404; font-weight: 600; border-radius: 8px; }
+.btn-back { background: #6c757d; border: none; color: white; font-weight: 600; border-radius: 8px; }
+body.dark-mode .btn-reset { background-color: #533f00; color: #ffeb99; border-color: #8c6c00; }
+body.dark-mode .btn-back { background-color: #495057; }

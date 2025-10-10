@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empréstimo Diário - Encomenda Palotina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #007bff;
+            --primary-dark: #0056b3;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --orange: #fd7e14;
+            --light-blue: #e3f2fd;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark-green: #128C7E;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .calculator-container {
+            background: white;
+            height: 100vh;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER - 10% */
+        .calculator-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex: 0 0 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* ÁREA DE CONTEÚDO - 80% */
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-container {
+            padding: 0.5rem 1rem;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        /* FOOTER - 10% */
+        .footer-actions {
+            background: white;
+            padding: 0.5rem;
+            border-top: 2px solid #e9ecef;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+            flex: 0 0 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* ESTILOS RESTANTES PERMANECEM IGUAIS */
+        .section-title {
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+            padding-left: 12px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* BOTÕES FIXOS - SEMPRE OS MESMOS */
+        .btn-home {
+            background: var(--orange);
+            color: white;
+            border: none;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 8px 4px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-voltar {
+            background: var(--warning);
+            color: #212529;
+            border: none;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 8px 4px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-avancar {
+            background: var(--success);
+            color: white;
+            border: none;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 8px 4px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-resumo {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 8px 4px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        /* BOTÃO WHATSAPP FIXO - ESTADO INICIAL */
+        .btn-whatsapp-fixo {
+            background: white;
+            color: var(--whatsapp-dark-green);
+            border: 2px solid var(--whatsapp-dark-green);
+            font-weight: 600;
+            border-radius: 8px;
+            width: 100%;
+            padding: 8px;
+            margin-top: 0.3rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        /* BOTÃO WHATSAPP ATIVO - QUANDO CONCORDA */
+        .btn-whatsapp-fixo.active {
+            background: var(--whatsapp-green);
+            color: white;
+            border-color: var(--whatsapp-dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        /* EFEITOS HOVER PARA TODOS OS BOTÕES */
+        .btn-home:hover, .btn-voltar:hover, .btn-avancar:hover, .btn-resumo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-whatsapp-fixo:hover:not(.active) {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+        }
+
+        /* VISORES MODERNIZADOS */
+        .visor-container {
+            display: flex;
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+        }
+
+        .visor-item {
+            flex: 1;
+            text-align: center;
+            padding: 1.2rem 0.8rem;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .visor-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .valor-display {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0.3rem 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .valor-emprestimo {
+            color: white;
+            background: linear-gradient(135deg, var(--success), #20c997);
+            border-radius: 8px;
+            padding: 0.6rem;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .valor-pagamento {
+            color: white;
+            background: linear-gradient(135deg, var(--danger), #dc3545);
+            border-radius: 8px;
+            padding: 0.6rem;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .data-display, .dias-display {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.3rem 0;
+        }
+
+        /* SLIDERS MELHORADOS */
+        .slider-container {
+            margin: 1.2rem 0;
+        }
+
+        .custom-slider {
+            width: 100%;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            border: none;
+            outline: none;
+            margin: 15px 0;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+
+        .custom-slider:hover {
+            background: #dee2e6;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .slider-value-display {
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 6px;
+            font-size: 1rem;
+        }
+
+        /* SEÇÕES DE CONTEÚDO */
+        .summary-section {
+            background: var(--light-blue);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            border: 1px solid #b3d7ff;
+        }
+
+        .summary-block {
+            background: white;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .atraso-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-top: 1.2rem;
+        }
+
+        .alert-atraso {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-top: 1.2rem;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-top: 1.2rem;
+            color: #856404;
+        }
+
+        /* FORMULÁRIOS MELHORADOS */
+        .form-control {
+            border-radius: 8px;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-label {
+            font-weight: 500;
+        }
+
+        /* BOTÕES DE SELEÇÃO MELHORADOS */
+        .btn-selection {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .btn-selection:hover {
+            border-color: var(--primary);
+            background: #f8f9fa;
+        }
+
+        .btn-selection.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-selection i {
+            margin-right: 6px;
+        }
+
+        /* BOTÕES PIX */
+        .btn-pix {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .btn-pix.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* BOTÕES BANCO */
+        .btn-banco {
+            width: 100%;
+            padding: 10px 4px;
+            margin-bottom: 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            text-align: center;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-banco.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* VALIDAÇÕES */
+        .validation-error {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15) !important;
+        }
+
+        .validation-message {
+            color: var(--danger);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        /* ETAPAS E PROGRESSO */
+        .etapa {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .etapa.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress {
+            height: 8px;
+            margin: 0.8rem 0 0.5rem 0;
+            border-radius: 4px;
+            background: #e9ecef;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .concordancia-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-top: 1.2rem;
+            border-left: 4px solid var(--success);
+        }
+
+        /* RESPONSIVIDADE MELHORADA */
+        @media (max-width: 768px) {
+            .valor-display {
+                font-size: 1.2rem;
+            }
+            
+            .data-display, .dias-display {
+                font-size: 1rem;
+            }
+            
+            .visor-container {
+                flex-direction: row;
+                gap: 0.8rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .calculator-header h1 {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 0.95rem;
+            }
+            
+            .valor-display {
+                font-size: 1.1rem;
+            }
+            
+            .visor-item {
+                padding: 1rem 0.5rem;
+                min-height: 120px;
+            }
+            
+            .footer-actions {
+                padding: 0.6rem;
+            }
+            
+            .btn-home, .btn-voltar, .btn-avancar, .btn-resumo {
+                font-size: 0.75rem;
+                padding: 6px 2px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .visor-container {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .visor-item {
+                min-height: 110px;
+            }
+        }
+
+        /* ANIMAÇÕES EXTRAS */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* LABELS DOS CAMPOS */
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .example-text {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        /* TÍTULOS PARA BANCOS */
+        .banco-section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #495057;
+            margin: 1rem 0 0.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <!-- Header SEM botão Voltar - 10% -->
+        <div class="calculator-header">
+            <h1 style="font-size:1.3rem;margin:0;">
+                <i class="bi bi-calendar-day me-2"></i>Empréstimo Diário
+            </h1>
+            <p style="margin:0.3rem 0 0 0; font-size:0.8rem; opacity:0.95;">
+                Encomenda Palotina — empréstimo rápido e seguro
+            </p>
+        </div>
+
+        <!-- Área de Conteúdo - 80% -->
+        <div class="content-wrapper">
+            <!-- Barra de Progresso -->
+            <div class="progress-container">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 20%;" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="content-area">
+                <!-- TELA 1: Dados Pessoais -->
+                <div class="etapa active" id="tela1">
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-person-badge me-2"></i>Dados Pessoais</h4>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Nome completo:</label>
+                            <input type="text" class="form-control" id="clientName" placeholder="Ex: João Silva Santos">
+                            <div class="example-text">Digite seu nome completo como no documento</div>
+                            <div class="validation-message hidden" id="nameError">Informe o nome completo</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">CPF:</label>
+                            <input type="text" class="form-control" id="clientCPF" placeholder="Ex: 000.000.000-00">
+                            <div class="example-text">Apenas números, o sistema formata automaticamente</div>
+                            <div class="validation-message hidden" id="cpfError">Informe um CPF válido</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Chave PIX:</label>
+                            <div class="d-grid gap-2 mb-2">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-pix" id="btnPixCpf" onclick="selectPixType('cpf')">
+                                            <i class="bi bi-person-vcard"></i> CPF
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-pix" id="btnPixTelefone" onclick="selectPixType('telefone')">
+                                            <i class="bi bi-phone"></i> Telefone
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-pix" id="btnPixEmail" onclick="selectPixType('email')">
+                                            <i class="bi bi-envelope"></i> E-mail
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-pix" id="btnPixAleatorio" onclick="selectPixType('aleatorio')">
+                                            <i class="bi bi-shuffle"></i> Aleatório
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control mt-2" id="clientPix" placeholder="Digite sua chave PIX">
+                            <div class="validation-message hidden" id="pixError">Informe uma chave PIX válida</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Banco: Selecione onde quer receber o Empréstimo</label>
+                            
+                            <div class="banco-section-title">Bancos Digitais</div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoNubank" onclick="selectBanco('Nubank')">
+                                        Nubank
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoMercadoPago" onclick="selectBanco('Mercado Pago')">
+                                        M. Pago
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoInter" onclick="selectBanco('Inter')">
+                                        Inter
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoPicPay" onclick="selectBanco('PicPay')">
+                                        PicPay
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="banco-section-title">Bancos Físicos</div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoBrasil" onclick="selectBanco('Banco do Brasil')">
+                                        Brasil
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoSicredi" onclick="selectBanco('Sicredi')">
+                                        Sicredi
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoSicoob" onclick="selectBanco('Sicoob')">
+                                        Sicoob
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-banco" id="btnBancoCaixa" onclick="selectBanco('Caixa')">
+                                        Caixa
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-selection w-100" id="btnOutroBanco" onclick="showBancoModal()">
+                                <i class="bi bi-search"></i> Outro Banco - Clique para selecionar
+                            </button>
+                            <div class="validation-message hidden" id="bankError">Selecione um banco</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 2: Status do Cliente -->
+                <div class="etapa" id="tela2">
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-person-check me-2"></i>Status do Cliente</h4>
+                        
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="button" class="btn btn-selection" id="btnClientYes" onclick="selectClientStatus('yes')">
+                                <i class="bi bi-person-check"></i> Já sou cliente
+                            </button>
+                            <button type="button" class="btn btn-selection" id="btnClientNo" onclick="selectClientStatus('no')">
+                                <i class="bi bi-person-x"></i> Não sou cliente
+                            </button>
+                            <button type="button" class="btn btn-selection" id="btnCreateAccount" onclick="selectClientStatus('create')">
+                                <i class="bi bi-person-plus"></i> Criar Cadastro
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 3: Situação do Cliente -->
+                <div class="etapa" id="tela3">
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-person-lines-fill me-2"></i>Situação do Cliente</h4>
+                        
+                        <!-- Opções para clientes -->
+                        <div id="clientStatusOptions" class="hidden">
+                            <h6 class="mb-3">Selecione sua situação atual:</h6>
+                            <div class="d-grid gap-2">
+                                <button type="button" class="btn btn-selection" id="btnInArrearsNo" onclick="selectClientSituation('no')">
+                                    <i class="bi bi-check-circle"></i> Estou Com Minhas Parcelas em Dia
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnInArrearsYes" onclick="selectClientSituation('yes')">
+                                    <i class="bi bi-exclamation-triangle"></i> Estou Com Parcela Pendente
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Formulário para não clientes -->
+                        <div id="nonClientForm" class="hidden">
+                            <h6 class="mb-3">Como ficou sabendo do nosso serviço?</h6>
+                            <div class="d-grid gap-2 mb-3">
+                                <button type="button" class="btn btn-selection" id="btnSourceInstagram" onclick="selectSource('instagram')">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnSourceFacebook" onclick="selectSource('facebook')">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnSourceWhatsapp" onclick="selectSource('whatsapp')">
+                                    <i class="bi bi-whatsapp"></i> Whatsapp
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnSourceIndicado" onclick="selectSource('indicado')">
+                                    <i class="bi bi-person-check"></i> Indicado
+                                </button>
+                            </div>
+                            
+                            <!-- Campo para indicação -->
+                            <div class="mt-3 hidden" id="indicadoField">
+                                <input type="text" class="form-control" id="clientIndicado" placeholder="Quem te indicou?">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 4: Valor e Prazo do Empréstimo -->
+                <div class="etapa" id="tela4">
+                    <!-- Valor do Empréstimo -->
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-cash-coin me-2"></i>Valor do Empréstimo</h4>
+                        <div class="slider-container">
+                            <input type="range" class="custom-slider" id="loanValue" min="100" max="1000" step="50" value="300" oninput="updateRealTimeDisplay()">
+                            <div class="slider-value-display" id="loanValueDisplay">R$ 300,00</div>
+                        </div>
+                    </div>
+
+                    <!-- Dias para Pagamento -->
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-calendar-range me-2"></i>Dias para Pagamento</h4>
+                        <div class="slider-container">
+                            <input type="range" class="custom-slider" id="diasPagamento" min="1" max="30" value="15" oninput="updateRealTimeDisplay()">
+                            <div class="slider-value-display" id="diasPagamentoDisplay">15 dias</div>
+                        </div>
+                        
+                        <!-- Visores de Dias e Data -->
+                        <div class="visor-container">
+                            <div class="visor-item">
+                                <i class="bi bi-calendar-week text-primary" style="font-size: 1.5rem;"></i>
+                                <small class="text-muted">Prazo</small>
+                                <div class="dias-display" id="diasDisplay">15 dias</div>
+                                <small class="text-muted">Dias para pagamento</small>
+                            </div>
+                            <div class="visor-item">
+                                <i class="bi bi-calendar-check text-primary" style="font-size: 1.5rem;"></i>
+                                <small class="text-muted">Vencimento</small>
+                                <div class="data-display" id="dataVencimentoDisplay">10/11/2025</div>
+                                <small class="text-muted" id="diaSemanaDisplay">Segunda-feira</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Visores de Valor -->
+                        <div class="visor-container">
+                            <div class="visor-item">
+                                <i class="bi bi-arrow-down-circle text-white" style="font-size: 1.5rem;"></i>
+                                <small class="text-white">Valor Emprestado</small>
+                                <div class="valor-display valor-emprestimo" id="valorEmprestimoDisplay">R$ 300,00</div>
+                                <small class="text-white">Você recebe este valor</small>
+                            </div>
+                            <div class="visor-item">
+                                <i class="bi bi-arrow-up-circle text-white" style="font-size: 1.5rem;"></i>
+                                <small class="text-white">Valor a Pagar</small>
+                                <div class="valor-display valor-pagamento" id="valorTotalDisplay">R$ 379,65</div>
+                                <small class="text-white">Total na data de vencimento</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 5: Resumo Completo -->
+                <div class="etapa" id="tela5">
+                    <div class="summary-section">
+                        <h5 class="text-center mb-4"><i class="bi bi-file-text me-2"></i>Resumo do Empréstimo</h5>
+                        
+                        <!-- Bloco 1: Dados Pessoais -->
+                        <div class="summary-block">
+                            <h6><i class="bi bi-person me-2"></i>Dados Pessoais</h6>
+                            <div id="dadosPessoaisContent"></div>
+                        </div>
+
+                        <!-- Bloco 2: Detalhes do Empréstimo -->
+                        <div class="summary-block">
+                            <h6><i class="bi bi-cash-coin me-2"></i>Detalhes do Empréstimo</h6>
+                            <div id="detalhesEmprestimoContent"></div>
+                        </div>
+
+                        <!-- Bloco 3: Hipótese de Atraso -->
+                        <div class="atraso-section">
+                            <h6><i class="bi bi-exclamation-triangle me-2"></i>Em caso de atraso de 15 dias</h6>
+                            <div id="hipoteseAtrasoContent"></div>
+                        </div>
+
+                        <!-- Alertas de Atraso (se aplicável) -->
+                        <div id="alertaAtrasoContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RODAPÉ FIXO - BOTÕES CORRETOS - 10% -->
+        <div class="footer-actions">
+            <div class="row g-2">
+                <div class="col-3">
+                    <button class="btn btn-home w-100" onclick="window.location.href='../index.html'">
+                        <i class="bi bi-house"></i> Home
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-voltar w-100" onclick="voltarTela()">
+                        <i class="bi bi-arrow-left"></i> Voltar
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-avancar w-100" onclick="avancarTela()">
+                        <i class="bi bi-arrow-right"></i> Avançar
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-resumo w-100" onclick="irParaResumo()">
+                        <i class="bi bi-eye"></i> Resumo
+                    </button>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-whatsapp-fixo" id="whatsappBtnFixo" onclick="acaoWhatsApp()">
+                        <i class="bi bi-whatsapp"></i> Compartilhar no WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para seleção de bancos -->
+    <div class="modal fade" id="bancoModal" tabindex="-1" aria-labelledby="bancoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bancoModalLabel">Selecione seu banco</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Bradesco')">Bradesco</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Itaú')">Itaú</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Santander')">Santander</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Banrisul')">Banrisul</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Safra')">Safra</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('BTG Pactual')">BTG Pactual</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Original')">Original</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Neon')">Neon</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('C6 Bank')">C6 Bank</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Next')">Next</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('Pan')">Pan</button>
+                        <button type="button" class="btn btn-selection" onclick="selectBancoModal('BMG')">BMG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Taxa de juros diária (1.77% ao dia) - OCULTA
+        function getTaxaDiaria(dias) {
+    const taxaMinima = 0.25;  // 25% no primeiro dia
+    const taxaMaxima = 1.00;  // 100% no último dia (30 dias)
+    const diasMaximos = 30;
+    
+    // Fórmula linear crescente
+    const taxa = taxaMinima + ((taxaMaxima - taxaMinima) * (dias - 1) / (diasMaximos - 1));
+    return Math.max(taxaMinima, Math.min(taxaMaxima, taxa));
+}
+        const MULTA_ATRASO = 0.20; // 20% de multa
+        const JUROS_DIARIO_ATRASO = 0.10 / 365; // 10% a.a. convertido para diário
+
+        // Variáveis globais para controle de estado
+        let telaAtual = 1;
+        let clientStatus = ''; // 'yes', 'no', 'create'
+        let clientSituation = ''; // 'no', 'yes'
+        let sourceInfo = ''; // 'instagram', 'facebook', 'whatsapp', 'indicado'
+        let indicadoName = ''; // Nome da pessoa que indicou
+        let pixType = ''; // 'cpf', 'telefone', 'email', 'aleatorio'
+        let selectedBanco = ''; // Banco selecionado
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateRealTimeDisplay();
+            setupCPFFormatting();
+            setupPixFormatting();
+            
+            // Adicionar validação em tempo real para campos obrigatórios
+            setupRealTimeValidation();
+        });
+
+        // Avançar tela
+        function avancarTela() {
+            let proximaTela = telaAtual + 1;
+            
+            // Validar tela atual antes de avançar
+            if (telaAtual === 1 && !validarTela1()) {
+                mostrarErro('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (telaAtual === 2 && !validarTela2()) {
+                mostrarErro('Por favor, selecione se você é cliente.');
+                return;
+            }
+            
+            if (telaAtual === 3 && !validarTela3()) {
+                mostrarErro('Por favor, preencha todas as informações solicitadas.');
+                return;
+            }
+            
+            if (telaAtual === 4 && !validarTela4()) {
+                mostrarErro('Por favor, ajuste os valores do empréstimo.');
+                return;
+            }
+            
+            if (proximaTela > 5) {
+                mostrarErro('Você já está na última tela.');
+                return;
+            }
+            
+            telaAtual = proximaTela;
+            
+            // Ocultar todas as telas
+            document.querySelectorAll('.etapa').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Mostrar tela selecionada
+            document.getElementById(`tela${telaAtual}`).classList.add('active');
+            
+            // Atualizar barra de progresso
+            const progresso = (telaAtual / 5) * 100;
+            document.getElementById('progressBar').style.width = `${progresso}%`;
+            
+            // Se for para a tela 5, atualizar o resumo
+            if (telaAtual === 5) {
+                atualizarResumo();
+                // Ativar botão WhatsApp automaticamente
+                const whatsappBtn = document.getElementById('whatsappBtnFixo');
+                whatsappBtn.classList.add('active');
+            }
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+        }
+
+        function voltarTela() {
+            if (telaAtual > 1) {
+                telaAtual--;
+                
+                // Ocultar todas as telas
+                document.querySelectorAll('.etapa').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // Mostrar tela selecionada
+                document.getElementById(`tela${telaAtual}`).classList.add('active');
+                
+                // Atualizar barra de progresso
+                const progresso = (telaAtual / 5) * 100;
+                document.getElementById('progressBar').style.width = `${progresso}%`;
+                
+                // Scroll para o topo
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Ir direto para o resumo
+        function irParaResumo() {
+            // Validar telas anteriores antes de ir para o resumo
+            if (telaAtual === 1 && !validarTela1()) {
+                mostrarErro('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (telaAtual === 2 && !validarTela2()) {
+                mostrarErro('Por favor, selecione se você é cliente.');
+                return;
+            }
+            
+            if (telaAtual === 3 && !validarTela3()) {
+                mostrarErro('Por favor, preencha todas as informações solicitadas.');
+                return;
+            }
+            
+            if (telaAtual === 4 && !validarTela4()) {
+                mostrarErro('Por favor, ajuste os valores do empréstimo.');
+                return;
+            }
+            
+            telaAtual = 5;
+            
+            // Ocultar todas as telas
+            document.querySelectorAll('.etapa').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Mostrar tela 5
+            document.getElementById('tela5').classList.add('active');
+            
+            // Atualizar barra de progresso
+            document.getElementById('progressBar').style.width = '100%';
+            
+            // Atualizar resumo
+            atualizarResumo();
+            
+            // Ativar botão WhatsApp automaticamente
+            const whatsappBtn = document.getElementById('whatsappBtnFixo');
+            whatsappBtn.classList.add('active');
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+        }
+
+        // Ação do botão WhatsApp
+        function acaoWhatsApp() {
+            const whatsappBtn = document.getElementById('whatsappBtnFixo');
+            
+            if (telaAtual === 5 && whatsappBtn.classList.contains('active')) {
+                // Na tela 5 e com botão ativo: envia WhatsApp
+                sendWhatsApp();
+            } else {
+                // Nas outras telas: avança para próxima tela
+                avancarTela();
+            }
+        }
+
+        // Selecionar tipo de PIX
+        function selectPixType(type) {
+            pixType = type;
+            
+            // Resetar todos os botões PIX
+            document.querySelectorAll('.btn-pix').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativar botão selecionado
+            document.getElementById(`btnPix${type.charAt(0).toUpperCase() + type.slice(1)}`).classList.add('active');
+            
+            // Atualizar placeholder do campo PIX
+            const pixField = document.getElementById('clientPix');
+            switch(type) {
+                case 'cpf':
+                    pixField.placeholder = 'Ex: 123.456.789-09';
+                    break;
+                case 'telefone':
+                    pixField.placeholder = 'Ex: (11) 99999-9999';
+                    break;
+                case 'email':
+                    pixField.placeholder = 'Ex: seuemail@exemplo.com';
+                    break;
+                case 'aleatorio':
+                    pixField.placeholder = 'Ex: 123e4567-e89b-12d3-a456-426614174000';
+                    break;
+            }
+        }
+
+        // Selecionar banco dos botões
+        function selectBanco(banco) {
+            selectedBanco = banco;
+            
+            // Resetar todos os botões banco
+            document.querySelectorAll('.btn-banco').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativar botão selecionado
+            document.getElementById(`btnBanco${banco.replace(' ', '').replace('.', '')}`).classList.add('active');
+            
+            // Resetar botão de seleção de banco
+            document.getElementById('btnOutroBanco').classList.remove('active');
+        }
+
+        // Mostrar modal de bancos
+        function showBancoModal() {
+            const bancoModal = new bootstrap.Modal(document.getElementById('bancoModal'));
+            bancoModal.show();
+        }
+
+        // Selecionar banco do modal
+        function selectBancoModal(banco) {
+            selectedBanco = banco;
+            
+            // Resetar todos os botões banco
+            document.querySelectorAll('.btn-banco').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativar botão de seleção de banco
+            document.getElementById('btnOutroBanco').classList.add('active');
+            document.getElementById('btnOutroBanco').innerHTML = `<i class="bi bi-bank"></i> ${banco}`;
+            
+            // Fechar modal
+            const bancoModal = bootstrap.Modal.getInstance(document.getElementById('bancoModal'));
+            bancoModal.hide();
+        }
+
+        // Selecionar status do cliente (botões)
+        function selectClientStatus(status) {
+            clientStatus = status;
+            
+            // Resetar todos os botões
+            document.querySelectorAll('#tela2 .btn-selection').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativar botão selecionado
+            document.getElementById(`btnClient${status === 'yes' ? 'Yes' : status === 'no' ? 'No' : 'CreateAccount'}`).classList.add('active');
+            
+            // Se selecionou "Criar Cadastro", redireciona com confirmação
+            if (status === 'create') {
+                if (confirm('Tem certeza que deseja sair do aplicativo para criar cadastro?')) {
+                    window.location.href = 'https://www.colaquiseulink.com.br';
+                }
+                return;
+            }
+            
+            // Configurar a tela 3 conforme o status
+            if (status === 'yes') {
+                document.getElementById('clientStatusOptions').classList.remove('hidden');
+                document.getElementById('nonClientForm').classList.add('hidden');
+            } else if (status === 'no') {
+                document.getElementById('clientStatusOptions').classList.add('hidden');
+                document.getElementById('nonClientForm').classList.remove('hidden');
+            }
+            
+            // Avança para próxima tela automaticamente
+            setTimeout(() => avancarTela(), 500);
+        }
+
+        // Selecionar situação do cliente (botões)
+        function selectClientSituation(situation) {
+            clientSituation = situation;
+            
+            // Resetar todos os botões
+            document.querySelectorAll('#tela3 .btn-selection').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativar botão selecionado
+            document.getElementById(`btnInArrears${situation === 'no' ? 'No' : 'Yes'}`).classList.add('active');
+            
+            // Avança para próxima tela automaticamente
+            setTimeout(() => avancarTela(), 500);
+        }
+
+        // Selecionar fonte de informação (botões)
+        function selectSource(source) {
+            sourceInfo = source;
+            
+            // Resetar todos os botões
+            document.querySelectorAll('#tela3 .btn-selection').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativar botão selecionado
+            document.getElementById(`btnSource${source.charAt(0).toUpperCase() + source.slice(1)}`).classList.add('active');
+            
+            // Mostrar campo de indicação se necessário
+            if (source === 'indicado') {
+                document.getElementById('indicadoField').classList.remove('hidden');
+            } else {
+                document.getElementById('indicadoField').classList.add('hidden');
+                // Avança para próxima tela automaticamente
+                setTimeout(() => avancarTela(), 500);
+            }
+        }
+
+        // Formatar CPF
+        function setupCPFFormatting() {
+            const cpfEl = document.getElementById('clientCPF');
+            cpfEl.addEventListener('input', function(e){
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.substring(0,11);
+                if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                if (value.length > 7) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+                if (value.length > 11) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+                e.target.value = value;
+            });
+        }
+
+        // Formatar PIX
+        function setupPixFormatting() {
+            const pixEl = document.getElementById('clientPix');
+            pixEl.addEventListener('input', function(e){
+                let value = e.target.value;
+                
+                if (pixType === 'cpf') {
+                    value = value.replace(/\D/g, '');
+                    if (value.length > 11) value = value.substring(0,11);
+                    if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                    if (value.length > 7) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+                    if (value.length > 11) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+                } else if (pixType === 'telefone') {
+                    value = value.replace(/\D/g, '');
+                    if (value.length > 11) value = value.substring(0,11);
+                    if (value.length > 0) value = value.replace(/^(\d{2})(\d)/, '($1) $2');
+                    if (value.length > 10) value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                }
+                
+                e.target.value = value;
+            });
+        }
+
+        // Configurar validação em tempo real
+        function setupRealTimeValidation() {
+            const fields = ['clientName', 'clientCPF', 'clientPix'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('blur', function() {
+                        validateField(fieldId);
+                    });
+                }
+            });
+        }
+
+        // Validar campo individual
+        function validateField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            if (!field || !errorElement) return true;
+            
+            let isValid = true;
+            
+            switch(fieldId) {
+                case 'clientName':
+                    isValid = field.value.trim().length > 0;
+                    break;
+                case 'clientCPF':
+                    const cpfDigits = field.value.replace(/\D/g, '');
+                    isValid = cpfDigits.length === 11;
+                    break;
+                case 'clientPix':
+                    isValid = field.value.trim().length > 0;
+                    break;
+            }
+            
+            if (!isValid) {
+                field.classList.add('validation-error');
+                errorElement.classList.remove('hidden');
+                field.classList.add('shake');
+                setTimeout(() => field.classList.remove('shake'), 500);
+            } else {
+                field.classList.remove('validation-error');
+                errorElement.classList.add('hidden');
+            }
+            
+            return isValid;
+        }
+
+        // Validar banco
+        function validateBanco() {
+            const errorElement = document.getElementById('bankError');
+            
+            if (!selectedBanco) {
+                errorElement.classList.remove('hidden');
+                return false;
+            } else {
+                errorElement.classList.add('hidden');
+                return true;
+            }
+        }
+
+        // Mostrar erro de forma amigável
+        function mostrarErro(mensagem) {
+            // Criar alerta temporário
+            const alerta = document.createElement('div');
+            alerta.className = 'alert alert-warning position-fixed top-0 start-50 translate-middle-x mt-3';
+            alerta.style.zIndex = '9999';
+            alerta.style.maxWidth = '90%';
+            alerta.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span>${mensagem}</span>
+                </div>
+            `;
+            document.body.appendChild(alerta);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                alerta.remove();
+            }, 3000);
+        }
+
+        // Validar tela 1
+        function validarTela1() {
+            const nomeValido = validateField('clientName');
+            const cpfValido = validateField('clientCPF');
+            const pixValido = validateField('clientPix');
+            const bankValido = validateBanco();
+            
+            if (!nomeValido || !cpfValido || !pixValido || !bankValido) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Validar tela 2
+        function validarTela2() {
+            if (!clientStatus) {
+                mostrarErro('Por favor, selecione se você é cliente.');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Validar tela 3
+        function validarTela3() {
+            // Se é cliente, validar situação
+            if (clientStatus === 'yes' && !clientSituation) {
+                mostrarErro('Por favor, selecione sua situação atual.');
+                return false;
+            }
+            
+            // Se não é cliente, validar fonte de informação
+            if (clientStatus === 'no') {
+                if (!sourceInfo) {
+                    mostrarErro('Por favor, selecione como ficou sabendo do nosso serviço.');
+                    return false;
+                }
+                
+                // Se foi indicado, validar campo de indicação
+                if (sourceInfo === 'indicado') {
+                    indicadoName = document.getElementById('clientIndicado').value.trim();
+                    if (!indicadoName) {
+                        mostrarErro('Por favor, informe quem indicou nosso serviço.');
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+
+        // Validar tela 4
+        function validarTela4() {
+            const valor = parseInt(document.getElementById('loanValue').value);
+            const dias = parseInt(document.getElementById('diasPagamento').value);
+            
+            return valor >= 100 && valor <= 1000 && dias >= 1 && dias <= 30;
+        }
+
+        // Calcular valor total com juros compostos
+       function calcularValorTotal(valor, dias) {
+    const taxa = getTaxaDiaria(dias);
+    const valorTotal = valor * (1 + taxa);
+    return Math.round(valorTotal * 100) / 100;
+}
+
+        // Calcular valor em caso de atraso (SOMANDO com a parcela atual)
+        function calcularAtraso(valorParcela, diasAtraso) {
+            const multa = valorParcela * MULTA_ATRASO;
+            const juros = valorParcela * JUROS_DIARIO_ATRASO * diasAtraso;
+            const totalAtraso = valorParcela + multa + juros;
+            
+            return {
+                multa: Math.round(multa * 100) / 100,
+                juros: Math.round(juros * 100) / 100,
+                total: Math.round(totalAtraso * 100) / 100
+            };
+        }
+
+        // Obter nome do dia da semana
+        function getDiaSemana(data) {
+            const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+            return dias[data.getDay()];
+        }
+
+        // Formatar data no padrão brasileiro
+        function formatarData(data) {
+            return data.toLocaleDateString('pt-BR');
+        }
+
+        // Calcular data futura
+        function calcularDataFutura(dias) {
+            const data = new Date();
+            data.setDate(data.getDate() + dias);
+            return data;
+        }
+
+        // Atualizar display em tempo real
+        function updateRealTimeDisplay() {
+            const valor = parseInt(document.getElementById('loanValue').value);
+            const dias = parseInt(document.getElementById('diasPagamento').value);
+            
+            const valorTotal = calcularValorTotal(valor, dias);
+            const dataVencimento = calcularDataFutura(dias);
+            const diaSemana = getDiaSemana(dataVencimento);
+            
+            document.getElementById('valorEmprestimoDisplay').textContent = formatBRL(valor);
+            document.getElementById('valorTotalDisplay').textContent = formatBRL(valorTotal);
+            document.getElementById('loanValueDisplay').textContent = formatBRL(valor);
+            document.getElementById('diasPagamentoDisplay').textContent = `${dias} dia${dias > 1 ? 's' : ''}`;
+            document.getElementById('diasDisplay').textContent = `${dias} dia${dias > 1 ? 's' : ''}`;
+            document.getElementById('dataVencimentoDisplay').textContent = formatarData(dataVencimento);
+            document.getElementById('diaSemanaDisplay').textContent = diaSemana;
+        }
+
+        // Formatar valor em BRL
+        function formatBRL(valor) {
+            return 'R$ ' + valor.toFixed(2).replace('.', ',');
+        }
+
+        // Atualizar resumo
+        function atualizarResumo() {
+            const nome = document.getElementById('clientName').value.trim();
+            const cpf = document.getElementById('clientCPF').value.trim();
+            const pix = document.getElementById('clientPix').value.trim();
+            const valor = parseInt(document.getElementById('loanValue').value);
+            const dias = parseInt(document.getElementById('diasPagamento').value);
+
+            const valorParcela = calcularValorTotal(valor, dias);
+            const dataPagamento = calcularDataFutura(dias);
+            const dataAtraso = calcularDataFutura(dias + 15);
+            
+            // Calcular atraso SOMANDO com a parcela atual
+            const calculoAtraso = calcularAtraso(valorParcela, 15);
+
+            // BLOCO 1: Dados Pessoais
+            let statusCliente = '';
+            let mensagemStatus = '';
+            
+            if (clientStatus === 'yes') {
+                if (clientSituation === 'no') {
+                    statusCliente = '<div class="mb-2"><strong>Status:</strong> Cliente com parcelas em dia</div>';
+                    mensagemStatus = '<div class="alert alert-success mt-2"><strong>✓ PROBABILIDADE ALTA:</strong> Cliente com parcelas em dia tem 95% de chance de conseguir o empréstimo nos próximos 30 dias.</div>';
+                } else if (clientSituation === 'yes') {
+                    statusCliente = '<div class="mb-2"><strong>Status:</strong> Cliente com parcela pendente</div>';
+                    mensagemStatus = '<div class="alert alert-warning mt-2"><strong>⚠️ ATENÇÃO:</strong> Cliente possui parcelas em atraso. Há 90% de chance de não conseguir empréstimo até a quitação ou renegociação das dívidas.</div>';
+                }
+            } else if (clientStatus === 'no') {
+                let fonteTexto = '';
+                switch(sourceInfo) {
+                    case 'instagram': fonteTexto = 'Instagram'; break;
+                    case 'facebook': fonteTexto = 'Facebook'; break;
+                    case 'whatsapp': fonteTexto = 'WhatsApp'; break;
+                    case 'indicado': fonteTexto = `Indicado por: ${indicadoName}`; break;
+                }
+                
+                statusCliente = `
+                    <div class="mb-2"><strong>Status:</strong> Novo cliente</div>
+                    <div class="mb-2"><strong>Como ficou sabendo:</strong> ${fonteTexto}</div>
+                `;
+                mensagemStatus = '<div class="alert alert-info mt-2"><strong>📋 NOVO CLIENTE:</strong> Sua solicitação será analisada conforme nossa política de crédito para novos clientes.</div>';
+            }
+
+            document.getElementById('dadosPessoaisContent').innerHTML = `
+                <div class="mb-2"><strong>Data da simulação:</strong> ${new Date().toLocaleDateString('pt-BR')}</div>
+                <div class="mb-2"><strong>Cliente:</strong> ${nome}</div>
+                <div class="mb-2"><strong>CPF:</strong> ${cpf}</div>
+                <div class="mb-2"><strong>Chave PIX:</strong> ${pix}</div>
+                <div class="mb-2"><strong>Banco:</strong> ${selectedBanco}</div>
+                ${statusCliente}
+                ${mensagemStatus}
+            `;
+
+            // BLOCO 2: Detalhes do Empréstimo
+            document.getElementById('detalhesEmprestimoContent').innerHTML = `
+                <div class="mb-2"><strong>Valor do empréstimo:</strong> ${formatBRL(valor)}</div>
+                <div class="mb-2"><strong>Dias para pagamento:</strong> ${dias} dias</div>
+                <div class="mb-2"><strong>Data de vencimento:</strong> ${formatarData(dataPagamento)} (${getDiaSemana(dataPagamento)})</div>
+                <div class="mb-2 fw-bold fs-6"><strong>Valor total a pagar:</strong> ${formatBRL(valorParcela)}</div>
+            `;
+
+            // BLOCO 3: Hipótese de Atraso
+            document.getElementById('hipoteseAtrasoContent').innerHTML = `
+                <div class="mb-2"><strong>Data do vencimento:</strong> ${formatarData(dataPagamento)}</div>
+                <div class="mb-2"><strong>Data do atraso:</strong> ${formatarData(dataAtraso)}</div>
+                <div class="mb-2"><strong>Valor da parcela:</strong> ${formatBRL(valorParcela)}</div>
+                <div class="mb-2"><strong>Multa (20%):</strong> ${formatBRL(calculoAtraso.multa)}</div>
+                <div class="mb-2"><strong>Juros diários (10% a.a.):</strong> ${formatBRL(calculoAtraso.juros)}</div>
+                <div class="mb-2 fw-bold fs-6"><strong>Total a pagar com atraso:</strong> ${formatBRL(calculoAtraso.total)}</div>
+            `;
+
+            // Alertas de Atraso (se aplicável)
+            let alertaHTML = '';
+            if (clientStatus === 'yes' && clientSituation === 'yes') {
+                alertaHTML = `
+                    <div class="alert-atraso mt-3">
+                        <strong>⚠️ OBRIGAÇÃO DE REGULARIZAÇÃO:</strong> 
+                        Para conseguir novos créditos, é obrigatório colocar a dívida em dia. 
+                        Entre em contato para renegociar suas pendências.
+                    </div>
+                `;
+            }
+            document.getElementById('alertaAtrasoContent').innerHTML = alertaHTML;
+        }
+
+        // Enviar WhatsApp
+        function sendWhatsApp() {
+            const nome = document.getElementById('clientName').value.trim();
+            const cpf = document.getElementById('clientCPF').value.trim();
+            const pix = document.getElementById('clientPix').value.trim();
+            const valor = parseInt(document.getElementById('loanValue').value);
+            const dias = parseInt(document.getElementById('diasPagamento').value);
+
+            const valorParcela = calcularValorTotal(valor, dias);
+            const dataPagamento = calcularDataFutura(dias);
+
+            let statusMsg = '';
+            let alertaMsg = '';
+            
+            if (clientStatus === 'yes') {
+                if (clientSituation === 'no') {
+                    statusMsg = 'Cliente com parcelas em dia';
+                    alertaMsg = '\n\n✓ *PROBABILIDADE ALTA:* Cliente com parcelas em dia tem 95% de chance de conseguir o empréstimo nos próximos 30 dias.';
+                } else if (clientSituation === 'yes') {
+                    statusMsg = 'Cliente com parcela pendente';
+                    alertaMsg = '\n\n⚠️ *ATENÇÃO:* Cliente possui parcelas em atraso. Há 90% de chance de não conseguir empréstimo até a quitação ou renegociação das dívidas.';
+                }
+                
+                // Adicionar mensagem de obrigatoriedade de regularização
+                if (clientSituation === 'yes') {
+                    alertaMsg += '\n\n⚠️ *OBRIGAÇÃO DE REGULARIZAÇÃO:* Para conseguir novos créditos, é obrigatório colutar a dívida em dia. Entre em contato para renegociar suas pendências.';
+                }
+            } else if (clientStatus === 'no') {
+                let fonteTexto = '';
+                switch(sourceInfo) {
+                    case 'instagram': fonteTexto = 'Instagram'; break;
+                    case 'facebook': fonteTexto = 'Facebook'; break;
+                    case 'whatsapp': fonteTexto = 'WhatsApp'; break;
+                    case 'indicado': fonteTexto = `Indicado por: ${indicadoName}`; break;
+                }
+                
+                statusMsg = `Novo cliente - ${fonteTexto}`;
+                alertaMsg = '\n\n📋 *NOVO CLIENTE:* Sua solicitação será analisada conforme nossa política de crédito para novos clientes.';
+            }
+
+            const message = `*📅 EMPRÉSTIMO DIÁRIO - ENCOMENDA PALOTINA*\n\n` +
+                          `*Dados do Cliente:*\n` +
+                          `Nome: ${nome}\n` +
+                          `CPF: ${cpf}\n` +
+                          `Chave PIX: ${pix}\n` +
+                          `Banco: ${selectedBanco}\n` +
+                          `Status: ${statusMsg}` +
+                          `${alertaMsg}\n\n` +
+                          `*Detalhes do Empréstimo:*\n` +
+                          `Valor Solicitado: ${formatBRL(valor)}\n` +
+                          `Prazo: ${dias} dias\n` +
+                          `Data de Vencimento: ${formatarData(dataPagamento)} (${getDiaSemana(dataPagamento)})\n` +
+                          `Valor Total a Pagar: ${formatBRL(valorParcela)}\n\n` +
+                          `_*Condições sujeitas à análise*_\n` +
+                          `📞 *Encomenda Palotina*`;
+
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/554498408460?text=${encoded}`, '_blank');
+        }
+    </script>
+</body>
+</html>

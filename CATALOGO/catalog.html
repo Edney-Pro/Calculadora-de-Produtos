@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Produtos - Encomenda Palotina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- CSS Externo para o Catálogo -->
+    <link rel="stylesheet" href="catalog.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="catalog-header">
+        <div class="container">
+            <h1 class="mb-3"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Catálogo de Produtos</h1>
+            <p class="lead mb-0">Encomenda Palotina - Navegue pelas categorias</p>
+        </div>
+    </header>
+
+    <!-- Controles de Visualização -->
+    <div class="view-controls p-3">
+        <div class="grid-controls">
+            <span class="control-label">Visualizar:</span>
+            <button class="btn-grid" onclick="setGridColumns(2)" title="2 colunas"><i class="bi bi-grid-1x2-fill"></i></button>
+            <button class="btn-grid" onclick="setGridColumns(3)" title="3 colunas"><i class="bi bi-grid-3x2-gap-fill"></i></button>
+            <button class="btn-grid active" onclick="setGridColumns(4)" title="4 colunas"><i class="bi bi-grid-fill"></i></button>
+            <button class="btn-grid" onclick="setGridColumns(5)" title="5 colunas"><i class="bi bi-view-list"></i></button>
+        </div>
+        <div class="theme-toggle">
+            <button class="btn-theme" onclick="toggleTheme()" title="Alternar tema">
+                <i class="bi bi-sun-fill theme-icon-sun"></i>
+                <i class="bi bi-moon-stars-fill theme-icon-moon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Grid de Categorias -->
+    <main class="category-grid">
+        <div class="container">
+            <div class="row g-4 grid-container" data-columns="4">
+                <!-- Ícones atualizados e classes de coluna padronizadas -->
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1SSB8iSuWf3kD8F-Dg0pVbTlAGPKbVtlE?usp=drive_link" target="_blank" class="category-card"><div class="category-icon video"><i class="bi bi-camera-reels-fill"></i></div><div class="category-name">Vídeo</div><div class="category-description">Câmeras, filmadoras e equipamentos de vídeo</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1BOoVLCAZ9Mm2zElEtttSIbLh9tDB9kc8?usp=drive_link" target="_blank" class="category-card"><div class="category-icon utensilios"><i class="bi bi-ui-checks-grid"></i></div><div class="category-name">Utensílios Domésticos</div><div class="category-description">Utensílios e acessórios para o lar</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1qE5sTMQDWZtdLodqU3vVFBLG60JypptV?usp=drive_link" target="_blank" class="category-card"><div class="category-icon transporte-eletrico"><i class="bi bi-scooter"></i></div><div class="category-name">Transportes Elétricos</div><div class="category-description">Bicicletas, patinetes e veículos elétricos</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1jxxnEERu7-7GfuncE7WjzMBr7nCSqMRj?usp=drive_link" target="_blank" class="category-card"><div class="category-icon smartphones"><i class="bi bi-phone-fill"></i></div><div class="category-name">Smartphones</div><div class="category-description">Celulares, smartphones e acessórios</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1DXIoFgzvbSQg0Y9sXLgIKEPW45chaWBI?usp=drive_link" target="_blank" class="category-card"><div class="category-icon moda"><i class="bi bi-bag-heart-fill"></i></div><div class="category-name">Moda e Acessórios</div><div class="category-description">Roupas, bolsas e moda em geral</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1DL1NYseueM6am3dxOVHDBR3cGQTlb-IV?usp=drive_link" target="_blank" class="category-card"><div class="category-icon musica"><i class="bi bi-guitar"></i></div><div class="category-name">Instrumentos Musicais</div><div class="category-description">Instrumentos e equipamentos musicais</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1weO_pbm-Nfp1m4xxK5O-JVsgBI6QJ3v7?usp=drive_link" target="_blank" class="category-card"><div class="category-icon informatica"><i class="bi bi-laptop-fill"></i></div><div class="category-name">Informática</div><div class="category-description">Computadores, notebooks e tecnologia</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1im5lwymbt_VtC0gjBwtEKD8BOOtw1xPW?usp=drive_link" target="_blank" class="category-card"><div class="category-icon games"><i class="bi bi-joystick"></i></div><div class="category-name">Games</div><div class="category-description">Video games, consoles e acessórios</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1say6PKtRuwN4OUe-vdnv-ujVZUPxEqgk?usp=drive_link" target="_blank" class="category-card"><div class="category-icon fotografia"><i class="bi bi-camera-fill"></i></div><div class="category-name">Fotografia</div><div class="category-description">Câmeras, lentes e equipamentos fotográficos</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1lpP1tHsY77KWn6So9hHYIkhumtit38Uy?usp=drive_link" target="_blank" class="category-card"><div class="category-icon ferramentas"><i class="bi bi-tools"></i></div><div class="category-name">Ferramentas</div><div class="category-description">Ferramentas profissionais e domésticas</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1a0CBOitcwiWgxasn-EgszCrr8WHPKhwc?usp=drive_link" target="_blank" class="category-card"><div class="category-icon esportes"><i class="bi bi-bicycle"></i></div><div class="category-name">Esporte e Lazer</div><div class="category-description">Equipamentos esportivos e para lazer</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1i1YyxvQJ7CRINOhWr7TKbh6yGGRrP8O2?usp=drive_link" target="_blank" class="category-card"><div class="category-icon eletro-portateis"><i class="bi bi-earbuds"></i></div><div class="category-name">Eletro Portáteis</div><div class="category-description">Eletrônicos portáteis e gadgets</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1VXFArx2jWAEoC41Qs5gsdExFAFM2HnNL?usp=drive_link" target="_blank" class="category-card"><div class="category-icon eletrodomesticos"><i class="bi bi-box-seam-fill"></i></div><div class="category-name">Eletrodomésticos</div><div class="category-description">Eletrodomésticos para sua casa</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/10nIsbDtaZ7vSjHy7hXHV4-Y8RTyw_uFF?usp=drive_link" target="_blank" class="category-card"><div class="category-icon beleza"><i class="bi bi-person-heart"></i></div><div class="category-name">Cuidados Pessoais</div><div class="category-description">Beleza, cuidados e higiene pessoal</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1SAb_nTi-pzsiHcVK9CwPszzPkxsK7OJf?usp=drive_link" target="_blank" class="category-card"><div class="category-icon escritorio"><i class="bi bi-briefcase-fill"></i></div><div class="category-name">Comércio e Escritório</div><div class="category-description">Móveis e equipamentos para escritório</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1UHskb2lGqFPYuO1KEcz9h7AybUchxVV6?usp=drive_link" target="_blank" class="category-card"><div class="category-icon casa-moveis"><i class="bi bi-house-door-fill"></i></div><div class="category-name">Casa e Móveis</div><div class="category-description">Móveis, decoração e artigos para casa</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1cDa_VsR3IlPzeNl7w0CaSeLV9ztiueSC?usp=drive_link" target="_blank" class="category-card"><div class="category-icon brinquedos"><i class="bi bi-puzzle-fill"></i></div><div class="category-name">Brinquedos e Hobbies</div><div class="category-description">Brinquedos, jogos e hobbies</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1W2Xa_SbQw_zGoabbZ0nggTEu5GksLusb?usp=drive_link" target="_blank" class="category-card"><div class="category-icon automotivo"><i class="bi bi-car-front-fill"></i></div><div class="category-name">Automotivo</div><div class="category-description">Peças e acessórios automotivos</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1ST0FwQOt5XI41Dx85FbSL_mmt6ESGLjj?usp=drive_link" target="_blank" class="category-card"><div class="category-icon ar-ventilacao"><i class="bi bi-fan"></i></div><div class="category-name">Ar e Ventilação</div><div class="category-description">Ar condicionado e climatização</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/1_JvdrLSEnoxBdrhgI7gL0A47RQxVrKmo?usp=drive_link" target="_blank" class="category-card"><div class="category-icon automacao"><i class="bi bi-lightbulb-fill"></i></div><div class="category-name">Automação</div><div class="category-description">Sistemas de automação e iluminação</div></a></div>
+                <div class="col-item"><a href="https://drive.google.com/drive/folders/13tuy41Oqs4QIwmHPSRmX73r7_7ZvW60p?usp=drive_link" target="_blank" class="category-card"><div class="category-icon audio"><i class="bi bi-speaker-fill"></i></div><div class="category-name">Áudio</div><div class="category-description">Sistemas de som e equipamentos de áudio</div></a></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-actions">
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-md-6"><button class="btn btn-calculator w-100" onclick="goToCalculator()"><i class="bi bi-calculator me-2"></i>Calculadora de Parcelas</button></div>
+                <div class="col-md-6"><button class="btn btn-whatsapp w-100" onclick="contactWhatsApp()"><i class="bi bi-whatsapp me-2"></i>Falar no WhatsApp</button></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS Externo para o Catálogo -->
+    <script src="catalog.js"></script>
+</body>
+</html>
