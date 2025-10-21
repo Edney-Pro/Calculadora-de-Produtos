@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Produtos Usados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B4513;
+            --primary-light: #D2691E;
+            --secondary: #2E8B57;
+            --secondary-light: #3CB371;
+            --tertiary: #4169E1;
+            --tertiary-light: #6495ED;
+            --success: #00C48C;
+            --warning: #FF9F43;
+            --dark: #1E1E2F;
+            --light-bg: #F9FAFB;
+            --border: #E5E7EB;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --white: #FFFFFF;
+            
+            /* Tema Dark */
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #ffffff;
+            --dark-border: #333333;
+            --dark-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-weight: 400;
+        }
+
+        .calculator-container {
+            background: var(--dark-card);
+            height: 100vh;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px var(--dark-shadow);
+        }
+
+        /* HEADER */
+        .calculator-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: var(--white);
+            padding: 1.2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(139, 69, 19, 0.3);
+            flex: 0 0 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .calculator-header h1 {
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .calculator-header p {
+            margin: 0.3rem 0 0 0;
+            font-size: 0.8rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        /* ÁREA DE CONTEÚDO */
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-container {
+            padding: 0.8rem 1rem;
+            background: var(--dark-card);
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--dark-bg);
+        }
+
+        /* FOOTER */
+        .footer-actions {
+            background: var(--dark-card);
+            padding: 0.8rem;
+            border-top: 1px solid var(--dark-border);
+            box-shadow: 0 -4px 15px var(--dark-shadow);
+            flex: 0 0 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* ESTILOS GERAIS */
+        .section-title {
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+            padding-left: 12px;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* BOTÕES */
+        .btn-home {
+            background: #2d3748;
+            color: var(--dark-text);
+            border: none;
+            font-weight: 500;
+            border-radius: 12px;
+            padding: 10px 8px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px var(--dark-shadow);
+        }
+
+        .btn-voltar {
+            background: var(--warning);
+            color: var(--white);
+            border: none;
+            font-weight: 500;
+            border-radius: 12px;
+            padding: 10px 8px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-avancar {
+            background: var(--success);
+            color: var(--white);
+            border: none;
+            font-weight: 500;
+            border-radius: 12px;
+            padding: 10px 8px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-resumo {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            font-weight: 500;
+            border-radius: 12px;
+            padding: 10px 8px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        /* BOTÃO WHATSAPP */
+        .btn-whatsapp-fixo {
+            background: var(--dark-card);
+            color: #25D366;
+            border: 2px solid #25D366;
+            font-weight: 500;
+            border-radius: 12px;
+            width: 100%;
+            padding: 10px;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-whatsapp-fixo.active {
+            background: #25D366;
+            color: var(--white);
+            border-color: #25D366;
+        }
+
+        /* VISORES */
+        .visor-container {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .visor-item {
+            flex: 1;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--dark-shadow);
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .valor-display {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            color: var(--white);
+        }
+
+        /* VISORES COM CORES DIFERENTES E PROFISSIONAIS */
+        .valor-total {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+        }
+
+        .valor-prazo {
+            background: linear-gradient(135deg, #2E8B57, #3CB371);
+        }
+
+        .valor-parcela {
+            background: linear-gradient(135deg, #4169E1, #6495ED);
+        }
+
+        .visor-item i {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            color: var(--white);
+        }
+
+        .visor-item small {
+            color: var(--white);
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* SLIDERS */
+        .slider-container {
+            margin: 1.5rem 0;
+            background: var(--dark-card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px var(--dark-shadow);
+        }
+
+        .custom-slider {
+            width: 100%;
+            height: 6px;
+            background: var(--dark-border);
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            margin: 20px 0;
+            -webkit-appearance: none;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 4px solid var(--dark-card);
+            cursor: pointer;
+        }
+
+        .slider-value-display {
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* SEÇÕES DE CONTEÚDO */
+        .summary-section {
+            background: var(--dark-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid var(--dark-border);
+        }
+
+        .summary-block {
+            background: var(--dark-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* FORMULÁRIOS */
+        .form-control {
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid var(--dark-border);
+            background: var(--dark-card);
+            color: var(--dark-text);
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            background: var(--dark-card);
+            color: var(--dark-text);
+        }
+
+        /* BOTÕES DE SELEÇÃO */
+        .btn-selection {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid var(--dark-border);
+            border-radius: 12px;
+            background: var(--dark-card);
+            color: var(--dark-text);
+            font-weight: 500;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .btn-selection:hover {
+            border-color: var(--primary);
+        }
+
+        .btn-selection.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .btn-selection i {
+            margin-right: 8px;
+        }
+
+        /* PRODUTOS */
+        .produto-form {
+            background: var(--dark-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--dark-border);
+        }
+
+        .produtos-lista {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .produto-card {
+            background: var(--dark-bg);
+            border: 1px solid var(--dark-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* GARANTIA */
+        .garantia-options {
+            background: var(--dark-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--dark-border);
+        }
+
+        .garantia-btn {
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* DIA PAGAMENTO */
+        .dia-pagamento-container {
+            background: var(--dark-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid var(--dark-border);
+        }
+
+        /* VALIDAÇÕES */
+        .validation-error {
+            border-color: #dc3545 !important;
+        }
+
+        .validation-message {
+            color: #dc3545;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        /* ETAPAS E PROGRESSO */
+        .etapa {
+            display: none;
+        }
+
+        .etapa.active {
+            display: block;
+        }
+
+        .progress {
+            height: 8px;
+            margin: 1rem 0;
+            border-radius: 10px;
+            background: var(--dark-border);
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .valor-display {
+                font-size: 1.3rem;
+            }
+            
+            .visor-container {
+                flex-direction: row;
+                gap: 0.8rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .calculator-header h1 {
+                font-size: 1.1rem;
+            }
+            
+            .valor-display {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .visor-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <!-- Header -->
+        <div class="calculator-header">
+            <h1>
+                <i class="bi bi-arrow-repeat me-2"></i>Calculadora de Produtos Usados
+            </h1>
+            <p>
+                Parcele produtos seminovos em até 36x
+            </p>
+        </div>
+
+        <!-- Área de Conteúdo -->
+        <div class="content-wrapper">
+            <!-- Barra de Progresso -->
+            <div class="progress-container">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 14%;" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="content-area">
+                <!-- TELA 1: Dados Pessoais -->
+                <div class="etapa active" id="tela1">
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-person-badge me-2"></i>Dados Pessoais</h4>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Nome completo:</label>
+                            <input type="text" class="form-control" id="clientName" placeholder="Ex: João Silva Santos">
+                            <div class="validation-message hidden" id="nameError">Informe o nome completo</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">CPF:</label>
+                            <input type="text" class="form-control" id="clientCPF" placeholder="Ex: 000.000.000-00">
+                            <div class="validation-message hidden" id="cpfError">Informe um CPF válido</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 2: Status do Cliente -->
+                <div class="etapa" id="tela2">
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-person-check me-2"></i>Status do Cliente</h4>
+                        
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="button" class="btn btn-selection" id="btnClientYes" onclick="selectClientStatus('yes')">
+                                <i class="bi bi-person-check"></i> Já sou cliente
+                            </button>
+                            <button type="button" class="btn btn-selection" id="btnClientNo" onclick="selectClientStatus('no')">
+                                <i class="bi bi-person-x"></i> Não sou cliente
+                            </button>
+                            <button type="button" class="btn btn-selection" id="btnCreateAccount" onclick="selectClientStatus('create')">
+                                <i class="bi bi-person-plus"></i> Criar Cadastro
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 3: Situação do Cliente -->
+                <div class="etapa" id="tela3">
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-person-lines-fill me-2"></i>Situação do Cliente</h4>
+                        
+                        <!-- Opções para clientes -->
+                        <div id="clientStatusOptions" class="hidden">
+                            <h6 class="mb-3">Selecione sua situação atual:</h6>
+                            <div class="d-grid gap-2">
+                                <button type="button" class="btn btn-selection" id="btnInArrearsNo" onclick="selectClientSituation('no')">
+                                    <i class="bi bi-check-circle"></i> Estou Com Minhas Parcelas em Dia
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnInArrearsYes" onclick="selectClientSituation('yes')">
+                                    <i class="bi bi-exclamation-triangle"></i> Estou Com Parcela Pendente
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Formulário para não clientes -->
+                        <div id="nonClientForm" class="hidden">
+                            <h6 class="mb-3">Como ficou sabendo do nosso serviço?</h6>
+                            <div class="d-grid gap-2 mb-3">
+                                <button type="button" class="btn btn-selection" id="btnSourceInstagram" onclick="selectSource('instagram')">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnSourceFacebook" onclick="selectSource('facebook')">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnSourceWhatsapp" onclick="selectSource('whatsapp')">
+                                    <i class="bi bi-whatsapp"></i> Whatsapp
+                                </button>
+                                <button type="button" class="btn btn-selection" id="btnSourceIndicado" onclick="selectSource('indicado')">
+                                    <i class="bi bi-person-check"></i> Indicado
+                                </button>
+                            </div>
+                            
+                            <!-- Campo para indicação -->
+                            <div class="mt-3 hidden" id="indicadoField">
+                                <input type="text" class="form-control" id="clientIndicado" placeholder="Quem te indicou?">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 4: Cadastro de Produtos -->
+                <div class="etapa" id="tela4">
+                    <div class="mb-4">
+                        <h4 class="section-title"><i class="bi bi-cart-plus me-2"></i>Cadastro de Produtos Usados</h4>
+                        
+                        <!-- Formulário do Produto -->
+                        <div class="produto-form">
+                            <div class="row g-2 align-items-end">
+                                <div class="col-8">
+                                    <label class="form-label">Nome do Produto:</label>
+                                    <input type="text" class="form-control" id="produtoNome" placeholder="Ex: Smartphone Samsung Seminovo">
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label">Preço R$:</label>
+                                    <input type="number" class="form-control" id="produtoValor" placeholder="0,00" min="0" step="0.01">
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-success w-100 mt-3" onclick="adicionarProduto()">
+                                <i class="bi bi-plus-circle"></i> Adicionar Produto
+                            </button>
+                        </div>
+
+                        <!-- Lista de Produtos Adicionados -->
+                        <div class="produtos-lista">
+                            <h6>Produtos Usados Adicionados:</h6>
+                            <div id="listaProdutos"></div>
+                            <div class="mt-2 fw-bold" id="totalProdutos"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 5: Garantia -->
+                <div class="etapa" id="tela5">
+                    <div class="slider-container">
+                        <h4 class="section-title"><i class="bi bi-shield-check me-2"></i>Garantia para Produtos Usados</h4>
+                        
+                        <div class="garantia-options">
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection garantia-btn active" data-meses="3" data-percentual="3" data-nome="Garantia Básica">
+                                        <strong>3 MESES</strong>
+                                        <small>Garantia Básica</small>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection garantia-btn" data-meses="6" data-percentual="5" data-nome="Garantia Standard">
+                                        <strong>6 MESES</strong>
+                                        <small>Garantia Standard</small>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection garantia-btn" data-meses="9" data-percentual="7" data-nome="Garantia Plus">
+                                        <strong>9 MESES</strong>
+                                        <small>Garantia Plus</small>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection garantia-btn" data-meses="12" data-percentual="9" data-nome="Garantia Premium">
+                                        <strong>12 MESES</strong>
+                                        <small>Garantia Premium</small>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection garantia-btn" data-meses="18" data-percentual="12" data-nome="Garantia Extendida">
+                                        <strong>18 MESES</strong>
+                                        <small>Garantia Extendida</small>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection garantia-btn" data-meses="24" data-percentual="15" data-nome="Garantia Master">
+                                        <strong>24 MESES</strong>
+                                        <small>Garantia Master</small>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VISORES -->
+                        <div class="visor-container">
+                            <div class="visor-item valor-total">
+                                <i class="bi bi-cart-check"></i>
+                                <small>Valor Total</small>
+                                <div class="valor-display" id="valorTotalDisplay">R$ 0,00</div>
+                                <small>Produtos + Garantia</small>
+                            </div>
+                            
+                            <div class="visor-item valor-parcela">
+                                <i class="bi bi-credit-card"></i>
+                                <small>Parcela Mensal</small>
+                                <div class="valor-display" id="valorParcelaGarantiaDisplay">R$ 0,00</div>
+                                <small>Valor com garantia</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 6: Parcelamento - LAYOUT AJUSTADO -->
+                <div class="etapa" id="tela6">
+                    <div class="slider-container">
+                        <h4 class="section-title"><i class="bi bi-calendar-range me-2"></i>Condições de Pagamento</h4>
+                        
+                        <!-- Meses para Pagamento -->
+                        <div class="mb-4">
+                            <h6>Meses para Pagamento</h6>
+                            <input type="range" class="custom-slider" id="mesesPagamento" min="1" max="36" value="12" oninput="updateRealTimeDisplay()">
+                            <div class="slider-value-display" id="mesesPagamentoDisplay">12 meses</div>
+                        </div>
+
+                        <!-- VISORES - AGORA EM CIMA -->
+                        <div class="visor-container">
+                            <div class="visor-item valor-total">
+                                <i class="bi bi-cart-check"></i>
+                                <small>Valor Total</small>
+                                <div class="valor-display" id="valorFinalDisplay">R$ 0,00</div>
+                                <small>Valor final</small>
+                            </div>
+                            
+                            <div class="visor-item valor-prazo">
+                                <i class="bi bi-calendar-week"></i>
+                                <small>Prazo</small>
+                                <div class="valor-display" id="mesesDisplay">12 meses</div>
+                                <small>Meses para pagamento</small>
+                            </div>
+                            
+                            <div class="visor-item valor-parcela">
+                                <i class="bi bi-credit-card"></i>
+                                <small>Parcela Mensal</small>
+                                <div class="valor-display" id="valorParcelaFinalDisplay">R$ 0,00</div>
+                                <small>Valor fixo mensal</small>
+                            </div>
+                        </div>
+
+                        <!-- Dia de Pagamento - AGORA EMBAIXO DOS VISORES -->
+                        <div class="dia-pagamento-container">
+                            <h6 class="mb-3"><i class="bi bi-calendar-heart me-2"></i>Melhor dia para pagamento</h6>
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection" onclick="selectDiaPagamento(5)">Dia 5</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection" onclick="selectDiaPagamento(10)">Dia 10</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection active" onclick="selectDiaPagamento(15)">Dia 15</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection" onclick="selectDiaPagamento(20)">Dia 20</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection" onclick="selectDiaPagamento(25)">Dia 25</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-selection" onclick="selectDiaPagamento(30)">Dia 30</button>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-center">
+                                <small class="text-muted">Dia selecionado: <span id="diaSelecionadoDisplay">15</span></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TELA 7: Resumo Completo -->
+                <div class="etapa" id="tela7">
+                    <div class="summary-section">
+                        <h5 class="text-center mb-4"><i class="bi bi-file-text me-2"></i>Resumo da Compra - Produtos Usados</h5>
+                        
+                        <!-- Bloco 1: Dados Pessoais -->
+                        <div class="summary-block">
+                            <h6><i class="bi bi-person me-2"></i>Dados Pessoais</h6>
+                            <div id="dadosPessoaisContent"></div>
+                        </div>
+
+                        <!-- Bloco 2: Produtos Selecionados -->
+                        <div class="summary-block">
+                            <h6><i class="bi bi-cart me-2"></i>Produtos Usados Selecionados</h6>
+                            <div id="produtosSelecionadosContent"></div>
+                        </div>
+
+                        <!-- Bloco 3: Garantia -->
+                        <div class="summary-block">
+                            <h6><i class="bi bi-shield-check me-2"></i>Garantia</h6>
+                            <div id="garantiaContent"></div>
+                        </div>
+
+                        <!-- Bloco 4: Condições de Pagamento -->
+                        <div class="summary-block">
+                            <h6><i class="bi bi-credit-card me-2"></i>Condições de Pagamento</h6>
+                            <div id="condicoesPagamentoContent"></div>
+                        </div>
+
+                        <!-- Bloco 5: Cronograma -->
+                        <div class="summary-block">
+                            <h6><i class="bi bi-calendar-month me-2"></i>Cronograma de Pagamento</h6>
+                            <div id="cronogramaPagamentoContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RODAPÉ FIXO -->
+        <div class="footer-actions">
+            <div class="row g-2">
+                <div class="col-3">
+                    <button class="btn btn-home w-100" onclick="window.location.href='../index.html'">
+                        <i class="bi bi-house"></i> Home
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-voltar w-100" onclick="voltarTela()">
+                        <i class="bi bi-arrow-left"></i> Voltar
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-avancar w-100" onclick="avancarTela()">
+                        <i class="bi bi-arrow-right"></i> Avançar
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-resumo w-100" onclick="irParaResumo()">
+                        <i class="bi bi-eye"></i> Resumo
+                    </button>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-whatsapp-fixo" id="whatsappBtnFixo" onclick="acaoWhatsApp()">
+                        <i class="bi bi-whatsapp"></i> Compartilhar no WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // PARÂMETROS DO SISTEMA PARA PRODUTOS USADOS (OCULTOS)
+        const TAXA_FIXA = 0.08; // 8% a.m. FIXA para produtos usados
+
+        // Variáveis globais para controle de estado
+        let telaAtual = 1;
+        let clientStatus = '';
+        let clientSituation = '';
+        let sourceInfo = '';
+        let indicadoName = '';
+        let diaPagamento = 15;
+        let produtos = [];
+        let garantiaSelecionada = {
+            meses: 3,
+            percentual: 3,
+            nome: "Garantia Básica"
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateRealTimeDisplay();
+            setupCPFFormatting();
+            setupGarantiaButtons();
+        });
+
+        // Funções de cálculo
+        function calcularValorParcela(valor, meses) {
+            const i = TAXA_FIXA;
+            const fator = (i * Math.pow(1 + i, meses)) / (Math.pow(1 + i, meses) - 1);
+            const parcela = valor * fator;
+            return Math.round(parcela * 100) / 100;
+        }
+
+        function calcularValorTotalProdutos() {
+            let total = 0;
+            produtos.forEach(produto => {
+                total += produto.valor;
+            });
+            return Math.round(total * 100) / 100;
+        }
+
+        function calcularValorComGarantia() {
+            const valorProdutos = calcularValorTotalProdutos();
+            return valorProdutos + (valorProdutos * (garantiaSelecionada.percentual / 100));
+        }
+
+        function formatBRL(valor) {
+            return 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatarData(data) {
+            return data.toLocaleDateString('pt-BR');
+        }
+
+        function calcularDataFutura(meses, dia) {
+            const data = new Date();
+            data.setMonth(data.getMonth() + meses);
+            const ultimoDiaMes = new Date(data.getFullYear(), data.getMonth() + 1, 0).getDate();
+            const diaPagamento = Math.min(dia, ultimoDiaMes);
+            data.setDate(diaPagamento);
+            return data;
+        }
+
+        // Funções de interface
+        function updateRealTimeDisplay() {
+            const meses = parseInt(document.getElementById('mesesPagamento').value);
+            const valorProdutos = calcularValorTotalProdutos();
+            const valorComGarantia = calcularValorComGarantia();
+            const valorParcela = calcularValorParcela(valorComGarantia, meses);
+            
+            // Atualizar displays
+            document.getElementById('valorTotalDisplay').textContent = formatBRL(valorComGarantia);
+            document.getElementById('valorParcelaGarantiaDisplay').textContent = formatBRL(valorParcela);
+            document.getElementById('valorFinalDisplay').textContent = formatBRL(valorComGarantia);
+            document.getElementById('mesesPagamentoDisplay').textContent = `${meses} ${meses === 1 ? 'mês' : 'meses'}`;
+            document.getElementById('mesesDisplay').textContent = `${meses} ${meses === 1 ? 'mês' : 'meses'}`;
+            document.getElementById('valorParcelaFinalDisplay').textContent = formatBRL(valorParcela);
+        }
+
+        function setupGarantiaButtons() {
+            document.querySelectorAll('.garantia-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.garantia-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    garantiaSelecionada = {
+                        meses: parseInt(this.dataset.meses),
+                        percentual: parseInt(this.dataset.percentual),
+                        nome: this.dataset.nome
+                    };
+                    
+                    updateRealTimeDisplay();
+                });
+            });
+        }
+
+        function adicionarProduto() {
+            const nome = document.getElementById('produtoNome').value.trim();
+            const valor = parseFloat(document.getElementById('produtoValor').value);
+            
+            if (!nome || !valor || valor <= 0) {
+                mostrarErro('Por favor, preencha o nome e valor do produto.');
+                return;
+            }
+            
+            if (produtos.length >= 10) {
+                mostrarErro('Limite de 10 produtos atingido.');
+                return;
+            }
+            
+            const produto = {
+                id: Date.now(),
+                nome: nome,
+                valor: valor
+            };
+            
+            produtos.push(produto);
+            atualizarListaProdutos();
+            
+            // Limpar formulário
+            document.getElementById('produtoNome').value = '';
+            document.getElementById('produtoValor').value = '';
+            
+            mostrarSucesso('Produto adicionado com sucesso!');
+        }
+
+        function atualizarListaProdutos() {
+            const lista = document.getElementById('listaProdutos');
+            const totalElement = document.getElementById('totalProdutos');
+            lista.innerHTML = '';
+            
+            let total = 0;
+            
+            produtos.forEach((produto, index) => {
+                const div = document.createElement('div');
+                div.className = 'produto-card';
+                div.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${produto.nome}</strong>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span>${formatBRL(produto.valor)}</span>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="removerProduto(${index})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                lista.appendChild(div);
+                total += produto.valor;
+            });
+            
+            totalElement.textContent = `Total: ${formatBRL(total)}`;
+            updateRealTimeDisplay();
+        }
+
+        function removerProduto(index) {
+            produtos.splice(index, 1);
+            atualizarListaProdutos();
+        }
+
+        function selectDiaPagamento(dia) {
+            diaPagamento = dia;
+            document.querySelectorAll('.dia-pagamento-container .btn-selection').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            document.getElementById('diaSelecionadoDisplay').textContent = dia;
+        }
+
+        // Navegação
+        function avancarTela() {
+            let proximaTela = telaAtual + 1;
+            
+            if (telaAtual === 1 && !validarTela1()) {
+                mostrarErro('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (telaAtual === 2 && !validarTela2()) {
+                mostrarErro('Por favor, selecione se você é cliente.');
+                return;
+            }
+            
+            if (telaAtual === 3 && !validarTela3()) {
+                mostrarErro('Por favor, preencha todas as informações solicitadas.');
+                return;
+            }
+            
+            if (telaAtual === 4 && !validarTela4()) {
+                mostrarErro('Por favor, adicione pelo menos um produto.');
+                return;
+            }
+            
+            if (proximaTela > 7) {
+                mostrarErro('Você já está na última tela.');
+                return;
+            }
+            
+            telaAtual = proximaTela;
+            atualizarTela();
+        }
+
+        function voltarTela() {
+            if (telaAtual > 1) {
+                telaAtual--;
+                atualizarTela();
+            }
+        }
+
+        function irParaResumo() {
+            if (telaAtual === 1 && !validarTela1()) {
+                mostrarErro('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (telaAtual === 2 && !validarTela2()) {
+                mostrarErro('Por favor, selecione se você é cliente.');
+                return;
+            }
+            
+            if (telaAtual === 3 && !validarTela3()) {
+                mostrarErro('Por favor, preencha todas as informações solicitadas.');
+                return;
+            }
+            
+            if (telaAtual === 4 && !validarTela4()) {
+                mostrarErro('Por favor, adicione pelo menos um produto.');
+                return;
+            }
+            
+            telaAtual = 7;
+            atualizarTela();
+        }
+
+        function acaoWhatsApp() {
+            const whatsappBtn = document.getElementById('whatsappBtnFixo');
+            
+            if (telaAtual === 7 && whatsappBtn.classList.contains('active')) {
+                sendWhatsApp();
+            } else {
+                avancarTela();
+            }
+        }
+
+        function atualizarTela() {
+            document.querySelectorAll('.etapa').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            document.getElementById(`tela${telaAtual}`).classList.add('active');
+            
+            const progresso = (telaAtual / 7) * 100;
+            document.getElementById('progressBar').style.width = `${progresso}%`;
+            
+            if (telaAtual === 7) {
+                document.getElementById('whatsappBtnFixo').classList.add('active');
+                atualizarResumo();
+            } else {
+                document.getElementById('whatsappBtnFixo').classList.remove('active');
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Funções do cliente (mantidas do original)
+        function selectClientStatus(status) {
+            clientStatus = status;
+            
+            document.querySelectorAll('#tela2 .btn-selection').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(`btnClient${status === 'yes' ? 'Yes' : status === 'no' ? 'No' : 'CreateAccount'}`).classList.add('active');
+            
+            if (status === 'create') {
+                if (confirm('Tem certeza que deseja sair do aplicativo para criar cadastro?')) {
+                    window.location.href = 'https://www.colaquiseulink.com.br';
+                }
+                return;
+            }
+            
+            if (status === 'yes') {
+                document.getElementById('clientStatusOptions').classList.remove('hidden');
+                document.getElementById('nonClientForm').classList.add('hidden');
+            } else if (status === 'no') {
+                document.getElementById('clientStatusOptions').classList.add('hidden');
+                document.getElementById('nonClientForm').classList.remove('hidden');
+            }
+            
+            setTimeout(() => avancarTela(), 500);
+        }
+
+        function selectClientSituation(situation) {
+            clientSituation = situation;
+            
+            document.querySelectorAll('#tela3 .btn-selection').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(`btnInArrears${situation === 'no' ? 'No' : 'Yes'}`).classList.add('active');
+            
+            setTimeout(() => avancarTela(), 500);
+        }
+
+        function selectSource(source) {
+            sourceInfo = source;
+            
+            document.querySelectorAll('#tela3 .btn-selection').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(`btnSource${source.charAt(0).toUpperCase() + source.slice(1)}`).classList.add('active');
+            
+            if (source === 'indicado') {
+                document.getElementById('indicadoField').classList.remove('hidden');
+            } else {
+                document.getElementById('indicadoField').classList.add('hidden');
+                setTimeout(() => avancarTela(), 500);
+            }
+        }
+
+        function setupCPFFormatting() {
+            const cpfEl = document.getElementById('clientCPF');
+            cpfEl.addEventListener('input', function(e){
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.substring(0,11);
+                if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                if (value.length > 7) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+                if (value.length > 11) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+                e.target.value = value;
+            });
+        }
+
+        function validateField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            if (!field || !errorElement) return true;
+            
+            let isValid = true;
+            
+            switch(fieldId) {
+                case 'clientName':
+                    isValid = field.value.trim().length > 0;
+                    break;
+                case 'clientCPF':
+                    const cpfDigits = field.value.replace(/\D/g, '');
+                    isValid = cpfDigits.length === 11;
+                    break;
+            }
+            
+            if (!isValid) {
+                field.classList.add('validation-error');
+                errorElement.classList.remove('hidden');
+            } else {
+                field.classList.remove('validation-error');
+                errorElement.classList.add('hidden');
+            }
+            
+            return isValid;
+        }
+
+        function mostrarErro(mensagem) {
+            const alerta = document.createElement('div');
+            alerta.className = 'alert alert-warning position-fixed top-0 start-50 translate-middle-x mt-3';
+            alerta.style.zIndex = '9999';
+            alerta.style.maxWidth = '90%';
+            alerta.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span>${mensagem}</span>
+                </div>
+            `;
+            document.body.appendChild(alerta);
+            
+            setTimeout(() => {
+                alerta.remove();
+            }, 3000);
+        }
+
+        function mostrarSucesso(mensagem) {
+            const alerta = document.createElement('div');
+            alerta.className = 'alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3';
+            alerta.style.zIndex = '9999';
+            alerta.style.maxWidth = '90%';
+            alerta.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span>${mensagem}</span>
+                </div>
+            `;
+            document.body.appendChild(alerta);
+            
+            setTimeout(() => {
+                alerta.remove();
+            }, 3000);
+        }
+
+        function validarTela1() {
+            const nomeValido = validateField('clientName');
+            const cpfValido = validateField('clientCPF');
+            
+            return nomeValido && cpfValido;
+        }
+
+        function validarTela2() {
+            return clientStatus !== '';
+        }
+
+        function validarTela3() {
+            if (clientStatus === 'yes' && !clientSituation) {
+                return false;
+            }
+            
+            if (clientStatus === 'no' && !sourceInfo) {
+                return false;
+            }
+            
+            if (sourceInfo === 'indicado') {
+                indicadoName = document.getElementById('clientIndicado').value.trim();
+                if (!indicadoName) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function validarTela4() {
+            return produtos.length > 0;
+        }
+
+        function atualizarResumo() {
+            const nome = document.getElementById('clientName').value.trim();
+            const cpf = document.getElementById('clientCPF').value.trim();
+            const meses = parseInt(document.getElementById('mesesPagamento').value);
+            const valorComGarantia = calcularValorComGarantia();
+            const valorParcela = calcularValorParcela(valorComGarantia, meses);
+            const dataPrimeiraParcela = calcularDataFutura(1, diaPagamento);
+
+            let statusCliente = '';
+            let mensagemStatus = '';
+            
+            if (clientStatus === 'yes') {
+                if (clientSituation === 'no') {
+                    statusCliente = '<div class="mb-2"><strong>Status:</strong> Cliente com parcelas em dia</div>';
+                    mensagemStatus = '<div class="alert alert-success mt-2"><strong>✓ PROBABILIDADE ALTA:</strong> Cliente com parcelas em dia tem 95% de chance de conseguir o parcelamento.</div>';
+                } else if (clientSituation === 'yes') {
+                    statusCliente = '<div class="mb-2"><strong>Status:</strong> Cliente com parcela pendente</div>';
+                    mensagemStatus = '<div class="alert alert-warning mt-2"><strong>⚠️ ATENÇÃO:</strong> Cliente possui parcelas em atraso. É necessário regularizar as pendências.</div>';
+                }
+            } else if (clientStatus === 'no') {
+                let fonteTexto = '';
+                switch(sourceInfo) {
+                    case 'instagram': fonteTexto = 'Instagram'; break;
+                    case 'facebook': fonteTexto = 'Facebook'; break;
+                    case 'whatsapp': fonteTexto = 'WhatsApp'; break;
+                    case 'indicado': fonteTexto = `Indicado por: ${indicadoName}`; break;
+                }
+                
+                statusCliente = `
+                    <div class="mb-2"><strong>Status:</strong> Novo cliente</div>
+                    <div class="mb-2"><strong>Como ficou sabendo:</strong> ${fonteTexto}</div>
+                `;
+                mensagemStatus = '<div class="alert alert-info mt-2"><strong>📋 NOVO CLIENTE:</strong> Sua solicitação será analisada conforme nossa política de crédito.</div>';
+            }
+
+            // Dados Pessoais
+            document.getElementById('dadosPessoaisContent').innerHTML = `
+                <div class="mb-2"><strong>Data da simulação:</strong> ${new Date().toLocaleDateString('pt-BR')}</div>
+                <div class="mb-2"><strong>Cliente:</strong> ${nome}</div>
+                <div class="mb-2"><strong>CPF:</strong> ${cpf}</div>
+                ${statusCliente}
+                ${mensagemStatus}
+            `;
+
+            // Produtos Selecionados
+            let produtosHTML = '';
+            produtos.forEach(produto => {
+                produtosHTML += `
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>${produto.nome}</span>
+                        <span>${formatBRL(produto.valor)}</span>
+                    </div>
+                `;
+            });
+            produtosHTML += `<div class="d-flex justify-content-between mt-2 fw-bold"><span>Total:</span><span>${formatBRL(calcularValorTotalProdutos())}</span></div>`;
+            document.getElementById('produtosSelecionadosContent').innerHTML = produtosHTML;
+
+            // Garantia
+            document.getElementById('garantiaContent').innerHTML = `
+                <div class="mb-2"><strong>Garantia selecionada:</strong> ${garantiaSelecionada.nome}</div>
+                <div class="mb-2"><strong>Período da garantia:</strong> ${garantiaSelecionada.meses} meses</div>
+            `;
+
+            // Condições de Pagamento
+            document.getElementById('condicoesPagamentoContent').innerHTML = `
+                <div class="mb-2"><strong>Valor total:</strong> ${formatBRL(valorComGarantia)}</div>
+                <div class="mb-2"><strong>Parcelamento:</strong> ${meses} ${meses === 1 ? 'mês' : 'meses'}</div>
+                <div class="mb-2"><strong>Dia de pagamento:</strong> ${diaPagamento} de cada mês</div>
+                <div class="mb-2"><strong>Quantidade de parcelas:</strong> ${meses}x</div>
+                <div class="mb-2 fw-bold fs-6"><strong>Valor da parcela:</strong> ${formatBRL(valorParcela)}</div>
+            `;
+
+            // Cronograma
+            document.getElementById('cronogramaPagamentoContent').innerHTML = `
+                <div class="mb-2"><strong>Primeira parcela:</strong> ${formatarData(dataPrimeiraParcela)}</div>
+                <div class="mb-2"><strong>Última parcela:</strong> ${formatarData(calcularDataFutura(meses, diaPagamento))}</div>
+                <div class="mb-2"><strong>Valor fixo mensal:</strong> ${formatBRL(valorParcela)}</div>
+            `;
+        }
+
+        function sendWhatsApp() {
+            const nome = document.getElementById('clientName').value.trim();
+            const cpf = document.getElementById('clientCPF').value.trim();
+            const meses = parseInt(document.getElementById('mesesPagamento').value);
+            const valorComGarantia = calcularValorComGarantia();
+            const valorParcela = calcularValorParcela(valorComGarantia, meses);
+            const dataPrimeiraParcela = calcularDataFutura(1, diaPagamento);
+
+            let statusMsg = '';
+            
+            if (clientStatus === 'yes') {
+                if (clientSituation === 'no') {
+                    statusMsg = 'Cliente com parcelas em dia';
+                } else if (clientSituation === 'yes') {
+                    statusMsg = 'Cliente com parcela pendente';
+                }
+            } else if (clientStatus === 'no') {
+                let fonteTexto = '';
+                switch(sourceInfo) {
+                    case 'instagram': fonteTexto = 'Instagram'; break;
+                    case 'facebook': fonteTexto = 'Facebook'; break;
+                    case 'whatsapp': fonteTexto = 'WhatsApp'; break;
+                    case 'indicado': fonteTexto = `Indicado por: ${indicadoName}`; break;
+                }
+                statusMsg = `Novo cliente - ${fonteTexto}`;
+            }
+
+            // Lista de produtos para WhatsApp
+            let produtosMsg = '';
+            produtos.forEach(produto => {
+                produtosMsg += `\n• ${produto.nome} - ${formatBRL(produto.valor)}`;
+            });
+
+            const message = `*🔄 CALCULADORA DE PRODUTOS USADOS*\n\n` +
+                          `*Dados do Cliente:*\n` +
+                          `Nome: ${nome}\n` +
+                          `CPF: ${cpf}\n` +
+                          `Status: ${statusMsg}\n\n` +
+                          `*Produtos Usados Selecionados:*${produtosMsg}\n\n` +
+                          `*Garantia:*\n` +
+                          `${garantiaSelecionada.nome} - ${garantiaSelecionada.meses} meses\n\n` +
+                          `*Condições de Pagamento:*\n` +
+                          `Valor Total: ${formatBRL(valorComGarantia)}\n` +
+                          `Parcelas: ${meses}x de ${formatBRL(valorParcela)}\n` +
+                          `Dia de Pagamento: ${diaPagamento} de cada mês\n` +
+                          `Primeira Parcela: ${formatarData(dataPrimeiraParcela)}\n\n` +
+                          `_*Condições para produtos usados - sujeitas à análise*_`;
+
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        }
+    </script>
+</body>
+</html>

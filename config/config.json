@@ -1,0 +1,271 @@
+{
+  "system_name": "Calculadora de Parcelas Encomenda Palotina",
+  "version": "2.0",
+  "last_updated": "2024-01-15",
+  "active_modules": [
+    {
+      "id": "produtos_novos",
+      "name": "Produtos Novos",
+      "file": "produtos-novos.html",
+      "status": "active",
+      "category": "produtos"
+    },
+    {
+      "id": "moveis_com_montagem",
+      "name": "Móveis com Montagem",
+      "file": "moveis-com-montagem.html",
+      "status": "active",
+      "category": "moveis"
+    },
+    {
+      "id": "contagem_dinheiro",
+      "name": "Contagem de Dinheiro",
+      "file": "contagem-dinheiro.html",
+      "status": "active",
+      "category": "ferramentas"
+    },
+    {
+      "id": "renegociacao_produtos_atrasados",
+      "name": "Produtos Atrasados",
+      "file": "renegociacao-produtos-atrasados.html",
+      "status": "active",
+      "category": "renegociacao"
+    },
+    {
+      "id": "renegociacao_produtos_avencer",
+      "name": "Produtos a Vencer",
+      "file": "renegociacao-produtos-avencer.html",
+      "status": "active",
+      "category": "renegociacao"
+    },
+    {
+      "id": "renegociacao_veiculos_atrasados",
+      "name": "Veículos Atrasados",
+      "file": "renegociacao-veiculos-atrasados.html",
+      "status": "active",
+      "category": "renegociacao"
+    },
+    {
+      "id": "renegociacao_divida_total",
+      "name": "Dívida Total",
+      "file": "renegociacao-produtos-total.html",
+      "status": "active",
+      "category": "renegociacao"
+    },
+    {
+      "id": "catalogo_produtos",
+      "name": "Catálogo de Produtos",
+      "file": "categorias.html",
+      "status": "active",
+      "category": "catalogo"
+    }
+  ],
+  "maintenance_modules": [
+    {
+      "id": "produtos_usados",
+      "name": "Produtos Usados",
+      "file": "produtos-usados.html",
+      "status": "planned",
+      "category": "produtos"
+    },
+    {
+      "id": "moveis_sem_montagem",
+      "name": "Móveis sem Montagem",
+      "file": "moveis-sem-montagem.html",
+      "status": "planned",
+      "category": "moveis"
+    },
+    {
+      "id": "emprestimos_sem_garantia",
+      "name": "Empréstimos sem Garantia",
+      "file": "emprestimos_sem_garantia.html",
+      "status": "ready",
+      "category": "emprestimos"
+    },
+    {
+      "id": "emprestimos_com_garantia",
+      "name": "Empréstimos com Garantia",
+      "file": "emprestimos_com_garantia.html",
+      "status": "ready",
+      "category": "emprestimos"
+    },
+    {
+      "id": "emprestimos_diario",
+      "name": "Empréstimo Diário",
+      "file": "emprestimos_diario.html",
+      "status": "ready",
+      "category": "emprestimos"
+    },
+    {
+      "id": "carros_usados",
+      "name": "Carros Usados",
+      "file": "veiculos-carros-usados.html",
+      "status": "planned",
+      "category": "veiculos"
+    },
+    {
+      "id": "motos_usadas",
+      "name": "Motos Usadas",
+      "file": "veiculos-motos-usadas.html",
+      "status": "planned",
+      "category": "veiculos"
+    },
+    {
+      "id": "acessorios_veiculos",
+      "name": "Acessórios Veículos",
+      "file": "veiculos-acessorios.html",
+      "status": "planned",
+      "category": "veiculos"
+    },
+    {
+      "id": "bicicletas_eletricas",
+      "name": "Bicicletas Elétricas",
+      "file": "eletricos-bicicletas.html",
+      "status": "planned",
+      "category": "eletricos"
+    },
+    {
+      "id": "patinetes_eletricos",
+      "name": "Patinetes Elétricos",
+      "file": "eletricos-patinetes.html",
+      "status": "planned",
+      "category": "eletricos"
+    },
+    {
+      "id": "acessorios_eletricos",
+      "name": "Acessórios Elétricos",
+      "file": "eletricos-acessorios.html",
+      "status": "planned",
+      "category": "eletricos"
+    },
+    {
+      "id": "calculadora_normal",
+      "name": "Calculadora Normal",
+      "file": "calculadora-normal.html",
+      "status": "planned",
+      "category": "ferramentas"
+    }
+  ],
+  "product_catalog": {
+    "drive_folders": {
+      "smartphones": "https://drive.google.com/drive/folders/1jxxnEERu7-7GfuncE7WjzMBr7nCSqMRj",
+      "tv": "https://drive.google.com/drive/folders/1VXFArx2jWAEoC41Qs5gsdExFAFM2HnNL",
+      "moveis": "https://drive.google.com/drive/folders/1UHskb2lGqFPYuO1KEcz9h7AybUchxVV6"
+    },
+    "categories_planned": [
+      "eletrodomesticos",
+      "informatica",
+      "games",
+      "audio_video",
+      "eletroportateis",
+      "cama_mesa_banho",
+      "decoracao",
+      "utilidades_domesticas",
+      "telefonia",
+      "tablets",
+      "smartwatch",
+      "fotografia",
+      "instrumentos_musicais",
+      "brinquedos",
+      "livros",
+      "papelaria",
+      "pet_shop",
+      "automotivo",
+      "ferramentas",
+      "esportes",
+      "viagem"
+    ]
+  },
+  "social_links": {
+    "instagram": "https://instagram.com/encomendapalotina",
+    "facebook": "https://facebook.com/encomendapalotina",
+    "whatsapp": "https://wa.me/554498408460",
+    "email": "mailto:encomendapalotina@gmail.com"
+  },
+  "taxas": {
+    "produtos_novos": {
+      "com_entrada": {
+        "inicio": 0.14,
+        "fim": 0.05
+      },
+      "sem_entrada": {
+        "inicio": 0.18,
+        "fim": 0.08
+      },
+      "parcelas_max": 36
+    },
+    "moveis_com_montagem": {
+      "com_entrada": {
+        "inicio": 0.14,
+        "fim": 0.05
+      },
+      "sem_entrada": {
+        "inicio": 0.18,
+        "fim": 0.08
+      },
+      "parcelas_max": 36,
+      "taxa_montagem": 0.10
+    },
+    "renegociacao_produtos_atrasados": {
+      "entrada_obrigatoria": 0.35,
+      "fase1_parcelas_max": 12,
+      "fase1_taxa": 0.05,
+      "fase2_parcelas_max": 60,
+      "fase2_taxa": 0.03,
+      "parcela_minima": 125.00
+    },
+    "renegociacao_produtos_avencer": {
+      "entrada_obrigatoria": 0.45,
+      "fase1_parcelas_max": 18,
+      "fase1_taxa": 0.00,
+      "fase2_parcelas_max": 96,
+      "fase2_taxa": 0.03,
+      "parcela_minima": 250.00
+    },
+    "renegociacao_veiculos_atrasados": {
+      "entrada_obrigatoria": 0.45,
+      "fase1_parcelas_max": 12,
+      "fase1_taxa": 0.07,
+      "fase2_parcelas_max": 60,
+      "fase2_taxa": 0.04,
+      "parcela_minima": 350.00
+    },
+    "renegociacao_divida_total": {
+      "entrada_obrigatoria": 0.50,
+      "fase1_parcelas_max": 24,
+      "fase1_taxa": 0.04,
+      "fase2_parcelas_max": 60,
+      "fase2_taxa": 0.035,
+      "parcela_minima": 150.00
+    },
+    "emprestimos_sem_garantia": {
+      "taxa_inicial": 0.19,
+      "taxa_final": 0.10,
+      "parcelas_max": 36,
+      "valor_minimo": 500.00,
+      "valor_maximo": 50000.00
+    },
+    "emprestimos_com_garantia": {
+      "taxa_inicial": 0.16,
+      "taxa_final": 0.08,
+      "parcelas_max": 36,
+      "valor_minimo": 1000.00,
+      "valor_maximo": 100000.00,
+      "garantia_multiplo": 2.0
+    },
+    "emprestimos_diario": {
+      "taxa_diaria": 0.0177,
+      "dias_maximo": 31,
+      "valor_minimo": 100.00,
+      "valor_maximo": 1000.00
+    }
+  },
+  "system_settings": {
+    "whatsapp_number": "554498408460",
+    "company_name": "Encomenda Palotina",
+    "primary_color": "#007bff",
+    "secondary_color": "#6f42c1",
+    "currency": "BRL",
+    "date_format": "dd/mm/yyyy"
+  }
+}
