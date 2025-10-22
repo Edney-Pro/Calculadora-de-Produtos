@@ -124,12 +124,17 @@ body {
 .category-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); }
 .category-badge { background: var(--bg-primary); color: var(--text-primary); padding: 0.25rem var(--spacing-sm); border-radius: var(--border-radius-md); font-size: 0.875rem; font-weight: 600; flex-shrink: 0; }
 
-/* !--- GRID SYSTEM CORRIGIDO ---! */
-.grid-container { display: grid; gap: var(--spacing-md); padding: var(--spacing-lg); }
-/* Regras globais baseadas no atributo data-columns */
+/* --- GRID SYSTEM --- */
+/* Esta seção agora controla o grid em TODAS as telas */
+.grid-container {
+    display: grid;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+}
 .grid-container[data-columns="1"] { grid-template-columns: 1fr; }
 .grid-container[data-columns="2"] { grid-template-columns: repeat(2, 1fr); }
 .grid-container[data-columns="3"] { grid-template-columns: repeat(3, 1fr); }
+
 
 /* Cards */
 .module-card { background: var(--bg-primary); border-radius: var(--border-radius-lg); padding: var(--spacing-lg); transition: all var(--transition-normal); cursor: pointer; display: flex; flex-direction: column; gap: var(--spacing-sm); height: 100%; border: 1px solid var(--border-color); border-top: 4px solid; }
@@ -169,18 +174,41 @@ body {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .category-section { animation: fadeIn 0.5s ease-out forwards; }
 
-/* Responsividade e Overrides */
+/* 
+ * --- SEÇÃO CORRIGIDA ---
+ * Responsividade e Overrides
+*/
 @media (max-width: 768px) {
-    /* Em tablet, 3 colunas se torna 2 */
-    .grid-container[data-columns="3"] { grid-template-columns: repeat(2, 1fr); }
-    .category-header { flex-direction: column; align-items: flex-start; }
+    /* As regras do grid foram removidas daqui para que os botões funcionem. */
+    /* A única regra que mantemos é para o cabeçalho da categoria. */
+    .category-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 @media (max-width: 480px) {
-    /* Em celular, tudo se torna 1 coluna, independente da seleção */
-    .grid-container[data-columns="2"], .grid-container[data-columns="3"] { grid-template-columns: 1fr; }
-    .footer-link span { display: none; }
-    .footer-link { padding: var(--spacing-md); }
+    /* As regras que forçavam 1 coluna foram REMOVIDAS. */
+    /* Agora os botões de 1, 2 e 3 colunas funcionarão livremente. */
+    
+    .footer-link span {
+        display: none;
+    }
+    .footer-link {
+        padding: var(--spacing-md);
+    }
+
+    /* Opcional: Reduz o espaçamento em telas muito pequenas para os cards caberem melhor */
+    .grid-container[data-columns="3"] {
+        gap: 0.5rem;
+        padding: var(--spacing-md);
+    }
+    .module-card {
+        padding: var(--spacing-md);
+    }
+    .module-name {
+        font-size: 1.1rem;
+    }
 }
 
 /* Layout Desktop */
