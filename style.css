@@ -42,7 +42,9 @@
 
 /* Tema Claro */
 .light-theme {
-    --bg-primary: #ffffff; --bg-secondary: #f1f5f9; --bg-card: #e2e8f0;
+    --bg-primary: #f1f5f9; /* Fundo um pouco mais escuro para os cards se destacarem */
+    --bg-secondary: #ffffff; /* Cards brancos */
+    --bg-card: #e2e8f0;
     --text-primary: #1e293b; --text-secondary: #475569; --text-muted: #64748b;
     --border-color: #cbd5e1; --shadow-color: rgba(0, 0, 0, 0.1);
     --accent-color: #2563eb;
@@ -115,35 +117,103 @@ body {
 .menu-item.active { background: var(--bg-card); color: var(--text-primary); }
 .menu-item:hover { background: var(--bg-card); color: var(--text-primary); }
 
-/* Conteúdo Principal */
-.content-area { flex: 1; padding: var(--spacing-lg); padding-bottom: 8rem; }
-.category-section { background: var(--bg-secondary); border-radius: var(--border-radius-lg); margin-bottom: var(--spacing-xl); box-shadow: 0 6px 15px var(--shadow-color); overflow: hidden; border: 1px solid var(--border-color); }
-.category-header { padding: var(--spacing-lg); display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
-.category-title-wrapper { display: flex; align-items: center; gap: var(--spacing-md); flex: 1; }
+/* --- CONTEÚDO PRINCIPAL (MODIFICADO) --- */
+.content-area {
+    flex: 1;
+    /* Removemos o padding para que o conteúdo possa ir de ponta a ponta */
+    padding: 0; 
+    padding-bottom: 8rem;
+}
+
+.category-section {
+    /* Removemos o fundo, bordas e sombras para criar um visual limpo */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-bottom: var(--spacing-xl);
+}
+
+.category-header {
+    /* O header agora é apenas um título, sem fundo */
+    background: transparent;
+    border-bottom: none;
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
+}
+
 .category-icon { width: 3rem; height: 3rem; border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: white; flex-shrink: 0; }
 .category-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); }
-.category-badge { background: var(--bg-primary); color: var(--text-primary); padding: 0.25rem var(--spacing-sm); border-radius: var(--border-radius-md); font-size: 0.875rem; font-weight: 600; flex-shrink: 0; }
+.category-badge { background: var(--bg-card); color: var(--text-primary); padding: 0.25rem var(--spacing-sm); border-radius: var(--border-radius-md); font-size: 0.875rem; font-weight: 600; flex-shrink: 0; }
 
-/* --- GRID SYSTEM --- */
-/* Esta seção agora controla o grid em TODAS as telas */
+/* --- GRID SYSTEM (SEM ALTERAÇÕES) --- */
 .grid-container {
     display: grid;
     gap: var(--spacing-md);
-    padding: var(--spacing-lg);
+    padding: 0 var(--spacing-lg) var(--spacing-lg); /* Adicionamos padding aqui para os cards não colarem nas laterais */
 }
 .grid-container[data-columns="1"] { grid-template-columns: 1fr; }
 .grid-container[data-columns="2"] { grid-template-columns: repeat(2, 1fr); }
 .grid-container[data-columns="3"] { grid-template-columns: repeat(3, 1fr); }
 
 
-/* Cards */
-.module-card { background: var(--bg-primary); border-radius: var(--border-radius-lg); padding: var(--spacing-lg); transition: all var(--transition-normal); cursor: pointer; display: flex; flex-direction: column; gap: var(--spacing-sm); height: 100%; border: 1px solid var(--border-color); border-top: 4px solid; }
+/* --- CARDS (MODIFICADO) --- */
+.module-card {
+    /* O card agora tem o fundo secundário para se destacar do fundo principal */
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Garante que o botão fique no final */
+    height: 100%;
+    border: 1px solid var(--border-color);
+    border-top: 4px solid;
+    text-align: center;
+}
 .module-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px var(--shadow-color); }
-.module-icon { width: 4.5rem; height: 4.5rem; border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; transition: all var(--transition-normal); margin: 0 auto var(--spacing-sm) auto; }
+.module-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    transition: all var(--transition-normal);
+    margin: 0 auto var(--spacing-md) auto; /* Aumenta margem inferior */
+}
 .module-card:hover .module-icon { transform: scale(1.08) rotate(2deg); }
-.module-name { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); text-align: center; }
-.module-description { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; text-align: center; flex-grow: 1; }
-.btn-module { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--border-radius-md); cursor: pointer; transition: all var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); font-weight: 600; font-size: 0.95rem; margin-top: auto; }
+.module-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.module-description {
+    /* Removemos a descrição da tela */
+    display: none;
+}
+
+.btn-module {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: auto; /* Empurra o botão para o final do card */
+}
 .btn-module:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--shadow-color); border-color: var(--accent-color); color: var(--accent-color); }
 
 /* Cores de Ícones e Botões */
@@ -174,41 +244,19 @@ body {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .category-section { animation: fadeIn 0.5s ease-out forwards; }
 
-/* 
- * --- SEÇÃO CORRIGIDA ---
- * Responsividade e Overrides
-*/
+/* Responsividade e Overrides */
 @media (max-width: 768px) {
-    /* As regras do grid foram removidas daqui para que os botões funcionem. */
-    /* A única regra que mantemos é para o cabeçalho da categoria. */
     .category-header {
         flex-direction: column;
         align-items: flex-start;
     }
 }
-
 @media (max-width: 480px) {
-    /* As regras que forçavam 1 coluna foram REMOVIDAS. */
-    /* Agora os botões de 1, 2 e 3 colunas funcionarão livremente. */
-    
-    .footer-link span {
-        display: none;
-    }
-    .footer-link {
-        padding: var(--spacing-md);
-    }
-
-    /* Opcional: Reduz o espaçamento em telas muito pequenas para os cards caberem melhor */
-    .grid-container[data-columns="3"] {
-        gap: 0.5rem;
-        padding: var(--spacing-md);
-    }
-    .module-card {
-        padding: var(--spacing-md);
-    }
-    .module-name {
-        font-size: 1.1rem;
-    }
+    .footer-link span { display: none; }
+    .footer-link { padding: var(--spacing-md); }
+    .grid-container[data-columns="3"] { gap: 0.5rem; padding: 0 var(--spacing-md) var(--spacing-md); }
+    .module-card { padding: var(--spacing-md); }
+    .module-name { font-size: 1.1rem; }
 }
 
 /* Layout Desktop */
@@ -221,6 +269,7 @@ body {
     .mobile-menu .menu-header .btn-close-menu { display: none; }
     .menu-item:hover, .menu-item.active { background: var(--bg-primary); color: var(--accent-color); }
     .content-area { flex: 1; padding: var(--spacing-xl); overflow-y: auto; height: 100vh; }
+    .grid-container { padding: 0 var(--spacing-lg) var(--spacing-lg); }
 }
 
 /* Scrollbar */
@@ -228,4 +277,4 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg-secondary); }
 ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; border: 2px solid var(--bg-secondary); }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
-html { scrollbar-color: var(--border-color) var(--bg-secondary); scrollbar-width: thin; }
+html { scrollbar-color: var(--border-color) var(--bg-secondary); scrollbar-width: thin; }```
