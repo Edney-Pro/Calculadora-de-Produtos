@@ -42,8 +42,8 @@
 
 /* Tema Claro */
 .light-theme {
-    --bg-primary: #f1f5f9; /* Fundo um pouco mais escuro para os cards se destacarem */
-    --bg-secondary: #ffffff; /* Cards brancos */
+    --bg-primary: #f1f5f9;
+    --bg-secondary: #ffffff;
     --bg-card: #e2e8f0;
     --text-primary: #1e293b; --text-secondary: #475569; --text-muted: #64748b;
     --border-color: #cbd5e1; --shadow-color: rgba(0, 0, 0, 0.1);
@@ -117,16 +117,14 @@ body {
 .menu-item.active { background: var(--bg-card); color: var(--text-primary); }
 .menu-item:hover { background: var(--bg-card); color: var(--text-primary); }
 
-/* --- CONTEÚDO PRINCIPAL (MODIFICADO) --- */
+/* Conteúdo Principal */
 .content-area {
     flex: 1;
-    /* Removemos o padding para que o conteúdo possa ir de ponta a ponta */
     padding: 0; 
     padding-bottom: 8rem;
 }
 
 .category-section {
-    /* Removemos o fundo, bordas e sombras para criar um visual limpo */
     background: transparent;
     border: none;
     box-shadow: none;
@@ -135,7 +133,6 @@ body {
 }
 
 .category-header {
-    /* O header agora é apenas um título, sem fundo */
     background: transparent;
     border-bottom: none;
     padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
@@ -145,20 +142,21 @@ body {
 .category-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); }
 .category-badge { background: var(--bg-card); color: var(--text-primary); padding: 0.25rem var(--spacing-sm); border-radius: var(--border-radius-md); font-size: 0.875rem; font-weight: 600; flex-shrink: 0; }
 
-/* --- GRID SYSTEM (SEM ALTERAÇÕES) --- */
+/* --- GRID SYSTEM (MODIFICADO) --- */
 .grid-container {
     display: grid;
-    gap: var(--spacing-md);
-    padding: 0 var(--spacing-lg) var(--spacing-lg); /* Adicionamos padding aqui para os cards não colarem nas laterais */
+    /* Reduzimos o espaço ENTRE os cards */
+    gap: 8px;
+    /* Reduzimos o espaço NAS LATERAIS da tela */
+    padding: 0 8px var(--spacing-lg);
 }
 .grid-container[data-columns="1"] { grid-template-columns: 1fr; }
 .grid-container[data-columns="2"] { grid-template-columns: repeat(2, 1fr); }
 .grid-container[data-columns="3"] { grid-template-columns: repeat(3, 1fr); }
 
 
-/* --- CARDS (MODIFICADO) --- */
+/* Cards */
 .module-card {
-    /* O card agora tem o fundo secundário para se destacar do fundo principal */
     background: var(--bg-secondary);
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-lg);
@@ -166,7 +164,7 @@ body {
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Garante que o botão fique no final */
+    justify-content: space-between;
     height: 100%;
     border: 1px solid var(--border-color);
     border-top: 4px solid;
@@ -183,7 +181,7 @@ body {
     font-size: 1.8rem;
     color: white;
     transition: all var(--transition-normal);
-    margin: 0 auto var(--spacing-md) auto; /* Aumenta margem inferior */
+    margin: 0 auto var(--spacing-md) auto;
 }
 .module-card:hover .module-icon { transform: scale(1.08) rotate(2deg); }
 .module-name {
@@ -194,7 +192,6 @@ body {
 }
 
 .module-description {
-    /* Removemos a descrição da tela */
     display: none;
 }
 
@@ -212,7 +209,7 @@ body {
     gap: var(--spacing-sm);
     font-weight: 600;
     font-size: 0.95rem;
-    margin-top: auto; /* Empurra o botão para o final do card */
+    margin-top: auto;
 }
 .btn-module:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--shadow-color); border-color: var(--accent-color); color: var(--accent-color); }
 
@@ -254,7 +251,6 @@ body {
 @media (max-width: 480px) {
     .footer-link span { display: none; }
     .footer-link { padding: var(--spacing-md); }
-    .grid-container[data-columns="3"] { gap: 0.5rem; padding: 0 var(--spacing-md) var(--spacing-md); }
     .module-card { padding: var(--spacing-md); }
     .module-name { font-size: 1.1rem; }
 }
@@ -269,6 +265,7 @@ body {
     .mobile-menu .menu-header .btn-close-menu { display: none; }
     .menu-item:hover, .menu-item.active { background: var(--bg-primary); color: var(--accent-color); }
     .content-area { flex: 1; padding: var(--spacing-xl); overflow-y: auto; height: 100vh; }
+    /* Adicionamos um padding maior para o grid no desktop */
     .grid-container { padding: 0 var(--spacing-lg) var(--spacing-lg); }
 }
 
@@ -277,4 +274,4 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg-secondary); }
 ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; border: 2px solid var(--bg-secondary); }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
-html { scrollbar-color: var(--border-color) var(--bg-secondary); scrollbar-width: thin; }```
+html { scrollbar-color: var(--border-color) var(--bg-secondary); scrollbar-width: thin; }
