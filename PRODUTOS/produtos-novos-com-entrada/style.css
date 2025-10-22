@@ -364,3 +364,21 @@ body {
 .hidden {
     display: none !important;
 }
+/* === CORREÇÃO FINAL PARA SAFE AREA E FOOTER ESCONDIDO === */
+.footer-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+.calculator-container,
+.content-wrapper,
+.content-area {
+    height: auto;
+    min-height: 100dvh; /* usa altura real do viewport incluindo área segura */
+}
+
+html, body {
+    height: auto;
+    min-height: 100dvh;
+}
