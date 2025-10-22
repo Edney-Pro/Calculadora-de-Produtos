@@ -27,10 +27,10 @@
                 <div class="control-group">
                     <span class="control-label">Colunas:</span>
                     <div class="grid-controls">
-                        <button class="btn-grid active" onclick="setGridColumns(1, event)" data-columns="1">
+                        <button class="btn-grid" onclick="setGridColumns(1, event)" data-columns="1">
                             <i class="fas fa-list"></i>
                         </button>
-                        <button class="btn-grid" onclick="setGridColumns(2, event)" data-columns="2">
+                        <button class="btn-grid active" onclick="setGridColumns(2, event)" data-columns="2">
                             <i class="fas fa-th-large"></i>
                         </button>
                         <button class="btn-grid" onclick="setGridColumns(3, event)" data-columns="3">
@@ -62,15 +62,18 @@
             </div>
         </div>
 
-        <!-- Menu Mobile / Sidebar Desktop -->
+        <!-- Menu Mobile / Sidebar Desktop (REORDENADO) -->
         <nav id="mobileMenu" class="mobile-menu hidden">
             <div class="menu-header">
                 <h3><i class="fas fa-calculator"></i> Menu</h3>
                 <button class="btn-close-menu" onclick="closeMobileMenu()"><i class="fas fa-times"></i></button>
             </div>
             <div class="menu-content">
-                <button class="menu-item" onclick="scrollToCategory('catalog')">
-                    <i class="fas fa-book"></i> Catálogo
+                <button class="menu-item" onclick="scrollToCategory('produtos')">
+                    <i class="fas fa-boxes"></i> Produtos
+                </button>
+                <button class="menu-item" onclick="scrollToCategory('moveis')">
+                    <i class="fas fa-couch"></i> Móveis
                 </button>
                 <button class="menu-item" onclick="scrollToCategory('compramos')">
                     <i class="fas fa-shopping-cart"></i> Compramos
@@ -78,11 +81,14 @@
                 <button class="menu-item" onclick="scrollToCategory('emprestimos')">
                     <i class="fas fa-hand-holding-usd"></i> Empréstimos
                 </button>
-                <button class="menu-item" onclick="scrollToCategory('produtos')">
-                    <i class="fas fa-boxes"></i> Produtos
+                <button class="menu-item" onclick="scrollToCategory('ferramentas')">
+                    <i class="fas fa-tools"></i> Ferramentas
                 </button>
-                <button class="menu-item" onclick="scrollToCategory('moveis')">
-                    <i class="fas fa-couch"></i> Móveis
+                <button class="menu-item" onclick="scrollToCategory('avancadas')">
+                    <i class="fas fa-chart-line"></i> Avançadas
+                </button>
+                <button class="menu-item" onclick="scrollToCategory('renegociacao')">
+                    <i class="fas fa-exchange-alt"></i> Renegociação
                 </button>
                 <button class="menu-item" onclick="scrollToCategory('veiculos')">
                     <i class="fas fa-car"></i> Veículos
@@ -90,52 +96,76 @@
                 <button class="menu-item" onclick="scrollToCategory('eletricos')">
                     <i class="fas fa-bolt"></i> Elétricos
                 </button>
-                <button class="menu-item" onclick="scrollToCategory('renegociacao')">
-                    <i class="fas fa-exchange-alt"></i> Renegociação
-                </button>
-                <button class="menu-item" onclick="scrollToCategory('ferramentas')">
-                    <i class="fas fa-tools"></i> Ferramentas
-                </button>
-                <button class="menu-item" onclick="scrollToCategory('avancadas')">
-                    <i class="fas fa-chart-line"></i> Avançadas
+                <button class="menu-item" onclick="scrollToCategory('catalog')">
+                    <i class="fas fa-book"></i> Catálogo
                 </button>
             </div>
         </nav>
 
-        <!-- Conteúdo Principal -->
+        <!-- Conteúdo Principal (REORDENADO) -->
         <main class="content-area">
-            <!-- CATÁLOGO -->
-            <section id="catalog" class="category-section">
+
+            <!-- PRODUTOS -->
+            <section id="produtos" class="category-section">
                 <div class="category-header">
                     <div class="category-title-wrapper">
-                        <div class="category-icon catalog-icon"><i class="fas fa-book"></i></div>
-                        <h2 class="category-title">Catálogo de Produtos</h2>
+                        <div class="category-icon produtos-icon"><i class="fas fa-boxes"></i></div>
+                        <h2 class="category-title">Produtos</h2>
                     </div>
-                    <span class="category-badge">3 ferramentas</span>
+                    <span class="category-badge">4 ferramentas</span>
                 </div>
                 <div class="grid-container" data-columns="2">
-                    <div class="module-card" style="border-top-color: var(--catalog-color);">
-                        <div class="module-icon catalog-icon"><i class="fas fa-tags"></i></div>
-                        <h3 class="module-name">Produtos Novos</h3>
-                        <p class="module-description">Catálogo completo de produtos novos para venda</p>
-                        <button class="btn-module btn-catalog" onclick="openModule('CATALOGO/catalogo-de-produtos-novos/index.html')">
-                            <i class="fas fa-external-link-alt"></i> Acessar
+                    <div class="module-card" style="border-top-color: var(--produtos-color);">
+                        <div class="module-icon produtos-icon"><i class="fas fa-box-open"></i></div>
+                        <h3 class="module-name">Novos com Entrada</h3>
+                        <p class="module-description">Produtos novos com pagamento de entrada</p>
+                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-novos-com-entrada/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
                         </button>
                     </div>
-                    <div class="module-card" style="border-top-color: var(--catalog-color);">
-                        <div class="module-icon catalog-icon"><i class="fas fa-shipping-fast"></i></div>
-                        <h3 class="module-name">Pronta Entrega</h3>
-                        <p class="module-description">Produtos disponíveis para entrega imediata</p>
-                        <button class="btn-module btn-catalog" onclick="openModule('CATALOGO/catalogo-de-produtos-pronta-entrega/index.html')">
-                            <i class="fas fa-external-link-alt"></i> Acessar
+                    <div class="module-card" style="border-top-color: var(--produtos-color);">
+                        <div class="module-icon produtos-icon"><i class="fas fa-credit-card"></i></div>
+                        <h3 class="module-name">Novos sem Entrada</h3>
+                        <p class="module-description">Produtos novos sem entrada inicial</p>
+                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-novos-sem-entrada/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
                         </button>
                     </div>
-                    <div class="module-card" style="border-top-color: var(--catalog-color);">
-                        <div class="module-icon catalog-icon"><i class="fas fa-history"></i></div>
-                        <h3 class="module-name">Produtos Usados</h3>
-                        <p class="module-description">Catálogo de produtos seminovos e usados</p>
-                        <button class="btn-module btn-catalog" onclick="openModule('CATALOGO/catalogo-de-produtos-usados/index.html')">
-                            <i class="fas fa-external-link-alt"></i> Acessar
+                    <div class="module-card" style="border-top-color: var(--produtos-color);">
+                        <div class="module-icon produtos-icon"><i class="fas fa-shopping-bag"></i></div>
+                        <h3 class="module-name">Usados com Entrada</h3>
+                        <p class="module-description">Produtos usados com entrada</p>
+                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-usados-com-entrada/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--produtos-color);">
+                        <div class="module-icon produtos-icon"><i class="fas fa-tags"></i></div>
+                        <h3 class="module-name">Usados sem Entrada</h3>
+                        <p class="module-description">Produtos usados sem entrada inicial</p>
+                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-usados-sem-entrada/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MÓVEIS -->
+            <section id="moveis" class="category-section">
+                <div class="category-header">
+                    <div class="category-title-wrapper">
+                        <div class="category-icon moveis-icon"><i class="fas fa-couch"></i></div>
+                        <h2 class="category-title">Móveis</h2>
+                    </div>
+                    <span class="category-badge">1 ferramenta</span>
+                </div>
+                <div class="grid-container" data-columns="2">
+                    <div class="module-card" style="border-top-color: var(--moveis-color);">
+                        <div class="module-icon moveis-icon"><i class="fas fa-tools"></i></div>
+                        <h3 class="module-name">Móveis com Montagem</h3>
+                        <p class="module-description">Cálculo de móveis incluindo serviço de montagem</p>
+                        <button class="btn-module btn-moveis" onclick="openModule('MOVEIS/moveis-com-montagem/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
                         </button>
                     </div>
                 </div>
@@ -206,281 +236,7 @@
                     </div>
                 </div>
             </section>
-
-            <!-- PRODUTOS -->
-            <section id="produtos" class="category-section">
-                <div class="category-header">
-                    <div class="category-title-wrapper">
-                        <div class="category-icon produtos-icon"><i class="fas fa-boxes"></i></div>
-                        <h2 class="category-title">Produtos</h2>
-                    </div>
-                    <span class="category-badge">4 ferramentas</span>
-                </div>
-                <div class="grid-container" data-columns="2">
-                    <div class="module-card" style="border-top-color: var(--produtos-color);">
-                        <div class="module-icon produtos-icon"><i class="fas fa-box-open"></i></div>
-                        <h3 class="module-name">Novos com Entrada</h3>
-                        <p class="module-description">Produtos novos com pagamento de entrada</p>
-                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-novos-com-entrada/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--produtos-color);">
-                        <div class="module-icon produtos-icon"><i class="fas fa-credit-card"></i></div>
-                        <h3 class="module-name">Novos sem Entrada</h3>
-                        <p class="module-description">Produtos novos sem entrada inicial</p>
-                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-novos-sem-entrada/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--produtos-color);">
-                        <div class="module-icon produtos-icon"><i class="fas fa-shopping-bag"></i></div>
-                        <h3 class="module-name">Usados com Entrada</h3>
-                        <p class="module-description">Produtos usados com entrada</p>
-                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-usados-com-entrada/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--produtos-color);">
-                        <div class="module-icon produtos-icon"><i class="fas fa-tags"></i></div>
-                        <h3 class="module-name">Usados sem Entrada</h3>
-                        <p class="module-description">Produtos usados sem entrada inicial</p>
-                        <button class="btn-module btn-primary-module" onclick="openModule('PRODUTOS/produtos-usados-sem-entrada/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- MÓVEIS -->
-            <section id="moveis" class="category-section">
-                <div class="category-header">
-                    <div class="category-title-wrapper">
-                        <div class="category-icon moveis-icon"><i class="fas fa-couch"></i></div>
-                        <h2 class="category-title">Móveis</h2>
-                    </div>
-                    <span class="category-badge">1 ferramenta</span>
-                </div>
-                <div class="grid-container" data-columns="2">
-                    <div class="module-card" style="border-top-color: var(--moveis-color);">
-                        <div class="module-icon moveis-icon"><i class="fas fa-tools"></i></div>
-                        <h3 class="module-name">Móveis com Montagem</h3>
-                        <p class="module-description">Cálculo de móveis incluindo serviço de montagem</p>
-                        <button class="btn-module btn-moveis" onclick="openModule('MOVEIS/moveis-com-montagem/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- VEÍCULOS AUTOMOTORES -->
-            <section id="veiculos" class="category-section">
-                <div class="category-header">
-                    <div class="category-title-wrapper">
-                        <div class="category-icon veiculos-icon"><i class="fas fa-car"></i></div>
-                        <h2 class="category-title">Veículos Automotores</h2>
-                    </div>
-                    <span class="category-badge">3 ferramentas</span>
-                </div>
-                <div class="grid-container" data-columns="2">
-                    <div class="module-card" style="border-top-color: var(--veiculos-color);">
-                        <div class="module-icon veiculos-icon"><i class="fas fa-car-side"></i></div>
-                        <h3 class="module-name">Acessórios Automotivos</h3>
-                        <p class="module-description">Cálculo de acessórios para veículos</p>
-                        <button class="btn-module btn-veiculos" onclick="openModule('VEICULOS AUTOMOTORES/calculadora-de-acessorios-automotivo/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--veiculos-color);">
-                        <div class="module-icon veiculos-icon"><i class="fas fa-car-alt"></i></div>
-                        <h3 class="module-name">Carros Usados</h3>
-                        <p class="module-description">Cálculo de financiamento de carros usados</p>
-                        <button class="btn-module btn-veiculos" onclick="openModule('VEICULOS AUTOMOTORES/calculadora-de-carros-usados/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--veiculos-color);">
-                        <div class="module-icon veiculos-icon"><i class="fas fa-motorcycle"></i></div>
-                        <h3 class="module-name">Motos Usadas</h3>
-                        <p class="module-description">Cálculo de financiamento de motos usadas</p>
-                        <button class="btn-module btn-veiculos" onclick="openModule('VEICULOS AUTOMOTORES/calculadora-de-motos-usadas/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- VEÍCULOS ELÉTRICOS -->
-            <section id="eletricos" class="category-section">
-                <div class="category-header">
-                    <div class="category-title-wrapper">
-                        <div class="category-icon eletricos-icon"><i class="fas fa-bolt"></i></div>
-                        <h2 class="category-title">Veículos Elétricos</h2>
-                    </div>
-                    <!-- CORRIGIDO de 6 para 5 -->
-                    <span class="category-badge">5 ferramentas</span>
-                </div>
-                <div class="grid-container" data-columns="2">
-                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
-                        <div class="module-icon eletricos-icon"><i class="fas fa-car-battery"></i></div>
-                        <h3 class="module-name">Acessórios Elétricos</h3>
-                        <p class="module-description">Acessórios para veículos elétricos</p>
-                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-acessorios-de-veiculos-eletricos/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
-                        <div class="module-icon eletricos-icon"><i class="fas fa-bicycle"></i></div>
-                        <h3 class="module-name">Bicicletas Elétricas Novas</h3>
-                        <p class="module-description">Cálculo de bicicletas elétricas novas</p>
-                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-bicicletas-eletricas-nova/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
-                        <div class="module-icon eletricos-icon"><i class="fas fa-bicycle"></i></div>
-                        <h3 class="module-name">Bicicletas Elétricas Usadas</h3>
-                        <p class="module-description">Cálculo de bicicletas elétricas usadas</p>
-                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-bicicletas-eletricas-usada/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
-                        <div class="module-icon eletricos-icon"><i class="fas fa-scooter"></i></div>
-                        <h3 class="module-name">Patinetes Elétricos Novos</h3>
-                        <p class="module-description">Cálculo de patinetes elétricos novos</p>
-                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-patinetes-eletricos-novo/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
-                        <div class="module-icon eletricos-icon"><i class="fas fa-scooter"></i></div>
-                        <h3 class="module-name">Patinetes Elétricos Usados</h3>
-                        <p class="module-description">Cálculo de patinetes elétricos usados</p>
-                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-patinetes-eletricos-usado/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- RENEGOCIAÇÃO -->
-            <section id="renegociacao" class="category-section">
-                <div class="category-header">
-                    <div class="category-title-wrapper">
-                        <div class="category-icon renegociacao-icon"><i class="fas fa-exchange-alt"></i></div>
-                        <h2 class="category-title">Renegociação</h2>
-                    </div>
-                    <span class="category-badge">13 ferramentas</span>
-                </div>
-                <div class="grid-container" data-columns="2">
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-money-bill-wave"></i></div>
-                        <h3 class="module-name">Empréstimo Atrasado</h3>
-                        <p class="module-description">Renegociação de empréstimos em atraso</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-emprestimo-atrasado/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-calendar-check"></i></div>
-                        <h3 class="module-name">Empréstimo a Vencer</h3>
-                        <p class="module-description">Renegociação de empréstimos a vencer</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-emprestimo-avencer/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-random"></i></div>
-                        <h3 class="module-name">Empréstimo Combinado</h3>
-                        <p class="module-description">Renegociação combinada de empréstimos</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-emprestimo-combinado/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-box"></i></div>
-                        <h3 class="module-name">Produtos Atrasados</h3>
-                        <p class="module-description">Renegociação de produtos em atraso</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-produtos-atrasados/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-box-open"></i></div>
-                        <h3 class="module-name">Produtos a Vencer</h3>
-                        <p class="module-description">Renegociação de produtos a vencer</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-produtos-avencer/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-boxes"></i></div>
-                        <h3 class="module-name">Produtos Combinados</h3>
-                        <p class="module-description">Renegociação combinada de produtos</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-produtos-combinados/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-car-crash"></i></div>
-                        <h3 class="module-name">Veículos Atrasados</h3>
-                        <p class="module-description">Renegociação de veículos em atraso</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-atrasados/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-car-side"></i></div>
-                        <h3 class="module-name">Veículos a Vencer</h3>
-                        <p class="module-description">Renegociação de veículos a vencer</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-avencer/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-truck-pickup"></i></div>
-                        <h3 class="module-name">Veículos Combinados</h3>
-                        <p class="module-description">Renegociação combinada de veículos</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-combinado/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-bolt"></i></div>
-                        <h3 class="module-name">Veículos Elétricos Atrasados</h3>
-                        <p class="module-description">Renegociação de veículos elétricos em atraso</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-eletricos-atrasados/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-charging-station"></i></div>
-                        <h3 class="module-name">Veículos Elétricos a Vencer</h3>
-                        <p class="module-description">Renegociação de veículos elétricos a vencer</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-eletricos-avencer/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-plug"></i></div>
-                        <h3 class="module-name">Veículos Elétricos Combinados</h3>
-                        <p class="module-description">Renegociação combinada de veículos elétricos</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-eletricos-combinado/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
-                        <div class="module-icon renegociacao-icon"><i class="fas fa-star"></i></div>
-                        <h3 class="module-name">Renegociação Especial</h3>
-                        <p class="module-description">Renegociações especiais e personalizadas</p>
-                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-especial/index.html')">
-                            <i class="fas fa-calculator"></i> Calcular
-                        </button>
-                    </div>
-                </div>
-            </section>
-
+            
             <!-- FERRAMENTAS -->
             <section id="ferramentas" class="category-section">
                 <div class="category-header">
@@ -658,6 +414,251 @@
                     </div>
                 </div>
             </section>
+            
+            <!-- RENEGOCIAÇÃO -->
+            <section id="renegociacao" class="category-section">
+                <div class="category-header">
+                    <div class="category-title-wrapper">
+                        <div class="category-icon renegociacao-icon"><i class="fas fa-exchange-alt"></i></div>
+                        <h2 class="category-title">Renegociação</h2>
+                    </div>
+                    <span class="category-badge">13 ferramentas</span>
+                </div>
+                <div class="grid-container" data-columns="2">
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-money-bill-wave"></i></div>
+                        <h3 class="module-name">Empréstimo Atrasado</h3>
+                        <p class="module-description">Renegociação de empréstimos em atraso</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-emprestimo-atrasado/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-calendar-check"></i></div>
+                        <h3 class="module-name">Empréstimo a Vencer</h3>
+                        <p class="module-description">Renegociação de empréstimos a vencer</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-emprestimo-avencer/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-random"></i></div>
+                        <h3 class="module-name">Empréstimo Combinado</h3>
+                        <p class="module-description">Renegociação combinada de empréstimos</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-emprestimo-combinado/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-box"></i></div>
+                        <h3 class="module-name">Produtos Atrasados</h3>
+                        <p class="module-description">Renegociação de produtos em atraso</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-produtos-atrasados/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-box-open"></i></div>
+                        <h3 class="module-name">Produtos a Vencer</h3>
+                        <p class="module-description">Renegociação de produtos a vencer</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-produtos-avencer/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-boxes"></i></div>
+                        <h3 class="module-name">Produtos Combinados</h3>
+                        <p class="module-description">Renegociação combinada de produtos</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-produtos-combinados/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-car-crash"></i></div>
+                        <h3 class="module-name">Veículos Atrasados</h3>
+                        <p class="module-description">Renegociação de veículos em atraso</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-atrasados/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-car-side"></i></div>
+                        <h3 class="module-name">Veículos a Vencer</h3>
+                        <p class="module-description">Renegociação de veículos a vencer</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-avencer/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-truck-pickup"></i></div>
+                        <h3 class="module-name">Veículos Combinados</h3>
+                        <p class="module-description">Renegociação combinada de veículos</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-combinado/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="module-name">Veículos Elétricos Atrasados</h3>
+                        <p class="module-description">Renegociação de veículos elétricos em atraso</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-eletricos-atrasados/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-charging-station"></i></div>
+                        <h3 class="module-name">Veículos Elétricos a Vencer</h3>
+                        <p class="module-description">Renegociação de veículos elétricos a vencer</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-eletricos-avencer/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-plug"></i></div>
+                        <h3 class="module-name">Veículos Elétricos Combinados</h3>
+                        <p class="module-description">Renegociação combinada de veículos elétricos</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-de-veiculos-eletricos-combinado/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--renegociacao-color);">
+                        <div class="module-icon renegociacao-icon"><i class="fas fa-star"></i></div>
+                        <h3 class="module-name">Renegociação Especial</h3>
+                        <p class="module-description">Renegociações especiais e personalizadas</p>
+                        <button class="btn-module btn-renegociacao" onclick="openModule('RENEGOCIACAO/renegociacao-especial/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- VEÍCULOS AUTOMOTORES -->
+            <section id="veiculos" class="category-section">
+                <div class="category-header">
+                    <div class="category-title-wrapper">
+                        <div class="category-icon veiculos-icon"><i class="fas fa-car"></i></div>
+                        <h2 class="category-title">Veículos Automotores</h2>
+                    </div>
+                    <span class="category-badge">3 ferramentas</span>
+                </div>
+                <div class="grid-container" data-columns="2">
+                    <div class="module-card" style="border-top-color: var(--veiculos-color);">
+                        <div class="module-icon veiculos-icon"><i class="fas fa-car-side"></i></div>
+                        <h3 class="module-name">Acessórios Automotivos</h3>
+                        <p class="module-description">Cálculo de acessórios para veículos</p>
+                        <button class="btn-module btn-veiculos" onclick="openModule('VEICULOS AUTOMOTORES/calculadora-de-acessorios-automotivo/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--veiculos-color);">
+                        <div class="module-icon veiculos-icon"><i class="fas fa-car-alt"></i></div>
+                        <h3 class="module-name">Carros Usados</h3>
+                        <p class="module-description">Cálculo de financiamento de carros usados</p>
+                        <button class="btn-module btn-veiculos" onclick="openModule('VEICULOS AUTOMOTORES/calculadora-de-carros-usados/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--veiculos-color);">
+                        <div class="module-icon veiculos-icon"><i class="fas fa-motorcycle"></i></div>
+                        <h3 class="module-name">Motos Usadas</h3>
+                        <p class="module-description">Cálculo de financiamento de motos usadas</p>
+                        <button class="btn-module btn-veiculos" onclick="openModule('VEICULOS AUTOMOTORES/calculadora-de-motos-usadas/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VEÍCULOS ELÉTRICOS -->
+            <section id="eletricos" class="category-section">
+                <div class="category-header">
+                    <div class="category-title-wrapper">
+                        <div class="category-icon eletricos-icon"><i class="fas fa-bolt"></i></div>
+                        <h2 class="category-title">Veículos Elétricos</h2>
+                    </div>
+                    <span class="category-badge">5 ferramentas</span>
+                </div>
+                <div class="grid-container" data-columns="2">
+                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
+                        <div class="module-icon eletricos-icon"><i class="fas fa-car-battery"></i></div>
+                        <h3 class="module-name">Acessórios Elétricos</h3>
+                        <p class="module-description">Acessórios para veículos elétricos</p>
+                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-acessorios-de-veiculos-eletricos/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
+                        <div class="module-icon eletricos-icon"><i class="fas fa-bicycle"></i></div>
+                        <h3 class="module-name">Bicicletas Elétricas Novas</h3>
+                        <p class="module-description">Cálculo de bicicletas elétricas novas</p>
+                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-bicicletas-eletricas-nova/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
+                        <div class="module-icon eletricos-icon"><i class="fas fa-bicycle"></i></div>
+                        <h3 class="module-name">Bicicletas Elétricas Usadas</h3>
+                        <p class="module-description">Cálculo de bicicletas elétricas usadas</p>
+                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-bicicletas-eletricas-usada/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
+                        <div class="module-icon eletricos-icon"><i class="fas fa-scooter"></i></div>
+                        <h3 class="module-name">Patinetes Elétricos Novos</h3>
+                        <p class="module-description">Cálculo de patinetes elétricos novos</p>
+                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-patinetes-eletricos-novo/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--eletricos-color);">
+                        <div class="module-icon eletricos-icon"><i class="fas fa-scooter"></i></div>
+                        <h3 class="module-name">Patinetes Elétricos Usados</h3>
+                        <p class="module-description">Cálculo de patinetes elétricos usados</p>
+                        <button class="btn-module btn-eletricos" onclick="openModule('VEICULOS ELETRICOS/calculadora-de-patinetes-eletricos-usado/index.html')">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CATÁLOGO -->
+            <section id="catalog" class="category-section">
+                <div class="category-header">
+                    <div class="category-title-wrapper">
+                        <div class="category-icon catalog-icon"><i class="fas fa-book"></i></div>
+                        <h2 class="category-title">Catálogo de Produtos</h2>
+                    </div>
+                    <span class="category-badge">3 ferramentas</span>
+                </div>
+                <div class="grid-container" data-columns="2">
+                    <div class="module-card" style="border-top-color: var(--catalog-color);">
+                        <div class="module-icon catalog-icon"><i class="fas fa-tags"></i></div>
+                        <h3 class="module-name">Produtos Novos</h3>
+                        <p class="module-description">Catálogo completo de produtos novos para venda</p>
+                        <button class="btn-module btn-catalog" onclick="openModule('CATALOGO/catalogo-de-produtos-novos/index.html')">
+                            <i class="fas fa-external-link-alt"></i> Acessar
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--catalog-color);">
+                        <div class="module-icon catalog-icon"><i class="fas fa-shipping-fast"></i></div>
+                        <h3 class="module-name">Pronta Entrega</h3>
+                        <p class="module-description">Produtos disponíveis para entrega imediata</p>
+                        <button class="btn-module btn-catalog" onclick="openModule('CATALOGO/catalogo-de-produtos-pronta-entrega/index.html')">
+                            <i class="fas fa-external-link-alt"></i> Acessar
+                        </button>
+                    </div>
+                    <div class="module-card" style="border-top-color: var(--catalog-color);">
+                        <div class="module-icon catalog-icon"><i class="fas fa-history"></i></div>
+                        <h3 class="module-name">Produtos Usados</h3>
+                        <p class="module-description">Catálogo de produtos seminovos e usados</p>
+                        <button class="btn-module btn-catalog" onclick="openModule('CATALOGO/catalogo-de-produtos-usados/index.html')">
+                            <i class="fas fa-external-link-alt"></i> Acessar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
         </main>
 
         <!-- Rodapé Mobile com Novos Links -->
