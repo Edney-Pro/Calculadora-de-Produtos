@@ -1,7 +1,16 @@
 // --- FUNÇÕES DA PÁGINA PRINCIPAL (INDEX.HTML) ---
 
+/**
+ * NOVO: Ao carregar a página, verifica o tema salvo no navegador
+ * e aplica-o. O tema padrão é o escuro ('dark-theme').
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    // Código para ser executado quando a página carregar, se necessário
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+    }
+    // Não é necessário 'else', pois o 'dark-theme' já é o padrão no body.
 });
 
 /**
@@ -27,15 +36,28 @@ function closeMobileMenu() {
 }
 
 /**
- * Alterna entre o tema claro e escuro.
+ * CORRIGIDO: Alterna entre o tema claro e escuro e salva a preferência.
  */
 function toggleTheme() {
-    document.body.classList.toggle('dark-theme');
+    const body = document.body;
+    const isLightTheme = body.classList.contains('light-theme');
+
+    if (isLightTheme) {
+        // Se está no tema claro, muda para o escuro
+        body.classList.remove('light-theme');
+        body.classList.add('dark-theme');
+        localStorage.setItem('theme', 'dark'); // Salva a preferência
+    } else {
+        // Se está no tema escuro, muda para o claro
+        body.classList.remove('dark-theme');
+        body.classList.add('light-theme');
+        localStorage.setItem('theme', 'light'); // Salva a preferência
+    }
 }
 
 /**
  * Define o número de colunas para os grids de módulos.
- * @param {number} cols - O número de colunas (1, 2 ou 3).
+ * @param {number} cols - O número de colunas (1 ou 2).
  * @param {Event} event - O evento do clique para marcar o botão ativo.
  */
 function setGridColumns(cols, event) {
@@ -89,7 +111,7 @@ function filterModules() {
 
     // Esconde a categoria se todos os seus módulos estiverem escondidos
     categories.forEach(category => {
-        const visibleModules = category.querySelectorAll('.module-card[style*="display: initial"], .module-card:not([style*="display: none"])');
+        const visibleModules = category.querySelectorAll('.module-card:not([style*="display: none"])');
         if (visibleModules.length === 0) {
             category.style.display = 'none';
         } else {
