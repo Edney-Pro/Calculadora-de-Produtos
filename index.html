@@ -18,29 +18,25 @@
             </div>
         </header>
 
-        <!-- Controles Mobile -->
+        <!-- Controles Mobile com Estrutura Simplificada -->
         <div class="view-controls">
-            <div class="mobile-controls">
-                <button class="btn-mobile-menu" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
+            <button class="btn-mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="grid-controls">
+                <button class="btn-grid" onclick="setGridColumns(1, event)" data-columns="1">
+                    <i class="fas fa-list"></i>
                 </button>
-                <div class="control-group">
-                    <span class="control-label">Colunas:</span>
-                    <div class="grid-controls">
-                        <button class="btn-grid" onclick="setGridColumns(1, event)" data-columns="1">
-                            <i class="fas fa-list"></i>
-                        </button>
-                        <button class="btn-grid active" onclick="setGridColumns(2, event)" data-columns="2">
-                            <i class="fas fa-th-large"></i>
-                        </button>
-                        <button class="btn-grid" onclick="setGridColumns(3, event)" data-columns="3">
-                            <i class="fas fa-th"></i>
-                        </button>
-                    </div>
-                </div>
+                <button class="btn-grid active" onclick="setGridColumns(2, event)" data-columns="2">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <button class="btn-grid" onclick="setGridColumns(3, event)" data-columns="3">
+                    <i class="fas fa-th"></i>
+                </button>
             </div>
             
-            <div class="control-group">
+            <div class="actions-group">
                 <button class="btn-theme" onclick="toggleTheme()">
                     <i class="fas fa-moon theme-icon-moon"></i>
                     <i class="fas fa-sun theme-icon-sun"></i>
@@ -677,4 +673,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
