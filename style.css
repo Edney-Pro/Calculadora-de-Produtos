@@ -41,7 +41,7 @@
 }
 
 /* Tema Claro */
-.light-theme {
+body.light-theme {
     --bg-primary: #f1f5f9;
     --bg-secondary: #ffffff;
     --bg-card: #e2e8f0;
@@ -75,24 +75,40 @@ body {
 *:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 2px; border-radius: var(--border-radius-md); }
 
 /* Header e Controles */
-.calculator-header, .view-controls {
+.calculator-header {
     padding: var(--spacing-md) var(--spacing-lg);
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-color);
+    position: sticky; top: 0; z-index: 100;
 }
-.calculator-header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-.header-content h1 { font-size: 1.65rem; font-weight: 700; display: flex; align-items: center; gap: var(--spacing-sm); }
+.header-content h1 { font-size: 1.65rem; font-weight: 700; display: flex; align-items: center; gap: var(--spacing-sm); margin:0; }
 .header-content h1 i { color: var(--accent-color); font-size: 1.8rem; }
-.header-subtitle { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
-.view-controls { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-md); flex-wrap: wrap; }
-.mobile-controls, .control-group { display: flex; align-items: center; gap: var(--spacing-md); }
-.control-label { color: var(--text-secondary); font-weight: 500; }
+.header-subtitle { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; margin:0; }
+
+.view-controls {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.mobile-controls { display: flex; align-items: center; gap: var(--spacing-md); }
+.control-group { display: flex; align-items: center; gap: var(--sm-spacing); }
+.control-label { display: none; }
+
 .grid-controls { display: flex; background: var(--bg-card); border-radius: var(--border-radius-md); padding: 2px; }
 .btn-grid { background: transparent; border: none; color: var(--text-muted); padding: var(--spacing-sm); border-radius: var(--border-radius-md); cursor: pointer; transition: var(--transition-fast); }
 .btn-grid.active { background: var(--bg-primary); color: var(--text-primary); box-shadow: 0 1px 3px var(--shadow-color); }
 .btn-grid:hover { color: var(--text-primary); background: var(--border-color); }
 .btn-mobile-menu, .btn-theme, .btn-search-mobile { background: var(--bg-card); border: none; color: var(--text-primary); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-md); cursor: pointer; transition: var(--transition-fast); }
 .btn-mobile-menu:hover, .btn-theme:hover, .btn-search-mobile:hover { background: var(--border-color); transform: translateY(-1px); }
+
+/* Lógica de Ícones Sol/Lua */
+.dark-theme .theme-icon-sun { display: none; }
+.light-theme .theme-icon-moon { display: none; }
 
 /* Busca */
 .search-container { background: var(--bg-secondary); padding: var(--spacing-md) var(--spacing-lg); border-bottom: 1px solid var(--border-color); }
@@ -142,12 +158,10 @@ body {
 .category-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); }
 .category-badge { background: var(--bg-card); color: var(--text-primary); padding: 0.25rem var(--spacing-sm); border-radius: var(--border-radius-md); font-size: 0.875rem; font-weight: 600; flex-shrink: 0; }
 
-/* --- GRID SYSTEM (MODIFICADO) --- */
+/* Grid System */
 .grid-container {
     display: grid;
-    /* Reduzimos o espaço ENTRE os cards */
     gap: 8px;
-    /* Reduzimos o espaço NAS LATERAIS da tela */
     padding: 0 8px var(--spacing-lg);
 }
 .grid-container[data-columns="1"] { grid-template-columns: 1fr; }
@@ -247,6 +261,10 @@ body {
         flex-direction: column;
         align-items: flex-start;
     }
+    
+    .grid-container[data-columns="3"] { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
 }
 @media (max-width: 480px) {
     .footer-link span { display: none; }
@@ -265,7 +283,6 @@ body {
     .mobile-menu .menu-header .btn-close-menu { display: none; }
     .menu-item:hover, .menu-item.active { background: var(--bg-primary); color: var(--accent-color); }
     .content-area { flex: 1; padding: var(--spacing-xl); overflow-y: auto; height: 100vh; }
-    /* Adicionamos um padding maior para o grid no desktop */
     .grid-container { padding: 0 var(--spacing-lg) var(--spacing-lg); }
 }
 
