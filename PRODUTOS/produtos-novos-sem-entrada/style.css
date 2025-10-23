@@ -94,4 +94,23 @@ body {background-color: var(--bg-primary);font-family: 'Inter', sans-serif;color
 .modal-fullscreen .modal-footer {flex-shrink: 0; border-top: 1px solid var(--border-color); padding-top: 1rem;}
 .obs-text {font-size: 0.8rem;color: var(--text-secondary);line-height: 1.5;}
 .atraso-details span {color: var(--text-secondary);}
+
 .atraso-details hr {margin: 0.5rem 0; border-color: var(--border-color);}
+/* === CORREÇÃO FINAL PARA SAFE AREA E FOOTER ESCONDIDO === */
+.footer-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+.calculator-container,
+.content-wrapper,
+.content-area {
+    height: auto;
+    min-height: 100dvh; /* usa altura real do viewport incluindo área segura */
+}
+
+html, body {
+    height: auto;
+    min-height: 100dvh;
+}
