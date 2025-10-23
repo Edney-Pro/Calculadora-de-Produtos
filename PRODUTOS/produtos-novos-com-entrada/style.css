@@ -382,3 +382,14 @@ html, body {
     height: auto;
     min-height: 100dvh;
 }
+
+/* === CORREÇÃO DE SCROLL BLOQUEADO === */
+body {
+    overflow: auto !important; /* permite rolagem da página */
+    -webkit-overflow-scrolling: touch; /* rolagem suave em iOS */
+}
+
+.content-wrapper {
+    overflow-y: auto !important; /* permite rolagem interna se precisar */
+    flex: 1 1 auto;
+}
