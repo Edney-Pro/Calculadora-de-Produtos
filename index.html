@@ -1,265 +1,50 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sistema Financeiro</title>
-
-    <!-- ✅ Caminhos relativos corrigidos -->
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="manifest" href="./manifest.json" />
-
-    <!-- Ícone de fallback -->
-    <link rel="icon" href="./assets/icones/produtos.ico" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Parcelas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
-<body data-theme="dark">
+<body>
+    <!-- Header -->
     <header class="simple-header">
         <div class="container">
-            <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+            <div class="logo">
+                <i class="fas fa-calculator logo-icon"></i>
+                <h1>Sistema de Parcelas</h1>
+            </div>
+            <p class="tagline">Soluções completas em financiamento e parcelamento</p>
+            
+            <!-- Toggle Theme -->
+            <button class="theme-toggle" aria-label="Alternar tema">
                 <div class="toggle-track">
+                    <i class="fas fa-sun toggle-icon sun"></i>
+                    <i class="fas fa-moon toggle-icon moon"></i>
                     <div class="toggle-thumb"></div>
-                    <span class="toggle-icon sun">☀️</span>
-                    <span class="toggle-icon moon">🌙</span>
                 </div>
             </button>
-
-            <div class="logo">
-                <div class="logo-icon">💰</div>
-                <h1>Sistema Financeiro</h1>
-            </div>
-            <p class="tagline">Soluções completas para suas necessidades financeiras</p>
         </div>
     </header>
 
-    <!-- CATEGORIAS PRINCIPAIS -->
-    <section class="section">
+    <!-- Main Content -->
+    <main class="main-content">
         <div class="container">
-            <div class="section-title">
-                <h2>Categorias Principais</h2>
-                <p>Escolha a categoria desejada e acesse todas as ferramentas disponíveis</p>
-            </div>
-
-            <div class="categories-grid">
-                <div class="category-item">
-                    <div class="category-icon">💳</div>
-                    <div class="category-content">
-                        <h3>Empréstimos</h3>
-                        <p>Simule e calcule diferentes tipos de empréstimos</p>
-                        <a href="./apps/EMPRESTIMOS/emprestimos.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🛍️</div>
-                    <div class="category-content">
-                        <h3>Produtos</h3>
-                        <p>Adquira produtos novos e usados com diversas condições</p>
-                        <a href="./apps/PRODUTOS/produtos.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🚗</div>
-                    <div class="category-content">
-                        <h3>Veículos Automotores</h3>
-                        <p>Financiamento para carros, motos e acessórios</p>
-                        <a href="./apps/VEICULOS AUTOMOTORES/veiculos-automotores.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🔋</div>
-                    <div class="category-content">
-                        <h3>Veículos Elétricos</h3>
-                        <p>Bicicletas, patinetes e scooters elétricos</p>
-                        <a href="./apps/VEICULOS ELETRICOS/veiculos-eletricos.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">⚙️</div>
-                    <div class="category-content">
-                        <h3>Ferramentas Avançadas</h3>
-                        <p>Utilidades para análise, controle e gestão</p>
-                        <a href="./apps/FERRAMENTAS_AVANCADAS/ferramentas-avancadas.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🔄</div>
-                    <div class="category-content">
-                        <h3>Renegociação</h3>
-                        <p>Ferramentas para renegociar dívidas e parcelas</p>
-                        <a href="./apps/RENEGOCIACAO/renegociacao.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🛋️</div>
-                    <div class="category-content">
-                        <h3>Móveis</h3>
-                        <p>Compra de móveis novos e planejados</p>
-                        <a href="./apps/MOVEIS/moveis.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🛍️</div>
-                    <div class="category-content">
-                        <h3>Compramos para Você</h3>
-                        <p>Serviço de compra assistida</p>
-                        <a href="./apps/COMPRAMOS/compramos-pra-voce.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🔧</div>
-                    <div class="category-content">
-                        <h3>Ferramentas Simples</h3>
-                        <p>Calculadoras básicas e utilitários</p>
-                        <a href="./apps/FERRAMENTAS/ferramentas.html" class="btn">Acessar</a>
-                    </div>
-                </div>
+            <!-- Módulos em Grid -->
+            <div class="modules-grid" id="modulesGrid">
+                <!-- Os módulos serão inseridos via JavaScript -->
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- CATÁLOGO -->
-    <section class="section catalog-section">
+    <!-- Footer Simplificado -->
+    <footer class="simple-footer">
         <div class="container">
-            <div class="section-title">
-                <h2>Catálogo de Produtos</h2>
-                <p>Explore nossos catálogos completos organizados por tipo</p>
-            </div>
-
-            <div class="catalog-grid">
-                <div class="category-item">
-                    <div class="category-icon">🆕</div>
-                    <div class="category-content">
-                        <h3>Produtos Novos</h3>
-                        <p>Seleção de produtos novos com garantia</p>
-                        <a href="./apps/CATALOGO/catalogo-de-produtos-novos/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🚚</div>
-                    <div class="category-content">
-                        <h3>Pronta Entrega</h3>
-                        <p>Produtos para entrega imediata</p>
-                        <a href="./apps/CATALOGO/catalogo-de-produtos-pronta-entrega/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🔄</div>
-                    <div class="category-content">
-                        <h3>Produtos Usados</h3>
-                        <p>Produtos seminovos e usados</p>
-                        <a href="./apps/CATALOGO/catalogo-de-produtos-usados/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ACESSO RÁPIDO -->
-    <section class="section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Acesso Rápido</h2>
-                <p>Ferramentas mais utilizadas</p>
-            </div>
-
-            <div class="categories-grid">
-                <div class="category-item">
-                    <div class="category-icon">🧮</div>
-                    <div class="category-content">
-                        <h3>Calculadora Normal</h3>
-                        <p>Calculadora básica</p>
-                        <a href="./apps/FERRAMENTAS/calculadora-normal/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">💸</div>
-                    <div class="category-content">
-                        <h3>Contagem de Dinheiro</h3>
-                        <p>Controle de valores em espécie</p>
-                        <a href="./apps/FERRAMENTAS/app-de-contagem-de-dinheiro/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">📊</div>
-                    <div class="category-content">
-                        <h3>Divisão de Lucros</h3>
-                        <p>Distribua lucros entre sócios</p>
-                        <a href="./apps/FERRAMENTAS/app-divisao-lucros-empresas/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">📋</div>
-                    <div class="category-content">
-                        <h3>Proposta em PDF</h3>
-                        <p>Gere propostas profissionais</p>
-                        <a href="./apps/FERRAMENTAS_AVANCADAS/proposta-pdf/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🎲</div>
-                    <div class="category-content">
-                        <h3>Sistema de Sorteio</h3>
-                        <p>Realize sorteios aleatórios</p>
-                        <a href="./apps/FERRAMENTAS_AVANCADAS/sistema-de-sorteio/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-icon">🛒</div>
-                    <div class="category-content">
-                        <h3>Catálogo Principal</h3>
-                        <p>Acesse o catálogo completo</p>
-                        <a href="./apps/CATALOGO/catalogo-de-produtos-novos/index.html" class="btn">Acessar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="universal-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Categorias</h3>
-                    <ul>
-                        <li><a href="./apps/PRODUTOS/produtos.html">Produtos</a></li>
-                        <li><a href="./apps/EMPRESTIMOS/emprestimos.html">Empréstimos</a></li>
-                        <li><a href="./apps/RENEGOCIACAO/renegociacao.html">Renegociação</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Catálogos</h3>
-                    <ul>
-                        <li><a href="./apps/CATALOGO/catalogo-de-produtos-novos/index.html">Produtos Novos</a></li>
-                        <li><a href="./apps/CATALOGO/catalogo-de-produtos-pronta-entrega/index.html">Pronta Entrega</a></li>
-                        <li><a href="./apps/CATALOGO/catalogo-de-produtos-usados/index.html">Produtos Usados</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="copyright">
-                <p>&copy; 2025 Sistema Financeiro. Todos os direitos reservados.</p>
-            </div>
+            <p>&copy; 2025 Sistema de Parcelas. Todos os direitos reservados sr. Edney C. da Silva.</p>
         </div>
     </footer>
 
-    <!-- ✅ Caminho corrigido -->
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
