@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empréstimos - Sistema Financeiro</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="manifest" href="../../manifest.json">
+    <style>
+        :root {
+            --bg-header: #0f172a;
+            --border-color: #334155;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --bg-tertiary: #334155;
+            --shadow-color: rgba(0,0,0,0.3);
+            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        [data-theme="light"] {
+            --bg-header: #1e293b;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --bg-tertiary: #e2e8f0;
+        }
+        .has-quick-nav { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+        @media(min-width:769px){ .has-quick-nav { padding-bottom:0; } }
+
+        .categories-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; }
+        .category-item { background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:2rem; text-align:center; box-shadow:0 4px 12px var(--shadow-color); transition:var(--transition); cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; }
+        .category-item:hover { transform:translateY(-8px); box-shadow:0 8px 24px var(--shadow-color); border-color:var(--primary);}
+        .category-content h3 { font-size:1.4rem; font-weight:600; color:var(--text-primary); margin-bottom:0.5rem; }
+        .category-content p { font-size:1rem; color:var(--text-muted); margin-bottom:1.5rem; flex:1; }
+        .btn { display:inline-flex; align-items:center; justify-content:center; background:var(--gradient-primary); color:white; padding:12px 24px; border-radius:8px; font-weight:600; border:none; cursor:pointer; transition:var(--transition); gap:8px; width:100%; max-width:200px; margin:0 auto; text-decoration:none; }
+        .btn:hover { background:linear-gradient(135deg,#2563eb,#4f46e5); transform:translateY(-2px); box-shadow:0 8px 24px var(--shadow-color); }
+
+        .quick-nav-bar { position:fixed; bottom:0; left:0; right:0; z-index:1000; background:var(--bg-header); border-top:1px solid var(--border-color); box-shadow:0 -4px 12px var(--shadow-color); display:none; padding-bottom:env(safe-area-inset-bottom); }
+        .quick-nav-bar .container { display:flex; justify-content:space-around; align-items:center; padding:0 16px; height:70px; margin:0 auto; max-width:600px; }
+        .quick-nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; flex:1; min-width:30%; padding:4px 0; transition:var(--transition); color:var(--text-muted); height:100%; }
+        .quick-nav-item:hover{ background-color:var(--bg-tertiary); }
+        .quick-nav-item.active{ color:var(--primary); font-weight:600; }
+        .quick-nav-icon { font-size: 2.5rem; } /* Aumentado em 4x */
+        @media(max-width:768px){ .quick-nav-bar{ display:block; } }
+
+    </style>
+</head>
+<body data-theme="dark" class="has-quick-nav">
+
+    <header class="simple-header">
+        <div class="container">
+            <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+                <div class="toggle-track">
+                    <div class="toggle-thumb"></div>
+                    <span class="toggle-icon sun">☀️</span>
+                    <span class="toggle-icon moon">🌙</span>
+                </div>
+            </button>
+
+            <div class="logo">
+                <div class="logo-icon">💰</div> <!-- Altere o ícone para um representativo -->
+                <h1>Empréstimos</h1> <!-- Altere o título -->
+            </div>
+            <p class="tagline">Ferramentas para empréstimos</p> <!-- Altere a tagline -->
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="categories-grid">
+            <!-- Repita para cada ferramenta -->
+            <div class="category-item">
+                <div class="category-icon">🛡️</div> <!-- Ícone representativo -->
+                <div class="category-content">
+                    <h3>Com Garantia</h3> <!-- Nome da ferramenta -->
+                    <p>Calculadora de empréstimo com garantia</p> <!-- Descrição -->
+                    <a href="calculadora-de-emprestimo-com-garantia/index.html" class="btn">Acessar</a> <!-- Link correto -->
+                </div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">📅</div>
+                <div class="category-content">
+                    <h3>Empréstimo Diário</h3>
+                    <p>Calculadora de empréstimo diário</p>
+                    <a href="calculadora-de-emprestimo-diario/index.html" class="btn">Acessar</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">🚀</div>
+                <div class="category-content">
+                    <h3>Sem Garantia</h3>
+                    <p>Calculadora de empréstimo sem garantia</p>
+                    <a href="calculadora-de-emprestimo-sem-garantia/index.html" class="btn">Acessar</a>
+                </div>
+            </div>
+            <!-- Adicione mais ferramentas conforme necessário -->
+        </section>
+    </div>
+
+    <nav class="quick-nav-bar">
+        <div class="container">
+            <a href="../../index.html" class="quick-nav-item">
+                <span class="quick-nav-icon">🏠</span>
+            </a>
+            <a href="https://wa.me/449984084" target="_blank" class="quick-nav-item">
+                <span class="quick-nav-icon" style="color:#25D366">📞</span>
+            </a>
+            <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="quick-nav-item">
+                <span class="quick-nav-icon">📸</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../../script.js"></script>
+</body>
+</html>
