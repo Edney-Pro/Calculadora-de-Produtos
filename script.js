@@ -1,5 +1,6 @@
-// Dados dos módulos do sistema
+// Dados dos módulos do sistema - 15 APPS COMPLETOS
 const modulesData = [
+    // APPS EXISTENTES (11)
     {
         name: "Cadastro",
         description: "Clientes",
@@ -76,6 +77,36 @@ const modulesData = [
         icon: "fas fa-chart-bar",
         link: "apps/FERRAMENTAS_AVANCADAS/ferramentas-avancadas.html",
         color: "#a855f7"
+    },
+
+    // NOVOS APPS (4) - MAIS USADOS
+    {
+        name: "Produtos Novos",
+        description: "Calculadora",
+        icon: "fas fa-calculator",
+        link: "apps/PRODUTOS/produtos-novos-sem-entrada/index.html",
+        color: "#3b82f6"
+    },
+    {
+        name: "Empréstimo",
+        description: "Parcelado",
+        icon: "fas fa-hand-holding-usd",
+        link: "apps/EMPRESTIMOS/calculadora-de-emprestimo-sem-garantia/index.html",
+        color: "#10b981"
+    },
+    {
+        name: "Empréstimo",
+        description: "Diário",
+        icon: "fas fa-calendar-day",
+        link: "apps/EMPRESTIMOS/calculadora-de-emprestimo-diario/index.html",
+        color: "#ef4444"
+    },
+    {
+        name: "WhatsApp",
+        description: "Fale Conosco",
+        icon: "fab fa-whatsapp",
+        link: "https://wa.me/554499840846",
+        color: "#25D366"
     }
 ];
 
@@ -133,7 +164,6 @@ function renderModules() {
     
     moduleItems.forEach(item => {
         item.addEventListener('click', function(e) {
-            // Feedback visual
             this.style.opacity = '0.7';
             setTimeout(() => {
                 this.style.opacity = '1';
@@ -150,18 +180,13 @@ function renderModules() {
     });
 }
 
-// Inicialização quando o DOM estiver carregado
+// Inicialização
 document.addEventListener('DOMContentLoaded', function() {
-    // Renderizar módulos
     renderModules();
-    
-    // Inicializar gerenciador de temas
     const themeManager = new ThemeManager();
-
-    console.log('Sistema de Parcelas inicializado!');
 });
 
-// Prevenir zoom em dispositivos móveis
+// Prevenir zoom
 document.addEventListener('touchstart', function(e) {
     if (e.touches.length > 1) {
         e.preventDefault();
