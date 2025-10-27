@@ -1,409 +1,373 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veículos Elétricos - Sistema Financeiro</title>
-    <link rel="stylesheet" href="../../style.css">
-    <link rel="manifest" href="../../manifest.json">
+    <title>Veículos Elétricos - Sistema de Parcelas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
             --primary: #3b82f6;
-            --border-color: #334155;
-            --bg-tertiary: #334155;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #3d3d3d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #888888;
+            --border-color: #444444;
             --shadow-color: rgba(0,0,0,0.3);
-            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            --gradient-primary: linear-gradient(135deg, #3b82f6, #6366f1);
+            --transition: all 0.3s ease;
         }
-
         [data-theme="light"] {
             --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-card: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --primary: #3b82f6;
-            --border-color: #e2e8f0;
-            --bg-tertiary: #f1f5f9;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e9e9e9;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-muted: #888888;
+            --border-color: #dddddd;
             --shadow-color: rgba(0,0,0,0.1);
         }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            transition: var(--transition);
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            font-family:Arial,sans-serif; 
+            background:var(--bg-primary); 
+            color:var(--text-primary); 
+            height:100vh; 
+            overflow:hidden; 
+            display:flex; 
+            flex-direction:column; 
+            transition:var(--transition); 
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .container { max-width:600px; margin:0 auto; padding:0 16px; }
+        
+        /* HEADER COMPACTO */
+        .standard-header {
+            background:var(--bg-secondary);
+            padding:1.2rem 0;
+            border-bottom:1px solid var(--border-color);
+            margin-bottom:1.5rem;
+            position:relative;
         }
-
-        .simple-header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 2rem 0;
-            text-align: center;
-            position: relative;
+        .standard-header .container {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
         }
-
+        .header-content { flex:1; }
         .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:12px;
+            margin-bottom:6px;
         }
+        .logo-icon { font-size:2rem; color:var(--primary); }
+        .logo h1 { font-size:1.6rem; color:var(--text-primary); margin:0; }
+        .tagline { color:var(--text-secondary); font-size:0.85rem; }
 
-        .logo-icon {
-            font-size: 2.5rem;
-        }
-
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-primary);
-        }
-
-        .tagline {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin: 0;
-        }
-
-        .has-quick-nav { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
-        @media(min-width:769px){ .has-quick-nav { padding-bottom:0; } }
-
-        .categories-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 24px; 
-            margin: 3rem 0; 
-        }
-        
-        .category-item { 
-            background: var(--bg-card); 
-            border: 1px solid var(--border-color); 
-            border-radius: 16px; 
-            padding: 2rem; 
-            text-align: center; 
-            box-shadow: 0 4px 12px var(--shadow-color); 
-            transition: var(--transition); 
-            cursor: pointer; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-        }
-        
-        .category-item:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 8px 24px var(--shadow-color); 
-            border-color: var(--primary);
-        }
-        
-        .category-icon { 
-            font-size: 3rem; 
-            margin-bottom: 1rem; 
-        }
-        
-        .category-content h3 { 
-            font-size: 1.4rem; 
-            font-weight: 600; 
-            color: var(--text-primary); 
-            margin-bottom: 0.5rem; 
-        }
-        
-        .category-content p { 
-            font-size: 1rem; 
-            color: var(--text-muted); 
-            margin-bottom: 1.5rem; 
-            flex: 1; 
-        }
-        
-        .btn { 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            background: var(--gradient-primary); 
-            color: white; 
-            padding: 12px 24px; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            border: none; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            gap: 8px; 
-            width: 100%; 
-            max-width: 200px; 
-            margin: 0 auto; 
-            text-decoration: none; 
-        }
-        
-        .btn:hover { 
-            background: linear-gradient(135deg, #2563eb, #4f46e5); 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 24px var(--shadow-color); 
-        }
-
-        .quick-nav-bar { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            right: 0; 
-            z-index: 1000; 
-            background: var(--bg-secondary); 
-            border-top: 1px solid var(--border-color); 
-            box-shadow: 0 -4px 12px var(--shadow-color); 
-            display: none; 
-            padding-bottom: env(safe-area-inset-bottom); 
-        }
-        
-        .quick-nav-bar .container { 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            padding: 0 16px; 
-            height: 70px; 
-            margin: 0 auto; 
-            max-width: 600px; 
-        }
-        
-        .quick-nav-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            text-decoration: none; 
-            flex: 1; 
-            min-width: 30%; 
-            padding: 4px 0; 
-            transition: var(--transition); 
-            color: var(--text-muted); 
-            height: 100%; 
-        }
-        
-        .quick-nav-item:hover{ 
-            background-color: var(--bg-tertiary); 
-        }
-        
-        .quick-nav-item.active{ 
-            color: var(--primary); 
-            font-weight: 600; 
-        }
-        
-        .quick-nav-icon { 
-            font-size: 2.5rem; 
-        }
-        
-        @media (max-width: 768px){ 
-            .quick-nav-bar{ 
-                display: block; 
-            } 
-        }
-
+        /* TOGGLE COMPACTO */
         .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            z-index: 1000;
+            position:absolute;
+            right:16px;
+            top:50%;
+            transform:translateY(-50%);
+            background:none;
+            border:none;
+            cursor:pointer;
+            padding:8px;
+            border-radius:50%;
+            transition:var(--transition);
         }
-
+        .theme-toggle:hover { background:var(--bg-tertiary); }
         .toggle-track {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: var(--bg-tertiary);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5px;
-            transition: var(--transition);
+            position:relative;
+            width:56px;
+            height:28px;
+            background:var(--bg-tertiary);
+            border-radius:14px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:0 8px;
         }
-
+        .toggle-icon { font-size:0.8rem; z-index:2; }
+        .toggle-icon.sun { color:#f59e0b; } .toggle-icon.moon { color:#d1d5db; }
         .toggle-thumb {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: var(--primary);
-            border-radius: 50%;
-            transition: var(--transition);
-            left: 3px;
+            position:absolute;
+            left:3px;
+            top:3px;
+            width:22px;
+            height:22px;
+            background:var(--primary);
+            border-radius:50%;
+            transition:transform 0.3s ease;
+            z-index:1;
+        }
+        [data-theme="light"] .toggle-thumb { transform:translateX(28px); }
+
+        /* GRID 2x3 FIXO */
+        .square-grid {
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:16px;
+            margin:1.5rem 0;
+            height:calc(100vh - 200px); /* Ajuste para caber header e footer */
+            overflow-y:auto;
+            -webkit-overflow-scrolling:touch;
+        }
+        .square-btn {
+            background:var(--bg-secondary);
+            border-radius:12px;
+            padding:1.5rem;
+            text-decoration:none;
+            color:var(--text-primary);
+            border:1px solid var(--border-color);
+            transition:var(--transition);
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            aspect-ratio:1/1;
+            min-height:130px;
+        }
+        .square-btn:hover {
+            transform:translateY(-4px);
+            box-shadow:0 8px 20px var(--shadow-color);
+            border-color:var(--primary);
+        }
+        .btn-icon { font-size:2.5rem; margin-bottom:1rem; }
+        .btn-text { font-size:1rem; font-weight:600; color:var(--text-primary); }
+
+        /* BOTÃO AJUDA */
+        .help-btn {
+            background:var(--bg-tertiary);
+            border:2px dashed var(--text-muted);
+        }
+        .help-btn:hover {
+            border-color:var(--primary);
+            background:var(--bg-secondary);
         }
 
-        body[data-theme="light"] .toggle-thumb {
-            transform: translateX(30px);
+        /* FOOTER FIXO COM AJUDA AO LADO DO INSTAGRAM */
+        .standard-footer {
+            position:fixed;
+            bottom:0;
+            left:0;
+            right:0;
+            z-index:1000;
+            background:var(--bg-secondary);
+            border-top:1px solid var(--border-color);
+            box-shadow:0 -4px 12px var(--shadow-color);
+            padding-bottom:env(safe-area-inset-bottom);
+            height:60px;
         }
-
-        .toggle-icon {
-            font-size: 14px;
-            transition: var(--transition);
+        .standard-footer .container {
+            display:flex;
+            justify-content:space-around;
+            align-items:center;
+            padding:0 16px;
+            height:100%;
         }
-
-        body[data-theme="light"] .toggle-icon.sun {
-            opacity: 1;
+        .footer-btn {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-decoration:none;
+            flex:1;
+            padding:8px 0;
+            transition:var(--transition);
+            color:var(--text-muted);
+            height:100%;
+            border-radius:8px;
         }
-
-        body[data-theme="light"] .toggle-icon.moon {
-            opacity: 0.3;
+        .footer-btn:hover {
+            background-color:var(--bg-tertiary);
+            transform:translateY(-2px);
         }
+        .footer-icon { font-size:1.8rem; transition:var(--transition); }
+        .fa-whatsapp { color:#25D366 !important; }
+        .footer-btn:hover .fa-home { color:var(--primary); }
+        .footer-btn:hover .fa-instagram { color:#E4405F; }
+        .footer-btn:hover .fa-question-circle { color:#8b5cf6; }
 
-        body[data-theme="dark"] .toggle-icon.sun {
-            opacity: 0.3;
+        @media (max-width:480px) {
+            .square-grid { gap:12px; height:calc(100vh - 180px); }
+            .square-btn { padding:1.2rem; min-height:110px; }
+            .btn-icon { font-size:2rem; }
+            .btn-text { font-size:0.9rem; }
+            .footer-icon { font-size:1.6rem; }
         }
-
-        body[data-theme="dark"] .toggle-icon.moon {
-            opacity: 1;
-        }
-
     </style>
 </head>
-<body class="has-quick-nav">
+<body>
 
-    <header class="simple-header">
+    <!-- HEADER -->
+    <header class="standard-header">
         <div class="container">
-            <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-bolt logo-icon"></i>
+                    <h1>Veículos Elétricos</h1>
+                </div>
+                <p class="tagline">Bicicletas, patinetes, scooters</p>
+            </div>
+            <button class="theme-toggle" aria-label="Alternar tema">
                 <div class="toggle-track">
+                    <i class="fas fa-sun toggle-icon sun"></i>
+                    <i class="fas fa-moon toggle-icon moon"></i>
                     <div class="toggle-thumb"></div>
-                    <span class="toggle-icon sun">☀️</span>
-                    <span class="toggle-icon moon">🌙</span>
                 </div>
             </button>
-
-            <div class="logo">
-                <div class="logo-icon">🔋</div>
-                <h1>Veículos Elétricos</h1>
-            </div>
-            <p class="tagline">Bicicletas, patinetes, scooters elétricos e acessórios</p>
         </div>
     </header>
 
+    <!-- CONTEÚDO -->
     <div class="container">
-        <section class="categories-grid">
-            <div class="category-item">
-                <div class="category-icon">⚙️</div>
-                <div class="category-content">
-                    <h3>Acessórios</h3>
-                    <p>Acessórios para veículos elétricos</p>
-                    <a href="calculadora-de-acessorios-de-veiculos-eletricos/index.html" class="btn">Acessar</a>
+        <div class="square-grid">
+            <!-- LINHA 1 -->
+            <!-- Bicicletas Elétricas Novas -->
+            <a href="calculadora-de-bicicletas-eletricas-nova/index.html" class="square-btn">
+                <div class="btn-icon">
+                    <i class="fas fa-bicycle" style="color:#10b981"></i>
                 </div>
-            </div>
-            
-            <div class="category-item">
-                <div class="category-icon">🚲</div>
-                <div class="category-content">
-                    <h3>Bicicletas Novas</h3>
-                    <p>Bicicletas elétricas novas</p>
-                    <a href="calculadora-de-bicicletas-eletricas-nova/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            
-            <div class="category-item">
-                <div class="category-icon">🔧</div>
-                <div class="category-content">
-                    <h3>Bicicletas Usadas</h3>
-                    <p>Bicicletas elétricas usadas</p>
-                    <a href="calculadora-de-bicicletas-eletricas-usada/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
+                <div class="btn-text">Bicicletas Novas</div>
+            </a>
 
-            <div class="category-item">
-                <div class="category-icon">🛴</div>
-                <div class="category-content">
-                    <h3>Patinetes Novos</h3>
-                    <p>Patinetes elétricos novos</p>
-                    <a href="calculadora-de-patinetes-eletricos-novo/index.html" class="btn">Acessar</a>
+            <!-- Bicicletas Elétricas Usadas -->
+            <a href="calculadora-de-bicicletas-eletricas-usada/index.html" class="square-btn">
+                <div class="btn-icon">
+                    <i class="fas fa-bicycle" style="color:#8b5cf6"></i>
                 </div>
-            </div>
+                <div class="btn-text">Bicicletas Usadas</div>
+            </a>
 
-            <div class="category-item">
-                <div class="category-icon">🔩</div>
-                <div class="category-content">
-                    <h3>Patinetes Usados</h3>
-                    <p>Patinetes elétricos usados</p>
-                    <a href="calculadora-de-patinetes-eletricos-usado/index.html" class="btn">Acessar</a>
+            <!-- LINHA 2 -->
+            <!-- Patinetes Elétricos Novos -->
+            <a href="calculadora-de-patinetes-eletricos-novo/index.html" class="square-btn">
+                <div class="btn-icon">
+                    <i class="fas fa-scooter" style="color:#06b6d4"></i>
                 </div>
-            </div>
+                <div class="btn-text">Patinetes Novos</div>
+            </a>
 
-            <div class="category-item">
-                <div class="category-icon">🛵</div>
-                <div class="category-content">
-                    <h3>Scooters Elétricas</h3>
-                    <p>Scooters elétricas novas e usadas</p>
-                    <a href="calculadora-de-scooter-eletrico/index.html" class="btn">Acessar</a>
+            <!-- Patinetes Elétricos Usados -->
+            <a href="calculadora-de-patinetes-eletricos-usado/index.html" class="square-btn">
+                <div class="btn-icon">
+                    <i class="fas fa-scooter" style="color:#ec4899"></i>
                 </div>
-            </div>
-        </section>
+                <div class="btn-text">Patinetes Usados</div>
+            </a>
+
+            <!-- LINHA 3 -->
+            <!-- Scooters Elétricas Novas (adicionando como placeholder, pois não há "nova" separada) -->
+            <a href="calculadora-de-scooter-eletrico/index.html" class="square-btn">
+                <div class="btn-icon">
+                    <i class="fas fa-motorcycle" style="color:#6366f1"></i>
+                </div>
+                <div class="btn-text">Scooters Elétricas</div>
+            </a>
+
+            <!-- Acessórios -->
+            <a href="calculadora-de-acessorios-de-veiculos-eletricos/index.html" class="square-btn">
+                <div class="btn-icon">
+                    <i class="fas fa-wrench" style="color:#f59e0b"></i>
+                </div>
+                <div class="btn-text">Acessórios</div>
+            </a>
+
+            <!-- BOTÃO AJUDA (removido do grid, será no footer) -->
+        </div>
     </div>
 
-    <nav class="quick-nav-bar">
+    <!-- FOOTER FIXO COM AJUDA AO LADO DO INSTAGRAM -->
+    <nav class="standard-footer">
         <div class="container">
-            <a href="../../index.html" class="quick-nav-item">
-                <span class="quick-nav-icon">🏠</span>
+            <a href="/" class="footer-btn">
+                <i class="fas fa-home footer-icon"></i>
             </a>
-            <a href="https://wa.me/449984084" target="_blank" class="quick-nav-item">
-                <span class="quick-nav-icon" style="color:#25D366">📞</span>
+            <a href="https://wa.me/554499840846" target="_blank" class="footer-btn">
+                <i class="fab fa-whatsapp footer-icon"></i>
             </a>
-            <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="quick-nav-item">
-                <span class="quick-nav-icon">📸</span>
+            <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="footer-btn">
+                <i class="fab fa-instagram footer-icon"></i>
+            </a>
+            <a href="#" class="footer-btn" onclick="showHelp()">
+                <i class="fas fa-question-circle footer-icon"></i>
             </a>
         </div>
     </nav>
 
+    <!-- MODAL DE AJUDA -->
+    <div id="helpModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; padding:20px; overflow-y:auto;">
+        <div style="background:var(--bg-secondary); border-radius:16px; padding:20px; max-width:500px; margin:40px auto; border:1px solid var(--border-color);">
+            <h2 style="text-align:center; margin-bottom:16px; color:var(--primary);">
+                <i class="fas fa-info-circle"></i> Como usar Veículos Elétricos
+            </h2>
+            <div style="font-size:0.95rem; line-height:1.6; color:var(--text-secondary);">
+                <div style="margin-bottom:16px; padding:12px; background:var(--bg-tertiary); border-radius:8px;">
+                    <strong style="color:#f59e0b">Acessórios</strong><br>
+                    • Carregadores, baterias<br>
+                    • Parcelamento em até 24x<br>
+                    • Valor acessível
+                </div>
+                <div style="margin-bottom:16px; padding:12px; background:var(--bg-tertiary); border-radius:8px;">
+                    <strong style="color:#10b981">Bicicletas Novas</strong><br>
+                    • Novas de fábrica<br>
+                    • Entrada + parcelas<br>
+                    • Até 36x
+                </div>
+                <div style="margin-bottom:16px; padding:12px; background:var(--bg-tertiary); border-radius:8px;">
+                    <strong style="color:#8b5cf6">Bicicletas Usadas</strong><br>
+                    • Seminovas<br>
+                    • Entrada flexível<br>
+                    • Até 24x
+                </div>
+                <div style="margin-bottom:16px; padding:12px; background:var(--bg-tertiary); border-radius:8px;">
+                    <strong style="color:#06b6d4">Patinetes Novos</strong><br>
+                    • Novas de loja<br>
+                    • Parcelas sem entrada<br>
+                    • Até 18x
+                </div>
+                <div style="margin-bottom:16px; padding:12px; background:var(--bg-tertiary); border-radius:8px;">
+                    <strong style="color:#ec4899">Patinetes Usados</strong><br>
+                    • Usados em bom estado<br>
+                    • Entrada mínima<br>
+                    • Até 12x
+                </div>
+                <div style="margin-bottom:16px; padding:12px; background:var(--bg-tertiary); border-radius:8px;">
+                    <strong style="color:#6366f1">Scooters Elétricas</strong><br>
+                    • Novas e usadas<br>
+                    • Financiamento até 48x<br>
+                    • Condições especiais
+                </div>
+            </div>
+            <button onclick="document.getElementById('helpModal').style.display='none'" 
+                    style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:600; margin-top:16px; cursor:pointer;">
+                Fechar
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPT TEMA + AJUDA -->
     <script>
-        // Inicializar tema baseado no localStorage ou preferência do sistema
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            if (savedTheme) {
-                document.body.setAttribute('data-theme', savedTheme);
-            } else {
-                document.body.setAttribute('data-theme', systemPrefersDark ? 'dark' : 'light');
-            }
+        // Tema
+        class ThemeManager {
+            constructor() { this.currentTheme = localStorage.getItem('theme') || 'dark'; this.init(); }
+            init() { this.applyTheme(); this.setupEventListeners(); }
+            applyTheme() { document.documentElement.setAttribute('data-theme', this.currentTheme); }
+            setupEventListeners() { document.querySelector('.theme-toggle').addEventListener('click', () => this.toggleTheme()); }
+            toggleTheme() { this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', this.currentTheme); localStorage.setItem('theme', this.currentTheme); }
         }
+        document.addEventListener('DOMContentLoaded', () => new ThemeManager());
 
-        // Alternar tema
-        function toggleTheme() {
-            const currentTheme = document.body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        // Função do botão Ajuda
+        function showHelp() {
+            document.getElementById('helpModal').style.display = 'block';
         }
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeTheme();
-            
-            const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) {
-                themeToggle.addEventListener('click', toggleTheme);
-            }
-        });
-
-        // Ouvir mudanças de preferência do sistema
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (!localStorage.getItem('theme')) {
-                document.body.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-            }
-        });
     </script>
 </body>
 </html>
