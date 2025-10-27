@@ -17,6 +17,8 @@
             --border-color: #444444;
             --shadow-color: rgba(0,0,0,0.3);
             --transition: all 0.3s ease;
+            --header-height: 80px;
+            --footer-height: 60px;
         }
         [data-theme="light"] {
             --bg-primary: #ffffff;
@@ -46,7 +48,10 @@
             background:var(--bg-secondary);
             padding:1.2rem 0;
             border-bottom:1px solid var(--border-color);
-            margin-bottom:1.5rem;
+            height:var(--header-height);
+            display:flex;
+            align-items:center;
+            justify-content:center;
             position:relative;
         }
         .standard-header .container {
@@ -107,20 +112,19 @@
         }
         [data-theme="light"] .toggle-thumb { transform:translateX(28px); }
 
-        /* GRID 2x3 FIXO */
+        /* GRID 2x3 FIXO SEM ROLAGEM */
         .square-grid {
             display:grid;
             grid-template-columns:repeat(2,1fr);
             gap:16px;
             margin:1.5rem 0;
-            height:calc(100vh - 200px); /* Ajuste para caber header e footer */
-            overflow-y:auto;
-            -webkit-overflow-scrolling:touch;
+            height:calc(100vh - var(--header-height) - var(--footer-height) - 3rem); /* Ajuste para header, footer e margens */
+            overflow:hidden; /* Garante que não haja rolagem */
         }
         .square-btn {
             background:var(--bg-secondary);
             border-radius:12px;
-            padding:1.5rem;
+            padding:1rem; /* Reduzido para caber */
             text-decoration:none;
             color:var(--text-primary);
             border:1px solid var(--border-color);
@@ -131,15 +135,15 @@
             justify-content:center;
             text-align:center;
             aspect-ratio:1/1;
-            min-height:130px;
+            min-height:120px; /* Ajustado para caber 6 itens */
         }
         .square-btn:hover {
             transform:translateY(-4px);
             box-shadow:0 8px 20px var(--shadow-color);
             border-color:var(--primary);
         }
-        .btn-icon { font-size:2.5rem; margin-bottom:1rem; }
-        .btn-text { font-size:1rem; font-weight:600; color:var(--text-primary); }
+        .btn-icon { font-size:2rem; margin-bottom:0.5rem; } /* Reduzido */
+        .btn-text { font-size:0.9rem; font-weight:600; color:var(--text-primary); }
 
         /* BOTÃO AJUDA */
         .help-btn {
@@ -162,7 +166,7 @@
             border-top:1px solid var(--border-color);
             box-shadow:0 -4px 12px var(--shadow-color);
             padding-bottom:env(safe-area-inset-bottom);
-            height:60px;
+            height:var(--footer-height);
         }
         .standard-footer .container {
             display:flex;
@@ -195,10 +199,10 @@
         .footer-btn:hover .fa-question-circle { color:#8b5cf6; }
 
         @media (max-width:480px) {
-            .square-grid { gap:12px; height:calc(100vh - 180px); }
-            .square-btn { padding:1.2rem; min-height:110px; }
-            .btn-icon { font-size:2rem; }
-            .btn-text { font-size:0.9rem; }
+            .square-grid { gap:12px; height:calc(100vh - var(--header-height) - var(--footer-height) - 2rem); }
+            .square-btn { padding:0.8rem; min-height:100px; }
+            .btn-icon { font-size:1.8rem; }
+            .btn-text { font-size:0.85rem; }
             .footer-icon { font-size:1.6rem; }
         }
     </style>
@@ -263,7 +267,7 @@
             </a>
 
             <!-- LINHA 3 -->
-            <!-- Scooters Elétricas Novas (adicionando como placeholder, pois não há "nova" separada) -->
+            <!-- Scooters Elétricas -->
             <a href="calculadora-de-scooter-eletrico/index.html" class="square-btn">
                 <div class="btn-icon">
                     <i class="fas fa-motorcycle" style="color:#6366f1"></i>
@@ -278,8 +282,6 @@
                 </div>
                 <div class="btn-text">Acessórios</div>
             </a>
-
-            <!-- BOTÃO AJUDA (removido do grid, será no footer) -->
         </div>
     </div>
 
