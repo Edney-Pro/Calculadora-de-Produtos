@@ -1,357 +1,275 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ferramentas Avançadas - Sistema Financeiro</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="manifest" href="../manifest.json">
+    <title>Ferramentas Avançadas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
             --primary: #3b82f6;
-            --border-color: #334155;
-            --bg-tertiary: #334155;
-            --shadow-color: rgba(0,0,0,0.3);
-            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            --gradient-primary: linear-gradient(135deg, #3b82f6, #6366f1);
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border-color: #444444;
+            --transition: all 0.2s ease;
         }
-
         [data-theme="light"] {
             --bg-primary: #ffffff;
             --bg-secondary: #f8fafc;
-            --bg-card: #ffffff;
             --text-primary: #1e293b;
             --text-secondary: #475569;
-            --text-muted: #64748b;
-            --primary: #3b82f6;
             --border-color: #e2e8f0;
-            --bg-tertiary: #f1f5f9;
-            --shadow-color: rgba(0,0,0,0.1);
-            --gradient-primary: linear-gradient(135deg, #3b82f6, #6366f1);
         }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body { height:100%; overflow:hidden; }
         body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            transition: var(--transition);
+            font-family:Arial,sans-serif;
+            background:var(--bg-primary);
+            color:var(--text-primary);
+            display:flex;
+            flex-direction:column;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        /* HEADER MÍNIMO */
+        .header {
+            background:var(--bg-secondary);
+            padding:10px 12px;
+            border-bottom:1px solid var(--border-color);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            font-size:0.9rem;
+            position:relative;
+            z-index:10;
         }
+        .logo { display:flex; align-items:center; gap:8px; }
+        .logo i { font-size:1.4rem; color:var(--primary); }
+        .logo h1 { font-size:1.1rem; font-weight:600; margin:0; }
+        .tagline { font-size:0.65rem; color:var(--text-secondary); margin-left:4px; }
 
-        .simple-header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 2rem 0;
-            text-align: center;
-            transition: var(--transition);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-
-        .logo-icon {
-            font-size: 2.5rem;
-        }
-
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-primary);
-        }
-
-        .tagline {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin: 0;
-        }
-
-        .has-quick-nav { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
-        @media(min-width:769px){ .has-quick-nav { padding-bottom:0; } }
-
-        .categories-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; margin: 3rem 0; }
-        .category-item { background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:2rem; text-align:center; box-shadow:0 4px 12px var(--shadow-color); transition:var(--transition); cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; }
-        .category-item:hover { transform:translateY(-8px); box-shadow:0 8px 24px var(--shadow-color); border-color:var(--primary);}
-        .category-icon { font-size:3rem; margin-bottom:1rem; }
-        .category-content h3 { font-size:1.4rem; font-weight:600; color:var(--text-primary); margin-bottom:0.5rem; }
-        .category-content p { font-size:1rem; color:var(--text-muted); margin-bottom:1.5rem; flex:1; }
-        .btn { display:inline-flex; align-items:center; justify-content:center; background:var(--gradient-primary); color:white; padding:12px 24px; border-radius:8px; font-weight:600; border:none; cursor:pointer; transition:var(--transition); gap:8px; width:100%; max-width:200px; margin:0 auto; text-decoration:none; }
-        .btn:hover { background:linear-gradient(135deg,#2563eb,#4f46e5); transform:translateY(-2px); box-shadow:0 8px 24px var(--shadow-color); }
-
-        .quick-nav-bar { position:fixed; bottom:0; left:0; right:0; z-index:1000; background:var(--bg-secondary); border-top:1px solid var(--border-color); box-shadow:0 -4px 12px var(--shadow-color); display:none; padding-bottom:env(safe-area-inset-bottom); }
-        .quick-nav-bar .container { display:flex; justify-content:space-around; align-items:center; padding:0 16px; height:70px; margin:0 auto; max-width:600px; }
-        .quick-nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; flex:1; min-width:30%; padding:4px 0; transition:var(--transition); color:var(--text-muted); height:100%; }
-        .quick-nav-item:hover{ background-color:var(--bg-tertiary); }
-        .quick-nav-item.active{ color:var(--primary); font-weight:600; }
-        .quick-nav-icon { font-size: 2.5rem; }
-        @media(max-width:768px){ .quick-nav-bar{ display:block; } }
-
+        /* TOGGLE COMPACTO */
         .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
+            background:none; border:none; cursor:pointer; padding:6px; border-radius:50%;
         }
-
         .toggle-track {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: var(--bg-tertiary);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5px;
-            transition: var(--transition);
+            width:44px; height:22px; background:#444; border-radius:11px; position:relative; display:flex; align-items:center; padding:0 4px;
         }
-
         .toggle-thumb {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: var(--primary);
-            border-radius: 50%;
-            transition: var(--transition);
-            left: 3px;
+            width:18px; height:18px; background:var(--primary); border-radius:50%; position:absolute; left:2px; transition:var(--transition);
+        }
+        [data-theme="light"] .toggle-thumb { transform:translateX(22px); }
+
+        /* GRID 3x5 — OCUPA 100% DA TELA */
+        .grid-container {
+            flex:1;
+            padding:8px;
+            overflow-y:auto;
+            -webkit-overflow-scrolling:touch;
+        }
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:10px;
+            height:100%;
+        }
+        .app-btn {
+            background:var(--bg-secondary);
+            border:1px solid var(--border-color);
+            border-radius:12px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-decoration:none;
+            color:var(--text-primary);
+            padding:12px 8px;
+            transition:var(--transition);
+            min-height:80px;
+        }
+        .app-btn:hover {
+            transform:scale(1.05);
+            border-color:var(--primary);
+            box-shadow:0 6px 16px rgba(0,0,0,0.3);
+        }
+        .app-icon {
+            font-size:2rem;
+            margin-bottom:6px;
+        }
+        .app-label {
+            font-size:0.75rem;
+            font-weight:600;
+            text-align:center;
+            line-height:1;
         }
 
-        [data-theme="light"] .toggle-thumb {
-            left: 33px;
+        /* FOOTER 4 BOTÕES */
+        .footer {
+            background:var(--bg-secondary);
+            border-top:1px solid var(--border-color);
+            height:56px;
+            display:flex;
+            z-index:100;
         }
-
-        .toggle-icon {
-            font-size: 14px;
-            transition: var(--transition);
+        .footer-btn {
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            color:var(--text-secondary);
+            font-size:0.65rem;
+            gap:2px;
+            text-decoration:none;
         }
+        .footer-icon { font-size:1.5rem; }
+        .fa-whatsapp { color:#25D366 !important; }
+        .footer-btn:hover .fa-home { color:var(--primary); }
+        .footer-btn:hover .fa-instagram { color:#E4405F; }
+        .footer-btn:hover .fa-question-circle { color:#8b5cf6; }
 
-        [data-theme="light"] .toggle-icon.sun {
-            opacity: 1;
+        /* RESPONSIVO */
+        @media (max-width:360px) {
+            .grid { gap:8px; }
+            .app-btn { padding:10px 6px; min-height:70px; }
+            .app-icon { font-size:1.8rem; }
+            .app-label { font-size:0.7rem; }
         }
-
-        [data-theme="light"] .toggle-icon.moon {
-            opacity: 0.3;
-        }
-
-        [data-theme="dark"] .toggle-icon.sun {
-            opacity: 0.3;
-        }
-
-        [data-theme="dark"] .toggle-icon.moon {
-            opacity: 1;
-        }
-
     </style>
 </head>
-<body data-theme="dark" class="has-quick-nav">
+<body>
 
-    <header class="simple-header">
-        <div class="container">
-            <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
-                <div class="toggle-track">
-                    <div class="toggle-thumb"></div>
-                    <span class="toggle-icon sun">☀️</span>
-                    <span class="toggle-icon moon">🌙</span>
-                </div>
-            </button>
-
-            <div class="logo">
-                <div class="logo-icon">⚙️</div>
-                <h1>Ferramentas Avançadas</h1>
+    <!-- HEADER MÍNIMO -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-cogs"></i>
+            <div>
+                <h1>Ferramentas</h1>
+                <span class="tagline">15 apps avançados</span>
             </div>
-            <p class="tagline">Ferramentas especializadas para análise financeira</p>
         </div>
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <div class="toggle-track">
+                <div class="toggle-thumb"></div>
+            </div>
+        </button>
     </header>
 
-    <div class="container">
-        <section class="categories-grid">
-            <div class="category-item">
-                <div class="category-icon">🚨</div>
-                <div class="category-content">
-                    <h3>Alertas Risco</h3>
-                    <p>Sistema de alertas para identificar riscos financeiros</p>
-                    <a href="alertas-risco/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">📊</div>
-                <div class="category-content">
-                    <h3>Análise Comparativa</h3>
-                    <p>Compare diferentes opções de financiamento</p>
-                    <a href="analise-comparativa/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">⏱️</div>
-                <div class="category-content">
-                    <h3>Antecipação Parcelas</h3>
-                    <p>Calcule a antecipação de parcelas do seu financiamento</p>
-                    <a href="antecipacao-parcelas/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">💰</div>
-                <div class="category-content">
-                    <h3>Capacidade Pagamento</h3>
-                    <p>Analise a capacidade de pagamento do cliente</p>
-                    <a href="capacidade-pagamento/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">🏷️</div>
-                <div class="category-content">
-                    <h3>CET Custo Efetivo</h3>
-                    <p>Calcule o Custo Efetivo Total do financiamento</p>
-                    <a href="cet-custo-efetivo/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">🎚️</div>
-                <div class="category-content">
-                    <h3>Controle Limites</h3>
-                    <p>Controle e gerencie limites de crédito</p>
-                    <a href="controle-limites/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">📉</div>
-                <div class="category-content">
-                    <h3>Desvalorização Garantia</h3>
-                    <p>Calcule a desvalorização de garantias ao longo do tempo</p>
-                    <a href="desvalorizacao-garantia/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">⚠️</div>
-                <div class="category-content">
-                    <h3>Multa Atraso</h3>
-                    <p>Calcule multas por atraso no pagamento</p>
-                    <a href="multa-atraso/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">🔄</div>
-                <div class="category-content">
-                    <h3>Portabilidade Dívida</h3>
-                    <p>Simule a portabilidade de dívidas entre instituições</p>
-                    <a href="portabilidade-divida/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">📄</div>
-                <div class="category-content">
-                    <h3>Proposta PDF</h3>
-                    <p>Gere propostas em PDF personalizadas</p>
-                    <a href="proposta-pdf/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">🎯</div>
-                <div class="category-content">
-                    <h3>Sistema de Bingo</h3>
-                    <p>Ferramenta para organização de jogos de bingo</p>
-                    <a href="sistema-de-bingo/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">👥</div>
-                <div class="category-content">
-                    <h3>Sistema de Consórcio</h3>
-                    <p>Gerencie grupos de consórcio</p>
-                    <a href="sistema-de-consorcio/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">🎰</div>
-                <div class="category-content">
-                    <h3>Sistema de Sorteio</h3>
-                    <p>Realize sorteios de forma aleatória e controlada</p>
-                    <a href="sistema-de-sorteio/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">🔄</div>
-                <div class="category-content">
-                    <h3>Troca com Troco</h3>
-                    <p>Calcule trocos em operações de compra e venda</p>
-                    <a href="troca-com-troco/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">📈</div>
-                <div class="category-content">
-                    <h3>Upgrade Produto</h3>
-                    <p>Simule upgrades de produtos com parcelamento</p>
-                    <a href="upgrade-produto/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-            <div class="category-item">
-                <div class="category-icon">✅</div>
-                <div class="category-content">
-                    <h3>Validador Garantias</h3>
-                    <p>Valide e analise garantias oferecidas</p>
-                    <a href="validador-garantias/index.html" class="btn">Acessar</a>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <nav class="quick-nav-bar">
-        <div class="container">
-            <a href="../index.html" class="quick-nav-item">
-                <span class="quick-nav-icon">🏠</span>
+    <!-- GRID 3x5 — 100% ALTURA -->
+    <div class="grid-container">
+        <div class="grid">
+            <a href="alertas-risco/index.html" class="app-btn">
+                <div class="app-icon" style="color:#ef4444"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="app-label">Alertas</div>
             </a>
-            <a href="https://wa.me/449984084" target="_blank" class="quick-nav-item">
-                <span class="quick-nav-icon" style="color:#25D366">📞</span>
+            <a href="analise-comparativa/index.html" class="app-btn">
+                <div class="app-icon" style="color:#3b82f6"><i class="fas fa-balance-scale"></i></div>
+                <div class="app-label">Análise</div>
             </a>
-            <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="quick-nav-item">
-                <span class="quick-nav-icon">📸</span>
+            <a href="antecipacao-parcelas/index.html" class="app-btn">
+                <div class="app-icon" style="color:#f59e0b"><i class="fas fa-clock"></i></div>
+                <div class="app-label">Antecipação</div>
+            </a>
+            <a href="capacidade-pagamento/index.html" class="app-btn">
+                <div class="app-icon" style="color:#10b981"><i class="fas fa-hand-holding-usd"></i></div>
+                <div class="app-label">Capacidade</div>
+            </a>
+            <a href="cet-custo-efetivo/index.html" class="app-btn">
+                <div class="app-icon" style="color:#8b5cf6"><i class="fas fa-percentage"></i></div>
+                <div class="app-label">CET</div>
+            </a>
+            <a href="controle-limites/index.html" class="app-btn">
+                <div class="app-icon" style="color:#06b6d4"><i class="fas fa-tachometer-alt"></i></div>
+                <div class="app-label">Limites</div>
+            </a>
+            <a href="desvalorizacao-garantia/index.html" class="app-btn">
+                <div class="app-icon" style="color:#dc2626"><i class="fas fa-chart-line"></i></div>
+                <div class="app-label">Desvalorização</div>
+            </a>
+            <a href="multa-atraso/index.html" class="app-btn">
+                <div class="app-icon" style="color:#f97316"><i class="fas fa-gavel"></i></div>
+                <div class="app-label">Multa</div>
+            </a>
+            <a href="portabilidade-divida/index.html" class="app-btn">
+                <div class="app-icon" style="color:#6366f1"><i class="fas fa-exchange-alt"></i></div>
+                <div class="app-label">Portabilidade</div>
+            </a>
+            <a href="proposta-pdf/index.html" class="app-btn">
+                <div class="app-icon" style="color:#ef4444"><i class="fas fa-file-pdf"></i></div>
+                <div class="app-label">PDF</div>
+            </a>
+            <a href="sistema-de-bingo/index.html" class="app-btn">
+                <div class="app-icon" style="color:#ec4899"><i class="fas fa-dice"></i></div>
+                <div class="app-label">Bingo</div>
+            </a>
+            <a href="sistema-de-consorcio/index.html" class="app-btn">
+                <div class="app-icon" style="color:#14b8a6"><i class="fas fa-users"></i></div>
+                <div class="app-label">Consórcio</div>
+            </a>
+            <a href="sistema-de-sorteio/index.html" class="app-btn">
+                <div class="app-icon" style="color:#a855f7"><i class="fas fa-gift"></i></div>
+                <div class="app-label">Sorteio</div>
+            </a>
+            <a href="troca-com-troco/index.html" class="app-btn">
+                <div class="app-icon" style="color:#f59e0b"><i class="fas fa-sync-alt"></i></div>
+                <div class="app-label">Troca</div>
+            </a>
+            <a href="upgrade-produto/index.html" class="app-btn">
+                <div class="app-icon" style="color:#10b981"><i class="fas fa-arrow-up"></i></div>
+                <div class="app-label">Upgrade</div>
             </a>
         </div>
+    </div>
+
+    <!-- FOOTER 4 BOTÕES -->
+    <nav class="footer">
+        <a href="/" class="footer-btn"><i class="fas fa-home footer-icon"></i><span>Home</span></a>
+        <a href="https://wa.me/554499840846" target="_blank" class="footer-btn"><i class="fab fa-whatsapp footer-icon"></i><span>WhatsApp</span></a>
+        <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="footer-btn"><i class="fab fa-instagram footer-icon"></i><span>Instagram</span></a>
+        <a href="#" class="footer-btn" onclick="showHelp()"><i class="fas fa-question-circle footer-icon"></i><span>Ajuda</span></a>
     </nav>
 
+    <!-- MODAL AJUDA -->
+    <div id="helpModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; padding:16px; overflow-y:auto;">
+        <div style="background:var(--bg-secondary); border-radius:12px; padding:16px; border:1px solid var(--border-color);">
+            <h3 style="text-align:center; color:var(--primary); margin-bottom:12px; font-size:1rem;">Ajuda Rápida</h3>
+            <div style="font-size:0.8rem; line-height:1.4; color:var(--text-secondary); columns:2; column-gap:12px;">
+                <div><strong style="color:#ef4444">Alertas</strong>: Risco</div>
+                <div><strong style="color:#3b82f6">Análise</strong>: Comparar</div>
+                <div><strong style="color:#f59e0b">Antecipação</strong>: Desconto</div>
+                <div><strong style="color:#10b981">Capacidade</strong>: Renda</div>
+                <div><strong style="color:#8b5cf6">CET</strong>: Custo total</div>
+                <div><strong style="color:#06b6d4">Limites</strong>: Crédito</div>
+                <div><strong style="color:#dc2626">Desvalorização</strong>: Garantia</div>
+                <div><strong style="color:#f97316">Multa</strong>: Atraso</div>
+                <div><strong style="color:#6366f1">Portabilidade</strong>: Migração</div>
+                <div><strong style="color:#ef4444">PDF</strong>: Proposta</div>
+                <div><strong style="color:#ec4899">Bingo</strong>: Rifas</div>
+                <div><strong style="color:#14b8a6">Consórcio</strong>: Grupos</div>
+                <div><strong style="color:#a855f7">Sorteio</strong>: Aleatório</div>
+                <div><strong style="color:#f59e0b">Troca</strong>: Troco</div>
+                <div><strong style="color:#10b981">Upgrade</strong>: Troca+</div>
+            </div>
+            <button onclick="document.getElementById('helpModal').style.display='none'" 
+                    style="width:100%; margin-top:12px; padding:10px; background:var(--primary); color:white; border:none; border-radius:8px; font-size:0.9rem;">
+                Fechar
+            </button>
+        </div>
+    </div>
+
     <script>
-        // Função para alternar o tema
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-            
-            // Salvar preferência no localStorage
-            localStorage.setItem('theme', newTheme);
-        });
-
-        // Verificar tema salvo ao carregar a página
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            body.setAttribute('data-theme', savedTheme);
+        function toggleTheme() {
+            const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
         }
+        function showHelp() {
+            document.getElementById('helpModal').style.display = 'block';
+        }
+        // Carregar tema salvo
+        const saved = localStorage.getItem('theme');
+        if (saved) document.documentElement.setAttribute('data-theme', saved);
     </script>
-
-    <script src="../script.js"></script>
 </body>
 </html>
