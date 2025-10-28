@@ -3,286 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renegociação - Sistema de Parcelas</title>
+    <title>Renegociação - Sistema Financeiro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="../manifest.json">
+
     <style>
+        /* ===== TEMA ===== */
         :root {
-            --primary: #3b82f6;
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --border-color: #444444;
-            --transition: all 0.2s ease;
+            --primary: #3b82f6; --bg-primary: #1a1a1a; --bg-secondary: #2d2d2d; --bg-tertiary: #3d3d3d;
+            --text-primary: #ffffff; --text-secondary: #cccccc; --text-muted: #888888;
+            --border-color: #444444; --shadow-color: rgba(0,0,0,0.3); --transition: all 0.3s ease;
         }
         [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --border-color: #e2e8f0;
+            --bg-primary: #ffffff; --bg-secondary: #f5f5f5; --bg-tertiary: #e9e9e9;
+            --text-primary: #333333; --text-secondary: #666666; --border-color: #dddddd;
+            --shadow-color: rgba(0,0,0,0.1);
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        html, body { height:100%; overflow:hidden; }
-        body {
-            font-family:Arial,sans-serif;
-            background:var(--bg-primary);
-            color:var(--text-primary);
-            display:flex;
-            flex-direction:column;
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* HEADER MÍNIMO */
-        .header {
-            background:var(--bg-secondary);
-            padding:10px 12px;
-            border-bottom:1px solid var(--border-color);
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            font-size:0.9rem;
-            position:relative;
-            z-index:10;
+        /* ===== HEADER ===== */
+        .standard-header {
+            background: var(--bg-secondary);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            position: relative;
         }
-        .logo { display:flex; align-items:center; gap:8px; }
-        .logo i { font-size:1.4rem; color:var(--primary); }
-        .logo h1 { font-size:1.1rem; font-weight:600; margin:0; }
-        .tagline { font-size:0.65rem; color:var(--text-secondary); margin-left:4px; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            position: relative;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+        }
+        .logo-icon { font-size: 2rem; color: var(--primary); }
+        .logo h1 { font-size: 1.5rem; margin: 0; }
+        .tagline { color: var(--text-secondary); font-size: 0.75rem; margin-left: 8px; }
 
-        /* TOGGLE COMPACTO */
+        /* ===== TOGGLE TEMA ===== */
         .theme-toggle {
-            background:none; border:none; cursor:pointer; padding:6px; border-radius:50%;
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
         }
+        .theme-toggle:hover { background: var(--bg-tertiary); }
         .toggle-track {
-            width:44px; height:22px; background:#444; border-radius:11px; position:relative; display:flex; align-items:center; padding:0 4px;
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--bg-tertiary);
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
         }
+        .toggle-icon { font-size: 0.75rem; z-index: 2; }
+        .toggle-icon.sun { color: #f59e0b; }
+        .toggle-icon.moon { color: #d1d5db; }
         .toggle-thumb {
-            width:18px; height:18px; background:var(--primary); border-radius:50%; position:absolute; left:2px; transition:var(--transition);
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
         }
-        [data-theme="light"] .toggle-thumb { transform:translateX(22px); }
+        [data-theme="light"] .toggle-thumb { transform: translateX(24px); }
 
-        /* GRID 3x5 — OCUPA 100% DA TELA */
+        /* ===== GRID ===== */
         .grid-container {
-            flex:1;
-            padding:8px;
-            overflow-y:auto;
-            -webkit-overflow-scrolling:touch;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            height: calc(100vh - var(--header-height) - var(--footer-height));
+            overflow: hidden;
         }
+
+        /* Ajuste dinâmico para ocupar espaço restante */
         .grid {
-            display:grid;
-            grid-template-columns:repeat(3,1fr);
-            gap:10px;
-            height:100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 10px;
+            flex: 1;
+            height: 100%;
         }
         .app-btn {
-            background:var(--bg-secondary);
-            border:1px solid var(--border-color);
-            border-radius:12px;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            text-decoration:none;
-            color:var(--text-primary);
-            padding:12px 8px;
-            transition:var(--transition);
-            min-height:80px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: var(--transition);
+            min-height: 0;
+            cursor: pointer;
         }
         .app-btn:hover {
-            transform:scale(1.05);
-            border-color:var(--primary);
-            box-shadow:0 6px 16px rgba(0,0,0,0.3);
+            transform: scale(1.03);
+            border-color: var(--primary);
+            box-shadow: 0 6px 16px var(--shadow-color);
         }
-        .app-icon {
-            font-size:1.8rem;
-            margin-bottom:4px;
-        }
-        .app-label {
-            font-size:0.7rem;
-            font-weight:600;
-            text-align:center;
-            line-height:1;
-        }
+        .app-icon { font-size: 2.2rem; margin-bottom: 6px; }
+        .app-label { font-size: 0.7rem; font-weight: 600; text-align: center; line-height: 1.1; }
 
-        /* FOOTER 4 BOTÕES */
-        .footer {
-            background:var(--bg-secondary);
-            border-top:1px solid var(--border-color);
-            height:56px;
-            display:flex;
-            z-index:100;
+        /* ===== FOOTER ===== */
+        .standard-footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -4px 12px var(--shadow-color);
+            flex-shrink: 0;
+            padding: 8px 0;
+        }
+        .standard-footer .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 16px;
         }
         .footer-btn {
-            flex:1;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            color:var(--text-secondary);
-            font-size:0.65rem;
-            gap:2px;
-            text-decoration:none;
+            flex: 1;
+            text-align: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 0;
+            border-radius: 10px;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            max-width: 33.333%;
         }
-        .footer-icon { font-size:1.5rem; }
-        .fa-whatsapp { color:#25D366 !important; }
-        .footer-btn:hover .fa-home { color:var(--primary); }
-        .footer-btn:hover .fa-instagram { color:#E4405F; }
-        .footer-btn:hover .fa-question-circle { color:#8b5cf6; }
+        .footer-btn:hover { background: var(--bg-tertiary); }
+        .footer-icon { font-size: 1.7rem; }
+        .fa-whatsapp { color: #25D366 !important; }
+        .footer-btn:hover .fa-home { color: var(--primary); }
+        .footer-btn:hover .fa-instagram { color: #E4405F; }
 
-        /* RESPONSIVO */
-        @media (max-width:360px) {
-            .grid { gap:8px; }
-            .app-btn { padding:10px 6px; min-height:70px; }
-            .app-icon { font-size:1.6rem; }
-            .app-label { font-size:0.65rem; }
+        /* ===== MODAL ===== */
+        #helpModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+        .help-list { display: grid; gap: 12px; font-size: 0.9rem; line-height: 1.5; }
+        .help-item { display: flex; align-items: center; gap: 12px; }
+        .help-icon {
+            width: 34px; height: 34px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 480px) {
+            .app-icon { font-size: 1.8rem; }
+            .app-label { font-size: 0.68rem; }
+            .grid { gap: 8px; }
+        }
+        @media (max-width: 360px) {
+            .app-icon { font-size: 1.6rem; }
+            .app-label { font-size: 0.62rem; }
+            .grid { gap: 6px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER MÍNIMO -->
-    <header class="header">
-        <div class="logo">
-            <i class="fas fa-sync-alt"></i>
-            <div>
-                <h1>Renegociação</h1>
-                <span class="tagline">13 ferramentas</span>
+    <!-- HEADER -->
+    <header class="standard-header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <i class="fas fa-handshake logo-icon"></i>
+                <h1>Cent. de Renegociação</h1>
+                <p class="tagline"></p>
             </div>
+            <button class="theme-toggle" aria-label="Alternar tema">
+                <div class="toggle-track">
+                    <i class="fas fa-sun toggle-icon sun"></i>
+                    <i class="fas fa-moon toggle-icon moon"></i>
+                    <div class="toggle-thumb"></div>
+                </div>
+            </button>
         </div>
-        <button class="theme-toggle" onclick="toggleTheme()">
-            <div class="toggle-track">
-                <div class="toggle-thumb"></div>
-            </div>
-        </button>
     </header>
 
-    <!-- GRID 3x5 — 100% ALTURA -->
-    <div class="grid-container">
+    <!-- GRID 3x5 - RENEGOCIAÇÃO -->
+    <main class="grid-container">
         <div class="grid">
-            <!-- 1. Empréstimo Atrasado -->
-            <a href="renegociacao-de-emprestimo-atrasado/index.html" class="app-btn">
-                <div class="app-icon" style="color:#ef4444"><i class="fas fa-exclamation-triangle"></i></div>
-                <div class="app-label">Empréstimo Atrasado</div>
-            </a>
+            <a href="renegociacao-de-emprestimo-atrasado/index.html" class="app-btn"><div class="app-icon" style="color:#ef4444"><i class="fas fa-clock"></i></div><div class="app-label">Empréstimos Atrasados</div></a>
+            <a href="renegociacao-de-emprestimo-avencer/index.html" class="app-btn"><div class="app-icon" style="color:#22c55e"><i class="fas fa-hourglass-half"></i></div><div class="app-label">Empréstimos a Vencer</div></a>
+            <a href="renegociacao-de-emprestimo-combinado/index.html" class="app-btn"><div class="app-icon" style="color:#3b82f6"><i class="fas fa-handshake"></i></div><div class="app-label">Empréstimos Combinados</div></a>
 
-            <!-- 2. Empréstimo a Vencer -->
-            <a href="renegociacao-de-emprestimo-avencer/index.html" class="app-btn">
-                <div class="app-icon" style="color:#f59e0b"><i class="fas fa-calendar-alt"></i></div>
-                <div class="app-label">Empréstimo a Vencer</div>
-            </a>
+            <a href="renegociacao-de-produtos-atrasados/index.html" class="app-btn"><div class="app-icon" style="color:#f97316"><i class="fas fa-box-open"></i></div><div class="app-label">Produtos Atrasados</div></a>
+            <a href="renegociacao-de-produtos-avencer/index.html" class="app-btn"><div class="app-icon" style="color:#10b981"><i class="fas fa-box"></i></div><div class="app-label">Produtos a Vencer</div></a>
+            <a href="renegociacao-de-produtos-combinados/index.html" class="app-btn"><div class="app-icon" style="color:#8b5cf6"><i class="fas fa-gift"></i></div><div class="app-label">Produtos Combinados</div></a>
 
-            <!-- 3. Empréstimo Combinado -->
-            <a href="renegociacao-de-emprestimo-combinado/index.html" class="app-btn">
-                <div class="app-icon" style="color:#8b5cf6"><i class="fas fa-link"></i></div>
-                <div class="app-label">Empréstimo Combinado</div>
-            </a>
+            <a href="renegociacao-de-veiculos-atrasados/index.html" class="app-btn"><div class="app-icon" style="color:#dc2626"><i class="fas fa-car-crash"></i></div><div class="app-label">Veículos Atrasados</div></a>
+            <a href="renegociacao-de-veiculos-avencer/index.html" class="app-btn"><div class="app-icon" style="color:#f59e0b"><i class="fas fa-car"></i></div><div class="app-label">Veículos a Vencer</div></a>
+            <a href="renegociacao-de-veiculos-combinado/index.html" class="app-btn"><div class="app-icon" style="color:#14b8a6"><i class="fas fa-car-side"></i></div><div class="app-label">Veículos Combinados</div></a>
 
-            <!-- 4. Produtos Atrasados -->
-            <a href="renegociacao-de-produtos-atrasados/index.html" class="app-btn">
-                <div class="app-icon" style="color:#ef4444"><i class="fas fa-shopping-cart"></i></div>
-                <div class="app-label">Produtos Atrasados</div>
-            </a>
+            <a href="renegociacao-de-veiculos-eletricos-atrasados/index.html" class="app-btn"><div class="app-icon" style="color:#0ea5e9"><i class="fas fa-bolt"></i></div><div class="app-label">Elétricos Atrasados</div></a>
+            <a href="renegociacao-de-veiculos-eletricos-avencer/index.html" class="app-btn"><div class="app-icon" style="color:#a855f7"><i class="fas fa-battery-half"></i></div><div class="app-label">Elétricos a Vencer</div></a>
+            <a href="renegociacao-de-veiculos-eletricos-combinado/index.html" class="app-btn"><div class="app-icon" style="color:#f43f5e"><i class="fas fa-charging-station"></i></div><div class="app-label">Elétricos Combinados</div></a>
 
-            <!-- 5. Produtos a Vencer -->
-            <a href="renegociacao-de-produtos-avencer/index.html" class="app-btn">
-                <div class="app-icon" style="color:#f59e0b"><i class="fas fa-box"></i></div>
-                <div class="app-label">Produtos a Vencer</div>
-            </a>
-
-            <!-- 6. Produtos Combinados -->
-            <a href="renegociacao-de-produtos-combinados/index.html" class="app-btn">
-                <div class="app-icon" style="color:#10b981"><i class="fas fa-cubes"></i></div>
-                <div class="app-label">Produtos Combinados</div>
-            </a>
-
-            <!-- 7. Veículos Atrasados -->
-            <a href="renegociacao-de-veiculos-atrasados/index.html" class="app-btn">
-                <div class="app-icon" style="color:#ef4444"><i class="fas fa-car"></i></div>
-                <div class="app-label">Veículos Atrasados</div>
-            </a>
-
-            <!-- 8. Veículos a Vencer -->
-            <a href="renegociacao-de-veiculos-avencer/index.html" class="app-btn">
-                <div class="app-icon" style="color:#f59e0b"><i class="fas fa-car-side"></i></div>
-                <div class="app-label">Veículos a Vencer</div>
-            </a>
-
-            <!-- 9. Veículos Combinados -->
-            <a href="renegociacao-de-veiculos-combinado/index.html" class="app-btn">
-                <div class="app-icon" style="color:#6366f1"><i class="fas fa-car-alt"></i></div>
-                <div class="app-label">Veículos Combinados</div>
-            </a>
-
-            <!-- 10. Elétricos Atrasados -->
-            <a href="renegociacao-de-veiculos-eletricos-atrasados/index.html" class="app-btn">
-                <div class="app-icon" style="color:#ef4444"><i class="fas fa-bolt"></i></div>
-                <div class="app-label">Elétricos Atrasados</div>
-            </a>
-
-            <!-- 11. Elétricos a Vencer -->
-            <a href="renegociacao-de-veiculos-eletricos-avencer/index.html" class="app-btn">
-                <div class="app-icon" style="color:#10b981"><i class="fas fa-plug"></i></div>
-                <div class="app-label">Elétricos a Vencer</div>
-            </a>
-
-            <!-- 12. Elétricos Combinados -->
-            <a href="renegociacao-de-veiculos-eletricos-combinado/index.html" class="app-btn">
-                <div class="app-icon" style="color:#8b5cf6"><i class="fas fa-battery-full"></i></div>
-                <div class="app-label">Elétricos Combinados</div>
-            </a>
-
-            <!-- 13. Renegociação Especial -->
-            <a href="renegociacao-especial/index.html" class="app-btn">
-                <div class="app-icon" style="color:#ec4899"><i class="fas fa-gem"></i></div>
-                <div class="app-label">Renegociação Especial</div>
-            </a>
-
-            <!-- 14 e 15: Preenchimento para grid 3x5 (opcional) -->
-            <div class="app-btn" style="opacity:0; pointer-events:none;"></div>
-            <div class="app-btn" style="opacity:0; pointer-events:none;"></div>
+            <a href="renegociacao-especial/index.html" class="app-btn"><div class="app-icon" style="color:#facc15"><i class="fas fa-star"></i></div><div class="app-label">Renegociação Especial</div></a>
+            <a href="../index.html" class="app-btn"><div class="app-icon" style="color:#3b82f6"><i class="fas fa-arrow-left"></i></div><div class="app-label">Voltar ao Início</div></a>
+            <button class="app-btn" onclick="showHelp()"><div class="app-icon" style="color:#06b6d4"><i class="fas fa-circle-question"></i></div><div class="app-label">Ajuda</div></button>
         </div>
-    </div>
+    </main>
 
-    <!-- FOOTER 4 BOTÕES -->
-    <nav class="footer">
-        <a href="/" class="footer-btn"><i class="fas fa-home footer-icon"></i><span>Home</span></a>
-        <a href="https://wa.me/554499840846" target="_blank" class="footer-btn"><i class="fab fa-whatsapp footer-icon"></i><span>WhatsApp</span></a>
-        <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="footer-btn"><i class="fab fa-instagram footer-icon"></i><span>Instagram</span></a>
-        <a href="#" class="footer-btn" onclick="showHelp()"><i class="fas fa-question-circle footer-icon"></i><span>Ajuda</span></a>
+    <!-- FOOTER APENAS COM HOME, WHATSAPP E INSTAGRAM -->
+    <nav class="standard-footer" id="footer">
+        <div class="container">
+            <button class="footer-btn" onclick="window.location.href='../index.html'">
+                <i class="fas fa-home footer-icon"></i>
+                <span>Home</span>
+            </button>
+            <button class="footer-btn" onclick="window.open('https://wa.me/5544998408460','_blank')">
+                <i class="fab fa-whatsapp footer-icon"></i>
+                <span>WhatsApp</span>
+            </button>
+            <button class="footer-btn" onclick="window.open('https://www.instagram.com/','_blank')">
+                <i class="fab fa-instagram footer-icon"></i>
+                <span>Instagram</span>
+            </button>
+        </div>
     </nav>
 
     <!-- MODAL AJUDA -->
-    <div id="helpModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; padding:16px; overflow-y:auto;">
-        <div style="background:var(--bg-secondary); border-radius:12px; padding:16px; border:1px solid var(--border-color); max-width:500px; margin:40px auto;">
-            <h3 style="text-align:center; color:var(--primary); margin-bottom:12px; font-size:1rem;">Ajuda Rápida</h3>
-            <div style="font-size:0.8rem; line-height:1.4; color:var(--text-secondary); columns:2; column-gap:12px;">
-                <div><strong style="color:#ef4444">Atrasado</strong>: Parcelas em atraso</div>
-                <div><strong style="color:#f59e0b">a Vencer</strong>: Em dia, renegociar</div>
-                <div><strong style="color:#8b5cf6">Combinado</strong>: Várias dívidas</div>
-                <div><strong style="color:#10b981">Produtos</strong>: Geladeira, TV, etc.</div>
-                <div><strong style="color:#6366f1">Veículos</strong>: Carro, moto</div>
-                <div><strong style="color:#ec4899">Especial</strong>: Condições exclusivas</div>
+    <div id="helpModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 16px; text-align: center;"></h3>
+            <div class="help-list">
+                <div class="help-item">
+                    <div class="help-icon" style="background: #ef4444;"><i class="fas fa-clock"></i></div>
+                    <div><strong>Empréstimos Atrasados:</strong> Renegocie dívidas em atraso com condições especiais</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #22c55e;"><i class="fas fa-hourglass-half"></i></div>
+                    <div><strong>Empréstimos a Vencer:</strong> Antecipe e renegocie antes do vencimento</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #3b82f6;"><i class="fas fa-handshake"></i></div>
+                    <div><strong>Empréstimos Combinados:</strong> Junte várias dívidas em uma só</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #f97316;"><i class="fas fa-box-open"></i></div>
+                    <div><strong>Produtos Atrasados:</strong> Renegocie produtos financiados em atraso</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #10b981;"><i class="fas fa-box"></i></div>
+                    <div><strong>Produtos a Vencer:</strong> Renegocie produtos antes do vencimento</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #8b5cf6;"><i class="fas fa-gift"></i></div>
+                    <div><strong>Produtos Combinados:</strong> Combine múltiplos produtos em uma renegociação</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #dc2626;"><i class="fas fa-car-crash"></i></div>
+                    <div><strong>Veículos Atrasados:</strong> Renegocie financiamento de veículos em atraso</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #f59e0b;"><i class="fas fa-car"></i></div>
+                    <div><strong>Veículos a Vencer:</strong> Renegocie financiamento antes do vencimento</div>
+                </div>
             </div>
-            <button onclick="document.getElementById('helpModal').style.display='none'" 
-                    style="width:100%; margin-top:12px; padding:10px; background:var(--primary); color:white; border:none; border-radius:8px; font-size:0.9rem; cursor:pointer;">
-                Fechar
-            </button>
+            <button class="modal-close" onclick="closeHelp()">Fechar Ajuda</button>
         </div>
     </div>
 
-    <!-- SCRIPT TEMA + AJUDA -->
+    <!-- SCRIPT -->
     <script>
-        function toggleTheme() {
-            const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+        // Ajusta dinamicamente o espaço da grid entre topo e footer
+        function ajustarAltura() {
+            const header = document.getElementById('header').offsetHeight;
+            const footer = document.getElementById('footer').offsetHeight;
+            document.querySelector('.grid-container').style.height = `calc(100vh - ${header + footer}px)`;
         }
+        window.addEventListener('resize', ajustarAltura);
+        window.addEventListener('load', ajustarAltura);
+
+        // Tema
+        class ThemeManager {
+            constructor() {
+                this.currentTheme = localStorage.getItem('theme') || 'dark';
+                this.init();
+            }
+            init() {
+                this.applyTheme();
+                this.setupToggle();
+            }
+            applyTheme() {
+                document.documentElement.setAttribute('data-theme', this.currentTheme);
+            }
+            setupToggle() {
+                document.querySelector('.theme-toggle').addEventListener('click', () => this.toggle());
+            }
+            toggle() {
+                this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+                this.applyTheme();
+                localStorage.setItem('theme', this.currentTheme);
+            }
+        }
+        new ThemeManager();
+
+        // Modal ajuda
         function showHelp() {
-            document.getElementById('helpModal').style.display = 'block';
+            document.getElementById('helpModal').style.display = 'flex';
         }
-        // Carregar tema salvo
-        const saved = localStorage.getItem('theme');
-        if (saved) document.documentElement.setAttribute('data-theme', saved);
+        
+        function closeHelp() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+        
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('helpModal');
+            if (e.target === modal) {
+                closeHelp();
+            }
+        });
+
+        // Inicialização quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            ajustarAltura();
+        });
     </script>
 </body>
 </html>
