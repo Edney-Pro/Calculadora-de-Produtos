@@ -3,28 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Produtos - Encomenda Palotina</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Categorias de Produtos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== TEMA ===== */
         :root {
-            --primary: #3b82f6;
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --bg-tertiary: #3d3d3d;
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --text-muted: #888888;
-            --border-color: #444444;
-            --shadow-color: rgba(0,0,0,0.3);
-            --transition: all 0.3s ease;
+            --primary: #3b82f6; --bg-primary: #1a1a1a; --bg-secondary: #2d2d2d; --bg-tertiary: #3d3d3d;
+            --text-primary: #ffffff; --text-secondary: #cccccc; --text-muted: #888888;
+            --border-color: #444444; --shadow-color: rgba(0,0,0,0.3); --transition: all 0.3s ease;
         }
         [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f5f5f5;
-            --bg-tertiary: #e9e9e9;
-            --text-primary: #333333;
-            --text-secondary: #666666;
-            --border-color: #dddddd;
+            --bg-primary: #ffffff; --bg-secondary: #f5f5f5; --bg-tertiary: #e9e9e9;
+            --text-primary: #333333; --text-secondary: #666666; --border-color: #dddddd;
             --shadow-color: rgba(0,0,0,0.1);
         }
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -38,7 +28,7 @@
             flex-direction: column;
         }
 
-        /* HEADER PADRÃO */
+        /* ===== HEADER ===== */
         .standard-header {
             background: var(--bg-secondary);
             padding: 1rem 0;
@@ -57,7 +47,7 @@
         .logo h1 { font-size: 1.5rem; margin: 0; }
         .tagline { color: var(--text-secondary); font-size: 0.75rem; margin-left: 8px; }
 
-        /* TOGGLE PADRÃO */
+        /* ===== TOGGLE TEMA ===== */
         .theme-toggle {
             position: absolute;
             right: 16px;
@@ -96,7 +86,7 @@
         }
         [data-theme="light"] .toggle-thumb { transform: translateX(24px); }
 
-        /* GRID FIXO 3x7 */
+        /* ===== GRID ===== */
         .grid-container {
             flex: 1;
             display: flex;
@@ -106,6 +96,7 @@
             overflow: hidden;
         }
 
+        /* Ajuste dinâmico para ocupar espaço restante */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -114,7 +105,6 @@
             flex: 1;
             height: 100%;
         }
-
         .app-btn {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -128,73 +118,29 @@
             color: var(--text-primary);
             transition: var(--transition);
             min-height: 0;
-            cursor: pointer;
         }
-
         .app-btn:hover {
             transform: scale(1.03);
             border-color: var(--primary);
             box-shadow: 0 6px 16px var(--shadow-color);
         }
+        .app-icon { font-size: 2.2rem; margin-bottom: 6px; }
+        .app-label { font-size: 0.7rem; font-weight: 600; text-align: center; line-height: 1.1; }
 
-        .app-icon { 
-            font-size: 1.8rem; 
-            margin-bottom: 6px; 
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .app-label { 
-            font-size: 0.7rem; 
-            font-weight: 600; 
-            text-align: center; 
-            line-height: 1.1;
-        }
-
-        /* CORES DOS ÍCONES */
-        .video { background: linear-gradient(135deg, #FF6B6B, #FF8E8E); }
-        .utensilios { background: linear-gradient(135deg, #4ECDC4, #88D9D3); }
-        .transporte-eletrico { background: linear-gradient(135deg, #45B7D1, #7ACDE5); }
-        .smartphones { background: linear-gradient(135deg, #96CEB4, #B8E0C8); }
-        .moda { background: linear-gradient(135deg, #FECA57, #FFDD8A); }
-        .musica { background: linear-gradient(135deg, #FF9FF3, #FFBFF7); }
-        .informatica { background: linear-gradient(135deg, #54A0FF, #85BCFF); }
-        .games { background: linear-gradient(135deg, #5F27CD, #8A5CDF); }
-        .fotografia { background: linear-gradient(135deg, #00D2D3, #4AE0E1); }
-        .ferramentas { background: linear-gradient(135deg, #FF9F43, #FFB87A); }
-        .esportes { background: linear-gradient(135deg, #1DD1A1, #4FE3B9); }
-        .eletro-portateis { background: linear-gradient(135deg, #F368E0, #F68FE8); }
-        .eletrodomesticos { background: linear-gradient(135deg, #EE5A24, #F27D52); }
-        .beleza { background: linear-gradient(135deg, #D980FA, #E5A5FC); }
-        .escritorio { background: linear-gradient(135deg, #B53471, #C85C95); }
-        .casa-moveis { background: linear-gradient(135deg, #009432, #3CB371); }
-        .brinquedos { background: linear-gradient(135deg, #FFC312, #FFD658); }
-        .automotivo { background: linear-gradient(135deg, #EA2027, #EE5A5A); }
-        .ar-ventilacao { background: linear-gradient(135deg, #0652DD, #3A7BFF); }
-        .automacao { background: linear-gradient(135deg, #9980FA, #B29FFA); }
-        .audio { background: linear-gradient(135deg, #ED4C67, #F1788D); }
-
-        /* FOOTER PADRÃO */
+        /* ===== FOOTER ===== */
         .standard-footer {
             background: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
             box-shadow: 0 -4px 12px var(--shadow-color);
             flex-shrink: 0;
-            padding: 8px 0;
+            padding: 8px 0 env(safe-area-inset-bottom, 20px) 0;
         }
-
         .standard-footer .container {
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 0 16px;
         }
-
         .footer-btn {
             flex: 1;
             text-align: center;
@@ -203,166 +149,150 @@
             padding: 8px 0;
             border-radius: 10px;
             transition: var(--transition);
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.7rem;
         }
-
         .footer-btn:hover { background: var(--bg-tertiary); }
         .footer-icon { font-size: 1.7rem; }
         .fa-whatsapp { color: #25D366 !important; }
         .footer-btn:hover .fa-home { color: var(--primary); }
         .footer-btn:hover .fa-instagram { color: #E4405F; }
+        .footer-btn:hover .fa-question-circle { color: #8b5cf6; }
 
-        /* RESPONSIVIDADE */
-        @media (max-width: 480px) {
-            .app-icon { font-size: 1.6rem; }
-            .app-label { font-size: 0.65rem; }
-            .grid { gap: 8px; }
+        /* ===== MODAL ===== */
+        #helpModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+        .help-list { display: grid; gap: 12px; font-size: 0.9rem; line-height: 1.5; }
+        .help-item { display: flex; align-items: center; gap: 12px; }
+        .help-icon {
+            width: 34px; height: 34px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white;
         }
 
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 480px) {
+            .app-icon { font-size: 1.8rem; }
+            .app-label { font-size: 0.68rem; }
+            .grid { gap: 8px; }
+        }
         @media (max-width: 360px) {
-            .app-icon { 
-                font-size: 1.4rem; 
-                width: 45px;
-                height: 45px;
-            }
-            .app-label { font-size: 0.6rem; }
+            .app-icon { font-size: 1.6rem; }
+            .app-label { font-size: 0.62rem; }
             .grid { gap: 6px; }
         }
     </style>
 </head>
 <body>
-    <!-- HEADER PADRÃO -->
+
+    <!-- HEADER -->
     <header class="standard-header" id="header">
-        <div class="header-content">
-            <i class="fas fa-boxes logo-icon"></i>
-            <h1>C.de Produtos</h1>
-            <p class="tagline"></p>
-        </div>
-        <button class="theme-toggle" aria-label="Alternar tema">
-            <div class="toggle-track">
-                <i class="fas fa-sun toggle-icon sun"></i>
-                <i class="fas fa-moon toggle-icon moon"></i>
-                <div class="toggle-thumb"></div>
+        <div class="container">
+            <div class="header-content">
+                <i class="fas fa-boxes logo-icon"></i>
+                <h1>Categorias</h1>
+                <p class="tagline">Produtos</p>
             </div>
-        </button>
+            <button class="theme-toggle" aria-label="Alternar tema">
+                <div class="toggle-track">
+                    <i class="fas fa-sun toggle-icon sun"></i>
+                    <i class="fas fa-moon toggle-icon moon"></i>
+                    <div class="toggle-thumb"></div>
+                </div>
+            </button>
+        </div>
     </header>
 
-    <!-- GRID FIXO 3x7 -->
+    <!-- GRID 3x7 (21 categorias) -->
     <main class="grid-container">
         <div class="grid">
-            <!-- 21 categorias em grid 3x7 fixo -->
-            <a href="https://drive.google.com/drive/folders/1SSB8iSuWf3kD8F-Dg0pVbTlAGPKbVtlE?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon video"><i class="fas fa-video"></i></div>
-                <div class="app-label">Vídeo</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1BOoVLCAZ9Mm2zElEtttSIbLh9tDB9kc8?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon utensilios"><i class="fas fa-utensils"></i></div>
-                <div class="app-label">Utensílios Domésticos</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1qE5sTMQDWZtdLodqU3vVFBLG60JypptV?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon transporte-eletrico"><i class="fas fa-scooter"></i></div>
-                <div class="app-label">Transportes Elétricos</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1jxxnEERu7-7GfuncE7WjzMBr7nCSqMRj?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon smartphones"><i class="fas fa-mobile-alt"></i></div>
-                <div class="app-label">Smartphones</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1DXIoFgzvbSQg0Y9sXLgIKEPW45chaWBI?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon moda"><i class="fas fa-tshirt"></i></div>
-                <div class="app-label">Moda e Acessórios</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1DL1NYseueM6am3dxOVHDBR3cGQTlb-IV?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon musica"><i class="fas fa-guitar"></i></div>
-                <div class="app-label">Instrumentos Musicais</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1weO_pbm-Nfp1m4xxK5O-JVsgBI6QJ3v7?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon informatica"><i class="fas fa-laptop"></i></div>
-                <div class="app-label">Informática</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1im5lwymbt_VtC0gjBwtEKD8BOOtw1xPW?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon games"><i class="fas fa-gamepad"></i></div>
-                <div class="app-label">Games</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1say6PKtRuwN4OUe-vdnv-ujVZUPxEqgk?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon fotografia"><i class="fas fa-camera"></i></div>
-                <div class="app-label">Fotografia</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1lpP1tHsY77KWn6So9hHYIkhumtit38Uy?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon ferramentas"><i class="fas fa-tools"></i></div>
-                <div class="app-label">Ferramentas</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1a0CBOitcwiWgxasn-EgszCrr8WHPKhwc?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon esportes"><i class="fas fa-bicycle"></i></div>
-                <div class="app-label">Esporte e Lazer</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1i1YyxvQJ7CRINOhWr7TKbh6yGGRrP8O2?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon eletro-portateis"><i class="fas fa-headphones"></i></div>
-                <div class="app-label">Eletro Portáteis</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1VXFArx2jWAEoC41Qs5gsdExFAFM2HnNL?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon eletrodomesticos"><i class="fas fa-blender"></i></div>
-                <div class="app-label">Eletrodomésticos</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/10nIsbDtaZ7vSjHy7hXHV4-Y8RTyw_uFF?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon beleza"><i class="fas fa-spa"></i></div>
-                <div class="app-label">Cuidados Pessoais</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1SAb_nTi-pzsiHcVK9CwPszzPkxsK7OJf?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon escritorio"><i class="fas fa-briefcase"></i></div>
-                <div class="app-label">Comércio e Escritório</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1UHskb2lGqFPYuO1KEcz9h7AybUchxVV6?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon casa-moveis"><i class="fas fa-couch"></i></div>
-                <div class="app-label">Casa e Móveis</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1cDa_VsR3IlPzeNl7w0CaSeLV9ztiueSC?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon brinquedos"><i class="fas fa-puzzle-piece"></i></div>
-                <div class="app-label">Brinquedos e Hobbies</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1W2Xa_SbQw_zGoabbZ0nggTEu5GksLusb?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon automotivo"><i class="fas fa-car"></i></div>
-                <div class="app-label">Automotivo</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1ST0FwQOt5XI41Dx85FbSL_mmt6ESGLjj?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon ar-ventilacao"><i class="fas fa-fan"></i></div>
-                <div class="app-label">Ar e Ventilação</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1_JvdrLSEnoxBdrhgI7gL0A47RQxVrKmo?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon automacao"><i class="fas fa-robot"></i></div>
-                <div class="app-label">Automação</div>
-            </a>
-            <a href="https://drive.google.com/drive/folders/13tuy41Oqs4QIwmHPSRmX73r7_7ZvW60p?usp=drive_link" target="_blank" class="app-btn">
-                <div class="app-icon audio"><i class="fas fa-volume-up"></i></div>
-                <div class="app-label">Áudio</div>
-            </a>
+            <!-- Categorias de produtos -->
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#3b82f6"><i class="fas fa-video"></i></div><div class="app-label">Vídeo</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#ef4444"><i class="fas fa-utensils"></i></div><div class="app-label">Utensílios Domésticos</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#10b981"><i class="fas fa-bolt"></i></div><div class="app-label">Transportes Elétricos</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#8b5cf6"><i class="fas fa-mobile-alt"></i></div><div class="app-label">Smartphones</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#ec4899"><i class="fas fa-tshirt"></i></div><div class="app-label">Moda e Acessórios</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#f59e0b"><i class="fas fa-guitar"></i></div><div class="app-label">Instrumentos Musicais</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#06b6d4"><i class="fas fa-laptop"></i></div><div class="app-label">Informática</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#f97316"><i class="fas fa-gamepad"></i></div><div class="app-label">Games</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#6366f1"><i class="fas fa-camera"></i></div><div class="app-label">Fotografia</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#dc2626"><i class="fas fa-tools"></i></div><div class="app-label">Ferramentas</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#14b8a6"><i class="fas fa-running"></i></div><div class="app-label">Esporte e Lazer</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#a855f7"><i class="fas fa-plug"></i></div><div class="app-label">Eletro Portáteis</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#84cc16"><i class="fas fa-blender"></i></div><div class="app-label">Eletrodomésticos</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#f43f5e"><i class="fas fa-spa"></i></div><div class="app-label">Cuidados Pessoais</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#0ea5e9"><i class="fas fa-briefcase"></i></div><div class="app-label">Comércio e Escritório</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#d946ef"><i class="fas fa-couch"></i></div><div class="app-label">Casa e Móveis</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#eab308"><i class="fas fa-puzzle-piece"></i></div><div class="app-label">Brinquedos e Hobbies</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#64748b"><i class="fas fa-car"></i></div><div class="app-label">Automotivo</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#22c55e"><i class="fas fa-fan"></i></div><div class="app-label">Ar e Ventilação</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#f97316"><i class="fas fa-robot"></i></div><div class="app-label">Automação</div></a>
+            <a href="#" class="app-btn"><div class="app-icon" style="color:#8b5cf6"><i class="fas fa-volume-up"></i></div><div class="app-label">Áudio</div></a>
         </div>
     </main>
 
-    <!-- FOOTER PADRÃO -->
+    <!-- FOOTER -->
     <nav class="standard-footer" id="footer">
         <div class="container">
-            <button class="footer-btn" onclick="goToHome()">
-                <i class="fas fa-home footer-icon"></i>
-                <span>Home</span>
-            </button>
-            <button class="footer-btn" onclick="goToCalculator()">
-                <i class="fas fa-calculator footer-icon"></i>
-                <span>Calculadora</span>
-            </button>
-            <button class="footer-btn" onclick="contactWhatsApp()">
-                <i class="fab fa-whatsapp footer-icon"></i>
-                <span>WhatsApp</span>
-            </button>
+            <a href="../../index.html" class="footer-btn"><i class="fas fa-home footer-icon"></i></a>
+            <a href="https://wa.me/5544998408460" target="_blank" class="footer-btn"><i class="fab fa-whatsapp footer-icon"></i></a>
+            <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="footer-btn"><i class="fab fa-instagram footer-icon"></i></a>
+            <a href="#" class="footer-btn" onclick="showHelp(); return false;"><i class="fas fa-question-circle footer-icon"></i></a>
         </div>
     </nav>
 
+    <!-- MODAL AJUDA -->
+    <div id="helpModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 16px; text-align: center;">Ajuda - Categorias</h2>
+            <div class="help-list">
+                <div class="help-item">
+                    <div class="help-icon" style="background: #3b82f6;"><i class="fas fa-info"></i></div>
+                    <div>Selecione uma categoria para visualizar os produtos</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #10b981;"><i class="fas fa-mobile-alt"></i></div>
+                    <div>Use os ícones do rodapé para navegação rápida</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon" style="background: #f59e0b;"><i class="fas fa-palette"></i></div>
+                    <div>Altere o tema clicando no botão no cabeçalho</div>
+                </div>
+            </div>
+            <button class="modal-close" onclick="document.getElementById('helpModal').style.display='none'">Fechar</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
     <script>
         // Ajusta dinamicamente o espaço da grid entre topo e footer
         function ajustarAltura() {
@@ -397,25 +327,13 @@
         }
         new ThemeManager();
 
-        // Navegação
-        function goToHome() {
-            window.location.href = '../../index.html';
+        // Modal ajuda
+        function showHelp() {
+            document.getElementById('helpModal').style.display = 'flex';
         }
-
-        function goToCalculator() {
-            window.location.href = '../../FERRAMENTAS/calculadora-normal/index.html';
-        }
-
-        function contactWhatsApp() {
-            const phoneNumber = '5544998408460';
-            const message = 'Olá! Gostaria de mais informações sobre os produtos do catálogo.';
-            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
-
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', function() {
-            ajustarAltura();
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('helpModal');
+            if (e.target === modal) modal.style.display = 'none';
         });
     </script>
 </body>
