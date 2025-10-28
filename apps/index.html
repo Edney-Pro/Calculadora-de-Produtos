@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cadastro de Cliente - Sistema de Parcelas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- CABEÇALHO -->
+    <header class="standard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo"><i id="header-icon" class="fas fa-user-plus logo-icon"></i><h1 id="header-title">Etapa 1: Pessoais</h1></div>
+                <p id="header-tagline" class="tagline">Seus dados de identificação.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+        <div class="container">
+            <form id="multiStepForm" onsubmit="event.preventDefault();">
+                <!-- ETAPA 1: DADOS PESSOAIS -->
+                <div id="step-1" class="form-step active">
+                    <div class="form-group"><label for="fullName">Nome Completo <span class="required">*</span></label><input type="text" id="fullName" class="form-control" required></div>
+                    <div class="form-group"><label for="cpf">CPF <span class="required">*</span></label><input type="text" id="cpf" class="form-control" placeholder="000.000.000-00" required></div>
+                    <div class="form-group"><label for="rg">RG <span class="required">*</span></label><input type="text" id="rg" class="form-control" placeholder="00.000.000-0" required></div>
+                    <div class="form-group"><label for="birthDate">Data de Nascimento <span class="required">*</span></label><input type="date" id="birthDate" class="form-control" required></div>
+                    <div class="form-group"><label for="phone">Telefone Principal <span class="required">*</span></label><input type="text" id="phone" class="form-control" placeholder="(00) 00000-0000" required></div>
+                    <div class="form-group"><label for="email">E-mail <span class="required">*</span></label><input type="email" id="email" class="form-control" placeholder="seu.email@exemplo.com" required></div>
+                </div>
+
+                <!-- ETAPAS 2 a 6 -->
+                <div id="step-2" class="form-step">
+                    <div class="form-group"><label for="cep">CEP <span class="required">*</span></label><input type="text" id="cep" class="form-control" placeholder="00000-000" required></div>
+                    <div class="form-group"><label for="street">Rua <span class="required">*</span></label><input type="text" id="street" class="form-control" required></div>
+                    <div class="form-group"><label for="number">Número <span class="required">*</span></label><input type="text" id="number" class="form-control" required></div>
+                    <div class="form-group"><label for="neighborhood">Bairro <span class="required">*</span></label><input type="text" id="neighborhood" class="form-control" required></div>
+                    <div class="form-group"><label for="city">Cidade</label><input type="text" id="city" class="form-control" readonly></div>
+                    <div class="form-group"><label for="state">Estado (UF)</label><input type="text" id="state" class="form-control" readonly></div>
+                    <div class="form-group"><label for="residenceTime">Tempo de Moradia <span class="required">*</span></label><select id="residenceTime" class="form-control" required><option value="">Selecione...</option><option value="Menos de 1 ano">Menos de 1 ano</option><option value="1 a 3 anos">1 a 3 anos</option><option value="3 a 5 anos">3 a 5 anos</option><option value="5 a 10 anos">5 a 10 anos</option><option value="Mais de 10 anos">Mais de 10 anos</option></select></div>
+                </div>
+
+                <div id="step-3" class="form-step">
+                    <div class="form-group"><label>Já é nosso cliente? <span class="required">*</span></label><div class="radio-group-wrapper"><label><input type="radio" name="isClient" value="Sim"> Sim</label><label><input type="radio" name="isClient" value="Não"> Não</label></div></div>
+                    <div id="existingClientFields" style="display: none;"><div class="form-group"><label>Suas parcelas anteriores estão: <span class="required">*</span></label><div class="radio-group-wrapper"><label><input type="radio" name="paymentStatus" value="Em dia"> Em dia</label><label><input type="radio" name="paymentStatus" value="Pendentes"> Pendentes</label></div></div></div>
+                    <div id="newClientFields" style="display: none;"><div class="form-group"><label for="howMet">Como nos conheceu? <span class="required">*</span></label><select id="howMet" class="form-control"><option value="">Selecione...</option><option value="Indicação">Indicação</option><option value="Instagram">Instagram</option><option value="Facebook">Facebook</option><option value="TikTok">TikTok</option><option value="Google">Google</option><option value="Outro">Outro</option></select></div><div id="referrerField" style="display: none;"><div class="form-group"><label for="referrerName">Quem indicou? <span class="required">*</span></label><input type="text" id="referrerName" class="form-control"></div></div></div>
+                </div>
+                
+                <div id="step-4" class="form-step">
+                    <div class="form-group"><label for="salaryRange">Faixa Salarial <span class="required">*</span></label><select id="salaryRange" class="form-control" required><option value="">Selecione...</option><option value="De R$ 800 a R$ 1.500">De R$ 800 a R$ 1.500</option><option value="De R$ 1.501 a R$ 2.500">De R$ 1.501 a R$ 2.500</option><option value="De R$ 2.501 a R$ 3.500">De R$ 2.501 a R$ 3.500</option><option value="De R$ 3.501 a R$ 4.500">De R$ 3.501 a R$ 4.500</option><option value="Acima de R$ 4.500">Acima de R$ 4.500</option></select></div>
+                </div>
+
+                <div id="step-5" class="form-step">
+                    <div class="form-group"><label for="profRefName">Referência Profissional <span class="required">*</span></label><input type="text" id="profRefName" class="form-control" required></div>
+                    <div class="form-group"><label for="profRefPhone">Telefone da Ref. Profissional <span class="required">*</span></label><input type="text" id="profRefPhone" class="form-control" placeholder="(00) 00000-0000" required></div>
+                    <div class="form-group"><label for="personalRefName">Referência Pessoal (Opcional)</label><input type="text" id="personalRefName" class="form-control"></div>
+                    <div class="form-group"><label for="personalRefPhone">Telefone da Ref. Pessoal (Opcional)</label><input type="text" id="personalRefPhone" class="form-control" placeholder="(00) 00000-0000"></div>
+                </div>
+
+                <div id="step-6" class="form-step">
+                    <div class="form-group"><label for="social1">Instagram (Link ou @usuário) <span class="required">*</span></label><input type="text" id="social1" class="form-control" placeholder="@usuario ou https://instagram.com/..." required></div>
+                    <div class="form-group"><label for="social2">Facebook (Opcional)</label><input type="text" id="social2" class="form-control"></div>
+                    <div class="form-group"><label for="social3">TikTok (Opcional)</label><input type="text" id="social3" class="form-control"></div>
+                    <div class="form-group"><label for="social4">LinkedIn (Opcional)</label><input type="text" id="social4" class="form-control"></div>
+                    <div class="form-group"><label for="social5">X / Twitter (Opcional)</label><input type="text" id="social5" class="form-control"></div>
+                    <div class="form-group"><label for="social6">Outra Rede (Opcional)</label><input type="text" id="social6" class="form-control"></div>
+                </div>
+
+                <!-- ETAPA 7: RESUMO -->
+                <div id="step-7" class="form-step"><div id="summary-content"></div></div>
+
+                <!-- ETAPA 8: AVISO FINAL -->
+                <div id="step-8" class="form-step">
+                    <div class="warning-box">
+                        <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h2>Aviso Importante!</h2>
+                        <p>Para finalizar e validar seu cadastro, você <strong>PRECISA</strong> enviar os seguintes itens no WhatsApp:</p>
+                        <ul><li><i class="fas fa-id-card"></i> Foto do seu Documento (CPF e RG ou CNH).</li><li><i class="fas fa-camera"></i> Uma Selfie sua segurando o documento.</li></ul>
+                        <p><strong>Lembrete:</strong> A CNH válida substitui o CPF, RG e o comprovante de residência.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <!-- BOTÕES DE NAVEGAÇÃO FIXOS -->
+    <div class="action-button-wrapper">
+        <div class="container action-buttons-container">
+            <button id="back-btn" class="action-button secondary">Voltar</button>
+            <button id="next-btn" class="action-button primary">Próximo</button>
+        </div>
+    </div>
+
+    <!-- RODAPÉ FIXO -->
+    <nav class="standard-footer">
+        <div class="container">
+            <a href="../../index.html" class="footer-btn"><i class="fas fa-home footer-icon"></i></a>
+            <a href="https://wa.me/5544998408460" target="_blank" class="footer-btn"><i class="fab fa-whatsapp footer-icon"></i></a>
+            <a href="https://www.instagram.com/encomendapalotina" target="_blank" class="footer-btn"><i class="fab fa-instagram footer-icon"></i></a>
+            <div id="help-btn" class="footer-btn"><i class="fas fa-question-circle footer-icon"></i></div>
+        </div>
+    </nav>
+    
+    <!-- MODAL DE AJUDA -->
+    <div id="help-modal" class="help-modal">
+        <div class="help-modal-content">
+            <div class="help-modal-header"><h2>Como Preencher o Cadastro</h2></div>
+            <div class="help-modal-body">
+                <h3>Etapa 1: Dados Pessoais</h3>
+                <p>Insira suas informações básicas de identificação. Todos os campos são obrigatórios para verificação.</p>
+                <h3>Etapa 2: Endereço</h3>
+                <p>Comece digitando seu CEP. A rua, bairro e cidade serão preenchidos automaticamente. Depois, complete com o número da sua casa.</p>
+                <h3>Etapa 3: Situação</h3>
+                <p>Nos informe se você já é nosso cliente. Suas respostas aqui nos ajudam a entender melhor seu perfil e agilizar o processo.</p>
+                <h3>Etapa 4: Dados Financeiros</h3>
+                <p>Selecione a faixa de renda que corresponde à sua realidade financeira atual. Esta informação é crucial para a análise de crédito.</p>
+                <h3>Etapa 5: Referências</h3>
+                <p>Precisamos de uma referência profissional obrigatória. A referência pessoal é opcional, mas ajuda a fortalecer seu cadastro.</p>
+                <h3>Etapa 6: Redes Sociais</h3>
+                <p>O Instagram é obrigatório. Você pode inserir o link do seu perfil ou apenas o seu @usuário. As outras redes são opcionais.</p>
+                <h3>Etapa 7: Resumo</h3>
+                <p>Confira todos os dados que você preencheu. Se encontrar algum erro, clique em "Editar" para voltar à etapa correspondente e corrigir.</p>
+                <h3>Etapa 8: Aviso Final</h3>
+                <p>Leia com atenção as instruções para o envio dos seus documentos. Este é o último passo antes de enviar seu cadastro pelo WhatsApp.</p>
+            </div>
+            <div class="help-modal-footer">
+                <button id="close-help-btn" class="action-button primary">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let currentStep = 1;
+        const totalSteps = 8;
+        const stepFields = {
+            1: ['fullName', 'cpf', 'rg', 'birthDate', 'phone', 'email'], 2: ['cep', 'street', 'number', 'neighborhood', 'residenceTime'],
+            3: ['isClient', 'paymentStatus', 'howMet', 'referrerName'], 4: ['salaryRange'], 5: ['profRefName', 'profRefPhone'], 6: ['social1']
+        };
+        const headerInfo = {
+            1: { icon: 'fa-user-plus', title: 'Etapa 1: Pessoais', tagline: 'Seus dados de identificação.' }, 2: { icon: 'fa-map-marker-alt', title: 'Etapa 2: Endereço', tagline: 'Onde você mora.' },
+            3: { icon: 'fa-question-circle', title: 'Etapa 3: Situação', tagline: 'Seu relacionamento conosco.' }, 4: { icon: 'fa-dollar-sign', title: 'Etapa 4: Financeiro', tagline: 'Sua renda mensal.' },
+            5: { icon: 'fa-users', title: 'Etapa 5: Referências', tagline: 'Contatos para referência.' }, 6: { icon: 'fa-share-alt', title: 'Etapa 6: Redes Sociais', tagline: 'Seus perfis online.' },
+            7: { icon: 'fa-check-circle', title: 'Etapa 7: Resumo', tagline: 'Revise seus dados.' }, 8: { icon: 'fa-exclamation-triangle', title: 'Etapa 8: Aviso Final', tagline: 'Leia antes de enviar.' }
+        };
+
+        const backBtn = document.getElementById('back-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const helpModal = document.getElementById('help-modal');
+
+        const goToStep = (stepNumber) => {
+            if (stepNumber < 1 || stepNumber > totalSteps) return;
+            document.querySelector('.form-step.active').classList.remove('active');
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+            currentStep = stepNumber;
+            if (currentStep === 7) populateSummary();
+            updateUI();
+        };
+
+        const updateUI = () => {
+            const info = headerInfo[currentStep];
+            document.getElementById('header-icon').className = `fas ${info.icon} logo-icon`;
+            document.getElementById('header-title').textContent = info.title;
+            document.getElementById('header-tagline').textContent = info.tagline;
+            backBtn.style.display = currentStep > 1 ? 'block' : 'none';
+            if (currentStep < 7) {
+                nextBtn.textContent = 'Próximo'; nextBtn.className = 'action-button primary';
+            } else if (currentStep === 7) {
+                nextBtn.textContent = 'Confirmar e Avançar'; nextBtn.className = 'action-button primary';
+            } else {
+                nextBtn.textContent = 'Entendi, Enviar no WhatsApp'; nextBtn.className = 'action-button whatsapp';
+            }
+            document.querySelector('main').scrollTop = 0;
+        };
+
+        const populateSummary = () => {
+            const summaryData = [
+                { t: 'Dados Pessoais', s: 1, f: { 'Nome': 'fullName', 'CPF': 'cpf', 'RG': 'rg', 'Nascimento': 'birthDate', 'Telefone': 'phone', 'E-mail': 'email' } },
+                { t: 'Endereço', s: 2, f: { 'Endereço': ['street', 'number'], 'Bairro': 'neighborhood', 'Cidade/UF': ['city', 'state'], 'CEP': 'cep' } },
+                { t: 'Situação', s: 3, f: { 'Cliente?': 'isClient', 'Pagamentos': 'paymentStatus', 'Conheceu por': 'howMet', 'Indicado por': 'referrerName' } },
+                { t: 'Financeiro', s: 4, f: { 'Faixa Salarial': 'salaryRange' } },
+                { t: 'Referências', s: 5, f: { 'Profissional': ['profRefName', 'profRefPhone'], 'Pessoal': ['personalRefName', 'personalRefPhone'] } },
+                { t: 'Redes Sociais', s: 6, f: { 'Instagram': 'social1', 'Facebook': 'social2' } }
+            ];
+            const container = document.getElementById('summary-content');
+            container.innerHTML = summaryData.map(sec => {
+                let items = Object.entries(sec.f).map(([lbl, key]) => {
+                    let val = Array.isArray(key) ? key.map(k => localStorage.getItem(k) || '').join(', ') : localStorage.getItem(key) || '';
+                    if (!val.trim() || val.trim() === ',') return '';
+                    return `<div class="summary-item"><span class="label">${lbl}:</span> <span class="value">${val}</span></div>`;
+                }).join('');
+                return items ? `<div class="summary-section"><div class="summary-title">${sec.t} <span class="summary-edit-btn" onclick="goToStep(${sec.s})">Editar</span></div>${items}</div>` : '';
+            }).join('');
+        };
+        
+        const validateField = (fieldId) => {
+            const input = document.getElementById(fieldId);
+            if (!input) return true;
+            let isValid = false;
+            if (input.type === 'radio') {
+                const groupName = input.name;
+                isValid = document.querySelector(`input[name="${groupName}"]:checked`) !== null;
+            } else {
+                isValid = input.checkValidity();
+                if(input.id === 'rg' && isValid) isValid = /^\d{2}\.\d{3}\.\d{3}-\d$/.test(input.value);
+            }
+            input.classList.toggle('is-valid', isValid); input.classList.toggle('is-invalid', !isValid);
+            return isValid;
+        };
+        const validateStep = (step) => {
+            if (step >= 7) return true;
+            return stepFields[step].every(fieldId => {
+                const el = document.getElementById(fieldId);
+                return !el || el.offsetParent === null || validateField(fieldId);
+            });
+        };
+
+        const submitToWhatsApp = () => {
+            for(let i = 1; i < 7; i++) { if (!validateStep(i)) { goToStep(i); return; } }
+            let msg = `*NOVO CADASTRO*\n\n*Pessoal:*\nNome: ${localStorage.getItem('fullName')}\nCPF: ${localStorage.getItem('cpf')}\nRG: ${localStorage.getItem('rg')}\nNasc: ${localStorage.getItem('birthDate')}\nTel: ${localStorage.getItem('phone')}\n\n*Endereço:*\n${localStorage.getItem('street')}, ${localStorage.getItem('number')} - ${localStorage.getItem('neighborhood')}, ${localStorage.getItem('city')}/${localStorage.getItem('state')}\n\n*Situação:*\nCliente: ${localStorage.getItem('isClient')}\n` + (localStorage.getItem('isClient') === 'Sim' ? `Pagamentos: ${localStorage.getItem('paymentStatus')}\n\n` : `Conheceu: ${localStorage.getItem('howMet')} ${localStorage.getItem('referrerName') ? `(Indicado: ${localStorage.getItem('referrerName')})` : ''}\n\n`) + `*Financeiro:*\nSalário: ${localStorage.getItem('salaryRange')}\n\n*Referências:*\nProfissional: ${localStorage.getItem('profRefName')} - ${localStorage.getItem('profRefPhone')}\n` + (localStorage.getItem('personalRefName') ? `Pessoal: ${localStorage.getItem('personalRefName')} - ${localStorage.getItem('personalRefPhone')}` : '') + `\n\n*Redes Sociais:*\nInstagram: ${localStorage.getItem('social1')}`;
+            window.open(`https://wa.me/5544998408460?text=${encodeURIComponent(msg)}`, '_blank');
+            localStorage.clear();
+        };
+
+        // Event Listeners
+        nextBtn.onclick = () => { if (currentStep < 7) validateStep(currentStep) && goToStep(currentStep + 1); else if (currentStep === 7) goToStep(8); else submitToWhatsApp(); };
+        backBtn.onclick = () => goToStep(currentStep - 1);
+        document.getElementById('help-btn').onclick = () => helpModal.style.display = 'flex';
+        document.getElementById('close-help-btn').onclick = () => helpModal.style.display = 'none';
+
+        document.querySelectorAll('.form-control, input[type="radio"]').forEach(input => {
+            const key = input.name || input.id, saved = localStorage.getItem(key);
+            if (input.type === 'radio') { if (saved === input.value) input.checked = true; } else if (saved) input.value = saved;
+            input.addEventListener(input.type === 'radio' || input.tagName === 'SELECT' ? 'change' : 'input', () => localStorage.setItem(key, input.type === 'radio' ? document.querySelector(`input[name="${key}"]:checked`).value : input.value));
+            if(input.type !== 'radio') input.addEventListener('blur', () => validateField(input.id));
+        });
+
+        // Listeners condicionais
+        document.querySelectorAll('input[name="isClient"]').forEach(r => r.addEventListener('change', e => {
+            const isClient = e.target.value === 'Sim';
+            document.getElementById('existingClientFields').style.display = isClient ? 'block' : 'none';
+            document.getElementById('newClientFields').style.display = !isClient ? 'block' : 'none';
+        }));
+        document.getElementById('howMet').addEventListener('change', e => { document.getElementById('referrerField').style.display = e.target.value === 'Indicação' ? 'block' : 'none'; });
+        
+        // Auto-avanço
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'blur', () => {
+                setTimeout(() => {
+                    const fields = stepFields[currentStep] || [];
+                    if (fields.length > 0 && input.id === fields[fields.length - 1] && validateStep(currentStep)) goToStep(currentStep + 1);
+                }, 100);
+            });
+        });
+
+        const savedIsClient = document.querySelector('input[name="isClient"]:checked'); if (savedIsClient) savedIsClient.dispatchEvent(new Event('change'));
+        const savedHowMet = document.getElementById('howMet'); if(savedHowMet.value) savedHowMet.dispatchEvent(new Event('change'));
+
+        // Máscaras
+        const applyMask = (id, func) => { const el = document.getElementById(id); if (el) el.addEventListener('input', e => e.target.value = func(e.target.value)); };
+        applyMask('cpf', v => v.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2'));
+        applyMask('rg', v => v.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)$/, '$1-$2'));
+        applyMask('phone', v => v.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2'));
+        applyMask('personalRefPhone', v => v.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2'));
+        applyMask('profRefPhone', v => v.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2'));
+        applyMask('cep', v => v.replace(/\D/g, '').replace(/(\d{5})(\d)/, '$1-$2'));
+        
+        // API de CEP
+        document.getElementById('cep').addEventListener('blur', async (e) => {
+            if (validateField('cep')) {
+                const res = await fetch(`https://viacep.com.br/ws/${e.target.value.replace(/\D/g, '')}/json/`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (!data.erro) {
+                        ['street', 'neighborhood', 'city', 'state'].forEach(id => {
+                            const key = {street: 'logradouro', neighborhood: 'bairro', city: 'localidade', state: 'uf'}[id];
+                            document.getElementById(id).value = data[key]; localStorage.setItem(id, data[key]);
+                        });
+                        document.getElementById('number').focus();
+                    }
+                }
+            }
+        });
+        updateUI();
+    });
+    </script>
+</body>
+</html>
