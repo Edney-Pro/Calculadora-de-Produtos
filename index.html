@@ -2,42 +2,580 @@
 <html lang="pt-BR" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Parcelas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catálogo de Produtos - Sistema de Parcelas</title>
+    
+    <!-- FONTES PROFISSIONAIS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- GLOBAIS ATUALIZADOS -->
+    <link rel="stylesheet" href="../../global/theme.css">
+    <link rel="stylesheet" href="../../global/components.css">
+    
+    <style>
+        /* ===== TEMA PROFISSIONAL ===== */
+        :root {
+            /* PALETA DE CORES PREMIUM */
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            /* CORES DE FUNDO SUAVES */
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #1a1a1a;
+            --bg-card: rgba(10, 10, 10, 0.9);
+            --bg-glass: rgba(30, 41, 59, 0.8);
+            
+            /* CORES DE TEXTO */
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* EFEITOS MODERNOS */
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.25);
+            --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* BORDER RADIUS */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #1a1a1a;
+            --bg-card: rgba(10, 10, 10, 0.9);
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.25);
+        }
+
+        /* ===== RESET E BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: manipulation;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* ===== HEADER PREMIUM ===== */
+        .premium-header {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: relative;
+            flex-shrink: 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .logo-container {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-glow);
+            flex-shrink: 0;
+        }
+
+        .logo-icon {
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .brand-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-text .tagline {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== GRID DE APPS PREMIUM ===== */
+        .apps-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background: var(--bg-primary);
+        }
+
+        .app-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem 1rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            min-height: 150px;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--shadow-color), var(--shadow-glow);
+            border-color: var(--primary);
+        }
+
+        .app-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .app-card:active {
+            transform: translateY(-4px) scale(0.98);
+        }
+
+        /* Efeito de borda colorida ao passar o mouse */
+        .app-card:hover {
+            animation: borderGlow 2s infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                box-shadow: 0 0 5px currentColor;
+            }
+            50% {
+                box-shadow: 0 0 20px currentColor;
+            }
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .app-card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .card-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        /* ===== DECORAÇÕES OSCILANTES ===== */
+        .floating-decoration {
+            position: absolute;
+            font-size: 1rem;
+            animation: floatDecoration 3s infinite ease-in-out;
+            z-index: 10;
+            opacity: 0.8;
+            top: 12px;
+            right: 12px;
+        }
+
+        @keyframes floatDecoration {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-5px) rotate(10deg);
+                opacity: 1;
+            }
+        }
+
+        /* ===== FOOTER PREMIUM ===== */
+        .premium-footer {
+            position: relative;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem 0;
+            z-index: 1000;
+            flex-shrink: 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: var(--transition);
+            padding: 4px 8px;
+            border-radius: var(--radius-md);
+            position: relative;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+            transition: var(--transition);
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-item:hover .nav-icon {
+            transform: scale(1.1);
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .apps-grid {
+                gap: 12px;
+                padding: 1rem 0;
+            }
+            
+            .app-card {
+                padding: 1.2rem 0.8rem;
+                border-radius: var(--radius-lg);
+                min-height: 140px;
+            }
+            
+            .card-icon {
+                font-size: 2.2rem;
+            }
+            
+            .card-title {
+                font-size: 0.9rem;
+            }
+            
+            .brand-text h1 {
+                font-size: 1.3rem;
+            }
+            
+            .brand-text .tagline {
+                font-size: 0.75rem;
+            }
+            
+            .premium-header,
+            .premium-footer {
+                height: 70px;
+                padding: 0.8rem 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .apps-grid {
+                gap: 10px;
+            }
+            
+            .app-card {
+                padding: 1rem 0.6rem;
+                min-height: 130px;
+            }
+            
+            .card-icon {
+                font-size: 2rem;
+            }
+            
+            .card-title {
+                font-size: 0.85rem;
+            }
+            
+            .nav-item {
+                padding: 4px 6px;
+            }
+            
+            .nav-icon {
+                font-size: 1.2rem;
+            }
+            
+            .nav-label {
+                font-size: 0.65rem;
+            }
+        }
+
+        /* ===== ANIMAÇÕES ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .app-card:nth-child(1) { animation-delay: 0.1s; }
+        .app-card:nth-child(2) { animation-delay: 0.2s; }
+        .app-card:nth-child(3) { animation-delay: 0.3s; }
+        .app-card:nth-child(4) { animation-delay: 0.4s; }
+        .app-card:nth-child(5) { animation-delay: 0.5s; }
+        .app-card:nth-child(6) { animation-delay: 0.6s; }
+    </style>
 </head>
 <body>
-    <header class="simple-header">
+
+    <!-- HEADER PREMIUM -->
+    <header class="premium-header">
         <div class="container">
-            <div class="logo">
-                <i class="fas fa-calculator logo-icon"></i>
-                <h1>Sistema de Parcelas</h1>
-            </div>
-            <p class="tagline">Soluções completas em financiamento e parcelamento</p>
-            
-            <button class="theme-toggle" aria-label="Alternar tema">
-                <div class="toggle-track">
-                    <i class="fas fa-sun toggle-icon sun"></i>
-                    <i class="fas fa-moon toggle-icon moon"></i>
-                    <div class="toggle-thumb"></div>
+            <div class="header-content">
+                <div class="logo-container">
+                    <span>🏆</span>
                 </div>
-            </button>
+                <div class="brand-text">
+                    <h1>Catálogo de Produtos</h1>
+                    <p class="tagline">Realize seus planos com facilidade</p>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="main-content">
-        <div class="container">
-            <div class="modules-grid" id="modulesGrid"></div>
+    <!-- GRID DE APPS -->
+    <main class="container">
+        <div class="apps-grid">
+            <!-- NOVOS COM ENTRADA -->
+            <a href="produtos-novos-com-entrada/index.html" class="app-card" style="color: #06b6d4">
+                <div class="card-icon">
+                    <i class="fas fa-box"></i>
+                </div>
+                <div class="card-title">Novos com Entrada</div>
+                <div class="card-subtitle">Entrada facilitada</div>
+                <div class="floating-decoration">⭐</div>
+            </a>
+
+            <!-- NOVOS SEM ENTRADA -->
+            <a href="produtos-novos-sem-entrada/index.html" class="app-card" style="color: #8b5cf6">
+                <div class="card-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="card-title">Novos sem Entrada</div>
+                <div class="card-subtitle">Sem entrada inicial</div>
+                <div class="floating-decoration">❤️</div>
+            </a>
+
+            <!-- USADOS COM ENTRADA -->
+            <a href="produtos-usados-com-entrada/index.html" class="app-card" style="color: #f59e0b">
+                <div class="card-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="card-title">Usados com Entrada</div>
+                <div class="card-subtitle">Entrada parcelada</div>
+                <div class="floating-decoration">🔶</div>
+            </a>
+
+            <!-- USADOS SEM ENTRADA -->
+            <a href="produtos-usados-sem-entrada/index.html" class="app-card" style="color: #10b981">
+                <div class="card-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="card-title">Usados sem Entrada</div>
+                <div class="card-subtitle">Sem entrada</div>
+                <div class="floating-decoration">🌸</div>
+            </a>
+
+            <!-- MÓVEIS -->
+            <a href="moveis-com-montagem/index.html" class="app-card" style="color: #ef4444">
+                <div class="card-icon">
+                    <i class="fas fa-couch"></i>
+                </div>
+                <div class="card-title">Móveis</div>
+                <div class="card-subtitle">Com montagem inclusa</div>
+                <div class="floating-decoration">🔷</div>
+            </a>
+
+            <!-- CONFIGURAÇÕES -->
+            <a href="../../apps/CONFIGURACAO/index.html" class="app-card" style="color: #8b5cf6">
+                <div class="card-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="card-title">Configurações</div>
+                <div class="card-subtitle">Personalize o sistema</div>
+                <div class="floating-decoration">💎</div>
+            </a>
         </div>
     </main>
 
-    <footer class="simple-footer">
+    <!-- FOOTER PREMIUM -->
+    <nav class="premium-footer">
         <div class="container">
-            <p>&copy; 2025 Sistema de Parcelas. Todos os direitos reservados sr. Edney</p>
+            <div class="footer-nav">
+                <a href="../../index.html" class="nav-item">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span class="nav-label">Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="window.open('https://wa.me/5544998408460','_blank')">
+                    <i class="fab fa-whatsapp nav-icon"></i>
+                    <span class="nav-label">WhatsApp</span>
+                </a>
+                <a href="#" class="nav-item" onclick="window.open('https://www.instagram.com/encomendapalotina','_blank')">
+                    <i class="fab fa-instagram nav-icon"></i>
+                    <span class="nav-label">Instagram</span>
+                </a>
+                <a href="../../apps/AJUDA/ajuda.html" class="nav-item active">
+                    <i class="fas fa-question-circle nav-icon"></i>
+                    <span class="nav-label">Ajuda</span>
+                </a>
+            </div>
         </div>
-    </footer>
+    </nav>
 
-    <script src="script.js"></script>
+    <script src="../../global/utils.js"></script>
+    <script>
+        // Inicialização quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            // Previne zoom em inputs em iOS
+            document.addEventListener('touchstart', function() {}, {passive: true});
+            
+            // Previne bounce/scroll em excesso
+            document.body.addEventListener('touchmove', function(e) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                    return;
+                }
+                e.preventDefault();
+            }, { passive: false });
+        });
+
+        // Previne comportamento padrão de gestos
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('gesturechange', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('gestureend', function(e) {
+            e.preventDefault();
+        });
+    </script>
 </body>
 </html>
