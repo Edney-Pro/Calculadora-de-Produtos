@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Veículos Elétricos</title>
+    
+    <!-- GLOBAIS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../global/theme.css">
+    <link rel="stylesheet" href="../../global/components.css">
+    
+    <style>
+        /* BLOQUEIA ROLAGEM E FIXA ESTRUTURA */
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* IMPEDE ROLAGEM */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura/altura */
+        }
+
+        .premium-header, .premium-footer {
+            flex-shrink: 0; /* Impede que o header/footer encolham */
+            z-index: 1000;
+        }
+
+        main.main-content {
+            flex: 1; /* Ocupa todo o espaço restante disponível */
+            display: flex;
+            justify-content: center; /* Centraliza horizontalmente o conteúdo */
+            align-items: center; /* Centraliza verticalmente o conteúdo */
+            padding: 0.8rem; /* Reduz um pouco o padding para dar mais espaço, se necessário */
+            background: transparent;
+            overflow: hidden; /* Garante que nada dentro role se a tela for muito pequena */
+            box-sizing: border-box;
+        }
+
+        /* GRID 2x3 CENTRALIZADO E ESTÁVEL */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Duas colunas flexíveis */
+            /* Usar fr aqui faz com que as colunas ocupem o espaço disponível igualmente */
+            
+            /* Ajusta a altura das linhas para serem flexíveis, mas com um mínimo */
+            /* A altura de cada card será calculada com base no espaço disponível e no gap */
+            grid-auto-rows: minmax(130px, auto); /* Altura mínima de 130px, mas pode crescer */
+            
+            gap: 12px; /* Reduz o espaçamento entre os itens para caber mais */
+            justify-content: center; /* Centraliza a grade na área disponível */
+            align-content: center; /* Centraliza a grade verticalmente na área disponível */
+            width: 100%; /* Ocupa toda a largura disponível do main-content */
+            max-width: 450px; /* Limita a largura máxima para não ficar muito grande em desktops, ajustado um pouco */
+            height: 100%; /* Garante que a grade tente preencher a altura disponível */
+        }
+
+        /* CARD PADRONIZADO */
+        .app-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 14px;
+            padding: 8px; /* Reduz o padding interno do card */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .app-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .card-icon {
+            font-size: 1.4rem; /* Reduz um pouco o tamanho do ícone */
+            margin-bottom: 6px; /* Reduz a margem */
+        }
+
+        .card-title {
+            font-size: 0.85rem; /* Reduz um pouco o tamanho da fonte do título */
+            font-weight: bold;
+            margin-bottom: 3px;
+            line-height: 1.1;
+            /* Garante que o texto não quebre em várias linhas desnecessariamente, se possível */
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%; /* Evita que o título seja maior que o card */
+        }
+
+        .card-subtitle {
+            font-size: 0.65rem; /* Reduz um pouco o tamanho da fonte do subtítulo */
+            opacity: 0.8;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%; /* Evita que o subtítulo seja maior que o card */
+        }
+
+        /* ANIMAÇÃO SUAVE DOS EMOJIS */
+        .floating-decoration {
+            position: absolute;
+            bottom: 6px; /* Ajusta a posição */
+            right: 6px; /* Ajusta a posição */
+            font-size: 0.8rem; /* Reduz o tamanho do emoji */
+            opacity: 0.5;
+            animation: floatRandom 8s infinite ease-in-out;
+        }
+
+        @keyframes floatRandom {
+            0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+            20%  { transform: translate(2px, -2px) rotate(5deg); opacity: 0.7; }
+            40%  { transform: translate(-2px, 2px) rotate(-3deg); opacity: 0.9; }
+            60%  { transform: translate(2px, 0px) rotate(5deg); opacity: 0.5; }
+            80%  { transform: translate(-2px, -4px) rotate(-8deg); opacity: 0.8; }
+            100% { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+        }
+
+        /* Adiciona um media query para telas muito pequenas, caso ainda haja problemas */
+        @media (max-height: 600px) { /* Exemplo: para telas com menos de 600px de altura */
+            .module-grid {
+                gap: 8px; /* Reduz ainda mais o espaçamento */
+                grid-auto-rows: minmax(120px, auto); /* Altura mínima menor */
+            }
+            .card-icon { font-size: 1.2rem; margin-bottom: 4px; }
+            .card-title { font-size: 0.8rem; margin-bottom: 2px; }
+            .card-subtitle { font-size: 0.6rem; }
+            .floating-decoration { font-size: 0.7rem; bottom: 4px; right: 4px; }
+        }
+        @media (max-width: 350px) { /* Exemplo: para telas com menos de 350px de largura */
+            .module-grid {
+                gap: 8px; /* Reduz ainda mais o espaçamento */
+            }
+            .card-icon { font-size: 1.2rem; margin-bottom: 4px; }
+            .card-title { font-size: 0.8rem; margin-bottom: 2px; }
+            .card-subtitle { font-size: 0.6rem; }
+            .floating-decoration { font-size: 0.7rem; bottom: 4px; right: 4px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="global-header"></div>
+
+    <main class="main-content">
+        <div class="module-grid">
+            
+            <a href="calculadora-de-acessorios-de-veiculos-eletricos/index.html" class="app-card" style="color: #06b6d4">
+                <div class="card-icon"><i class="fas fa-tools"></i></div>
+                <div class="card-title">Acessórios EV</div>
+                <div class="card-subtitle">Cálculo de peças</div>
+                <div class="floating-decoration" style="animation-delay: 0s;">⚡</div>
+            </a>
+
+            <a href="calculadora-de-bicicletas-eletricas-nova/index.html" class="app-card" style="color: #8b5cf6">
+                <div class="card-icon"><i class="fas fa-bicycle"></i></div>
+                <div class="card-title">Bicicleta Elétrica (N)</div>
+                <div class="card-subtitle">Avaliação de novas</div>
+                <div class="floating-decoration" style="animation-delay: 0.5s;">🚴</div>
+            </a>
+
+            <a href="calculadora-de-bicicletas-eletricas-usada/index.html" class="app-card" style="color: #f59e0b">
+                <div class="card-icon"><i class="fas fa-bicycle"></i></div>
+                <div class="card-title">Bicicleta Elétrica (U)</div>
+                <div class="card-subtitle">Avaliação de usadas</div>
+                <div class="floating-decoration" style="animation-delay: 1s;">♻️</div>
+            </a>
+            
+            <a href="calculadora-de-patinetes-eletricos-novo/index.html" class="app-card" style="color: #10b981">
+                <div class="card-icon"><i class="fas fa-scooter"></i></div>
+                <div class="card-title">Patinete Elétrico (N)</div>
+                <div class="card-subtitle">Avaliação de novos</div>
+                <div class="floating-decoration" style="animation-delay: 1.5s;">🛴</div>
+            </a>
+
+            <a href="calculadora-de-patinetes-eletricos-usado/index.html" class="app-card" style="color: #ef4444">
+                <div class="card-icon"><i class="fas fa-scooter"></i></div>
+                <div class="card-title">Patinete Elétrico (U)</div>
+                <div class="card-subtitle">Avaliação de usados</div>
+                <div class="floating-decoration" style="animation-delay: 2s;">♻️</div>
+            </a>
+            
+            <a href="calculadora-de-scooter-eletrico/index.html" class="app-card" style="color: #8b5cf6">
+                <div class="card-icon"><i class="fas fa-motorcycle"></i></div>
+                <div class="card-title">Scooter Elétrico</div>
+                <div class="card-subtitle">Cálculo específico</div>
+                <div class="floating-decoration" style="animation-delay: 2.5s;">🛵</div>
+            </a>
+
+        </div>
+    </main>
+
+    <div id="global-footer"></div>
+
+    <script src="../../global/config-manager.js"></script>
+    <script src="../../global/header-footer.js"></script>
+    <script src="../../global/matrix-background.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ConfigManager) {
+                ConfigManager.loadConfig();
+                ConfigManager.applyTheme();
+            }
+            loadGlobalHeaderFooter("Veículos Elétricos", "fas fa-bolt");
+            if (window.MatrixBackground) MatrixBackground.init();
+        });
+    </script>
+</body>
+</html>

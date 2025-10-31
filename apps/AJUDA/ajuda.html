@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ajuda e Suporte</title>
+    
+    <!-- GLOBAIS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../global/theme.css">
+    <link rel="stylesheet" href="../../global/components.css">
+    
+    <style>
+        /* ESTRUTURA DE TELA FIXA E UNIFORME (Header/Footer Fixos, Conteúdo Fixo) */
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; /* Fixa a altura total do viewport */
+            overflow: hidden; /* IMPEDE QUALQUER ROLAGEM DO BODY */
+            box-sizing: border-box; /* Garante que padding/border são incluídos na altura/largura */
+        }
+        
+        .premium-header, .premium-footer {
+            flex-shrink: 0; 
+            z-index: 1000; 
+        }
+
+        main.main-content { 
+            flex: 1; /* Ocupa todo o espaço restante entre Header e Footer */
+            overflow: hidden; /* O Conteúdo PRINCIPAL NÃO ROLA aqui. */
+            padding: 0.8rem; /* Padding geral para o main content */
+            background: transparent;
+            display: flex; 
+            justify-content: center; /* CENTRALIZA O module-grid HORIZONTALMENTE */
+            align-items: center; /* CENTRALIZA O module-grid VERTICALMENTE */
+            box-sizing: border-box;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 COLUNAS */
+            grid-auto-rows: minmax(100px, auto); /* Altura mínima razoável para os cards */
+            gap: 8px; /* Espaçamento reduzido entre os cards para caber mais */
+            
+            width: 100%; /* Ocupa a largura total disponível do main.main-content */
+            max-width: 500px; /* Limita a largura máxima da grade para telas maiores */
+            height: 100%; /* Ocupa toda a altura disponível do main.main-content */
+            flex-shrink: 0; 
+            
+            overflow-y: hidden; /* Garante que o grid não role */
+            box-sizing: border-box;
+        }
+        
+        /* ESTILOS DE CARD (Estética Premium/Transparente) */
+        .app-card {
+            aspect-ratio: 1 / 1; /* Mantém a proporção quadrada */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            padding: 5px; /* Reduz o padding interno do card */
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+        }
+        
+        .app-card:hover, .app-card:focus {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .card-icon { 
+            font-size: 1.2rem; /* Reduz o tamanho do ícone */
+            margin-bottom: 4px; 
+        }
+        .card-title { 
+            font-size: 0.7rem; /* Reduz o tamanho da fonte do título */
+            font-weight: bold; 
+            margin-bottom: 2px; 
+            line-height: 1.1; 
+            white-space: nowrap; /* Evita que o título quebre linha */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Adiciona "..." se o título for muito longo */
+            max-width: 100%;
+        }
+        .card-subtitle { 
+            font-size: 0.6rem; /* Reduz o tamanho da fonte do subtítulo */
+            opacity: 0.8; 
+            line-height: 1; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        
+        /* ANIMAÇÃO LENTA E ALEATÓRIA GARANTIDA COM DELAY */
+        .floating-decoration {
+            position: absolute;
+            bottom: 4px; /* Ajusta a posição */
+            right: 4px; /* Ajusta a posição */
+            font-size: 0.7rem; /* Reduz o tamanho do emoji */
+            opacity: 0.5;
+            animation: floatRandom 8s infinite ease-in-out; 
+        }
+        
+        @keyframes floatRandom {
+            0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+            20%  { transform: translate(2px, -2px) rotate(5deg); opacity: 0.7; }
+            40%  { transform: translate(-2px, 2px) rotate(-3deg); opacity: 0.9; }
+            60%  { transform: translate(2px, 0px) rotate(5deg); opacity: 0.5; }
+            80%  { transform: translate(-2px, -4px) rotate(-8deg); opacity: 0.8; }
+            100% { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+        }
+
+        /* MEDIA QUERIES PARA AJUSTES EM TELAS PEQUENAS */
+        @media (max-height: 600px), (max-width: 400px) { /* Combina para altura e largura pequenas */
+            main.main-content { padding: 0.6rem; }
+            .module-grid { gap: 6px; }
+            .card-icon { font-size: 1.1rem; margin-bottom: 3px; }
+            .card-title { font-size: 0.65rem; margin-bottom: 1px; }
+            .card-subtitle { font-size: 0.55rem; }
+            .floating-decoration { font-size: 0.6rem; bottom: 3px; right: 3px; }
+        }
+
+        @media (max-width: 320px) { /* Para telas muito estreitas (tipo iPhone SE antigo) */
+             .card-icon { font-size: 1rem; margin-bottom: 2px; }
+            .card-title { font-size: 0.6rem; }
+            .card-subtitle { font-size: 0.5rem; }
+            .floating-decoration { font-size: 0.5rem; bottom: 2px; right: 2px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SHELL HEADER GLOBAL -->
+    <div id="global-header"></div> 
+
+    <main class="main-content">
+        <div class="module-grid">
+            
+            <!-- Link para ajuda de Cadastro -->
+            <a href="cadastro.html" class="app-card" style="color: #06b6d4;">
+                <div class="card-icon"><i class="fas fa-address-card"></i></div>
+                <div class="card-title">Cadastro</div>
+                <div class="card-subtitle">Gerenciar contas</div>
+                <div class="floating-decoration" style="animation-delay: 0s;">🧑‍💻</div>
+            </a>
+
+            <!-- Link para ajuda de Catálogo -->
+            <a href="catalogo.html" class="app-card" style="color: #8b5cf6;">
+                <div class="card-icon"><i class="fas fa-boxes"></i></div>
+                <div class="card-title">Catálogo</div>
+                <div class="card-subtitle">Produtos e itens</div>
+                <div class="floating-decoration" style="animation-delay: 0.5s;">📦</div>
+            </a>
+
+            <!-- Link para ajuda de Compramos Pra Você -->
+            <a href="compramos.html" class="app-card" style="color: #f59e0b;">
+                <div class="card-icon"><i class="fas fa-shopping-cart"></i></div>
+                <div class="card-title">Compramos</div>
+                <div class="card-subtitle">Serviços de compra</div>
+                <div class="floating-decoration" style="animation-delay: 1s;">🛒</div>
+            </a>
+            
+            <!-- Link para ajuda de Configurações -->
+            <a href="configurações.html" class="app-card" style="color: #ef4444;">
+                <div class="card-icon"><i class="fas fa-cogs"></i></div>
+                <div class="card-title">Configurações</div>
+                <div class="card-subtitle">Ajustes do sistema</div>
+                <div class="floating-decoration" style="animation-delay: 1.5s;">⚙️</div>
+            </a>
+
+            <!-- Link para ajuda de Empréstimos -->
+            <a href="emprestimo.html" class="app-card" style="color: #10b981;">
+                <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                <div class="card-title">Empréstimos</div>
+                <div class="card-subtitle">Opções de crédito</div>
+                <div class="floating-decoration" style="animation-delay: 2s;">💰</div>
+            </a>
+
+            <!-- Link para ajuda de Ferramentas -->
+            <a href="ferramentas.html" class="app-card" style="color: #3b82f6;">
+                <div class="card-icon"><i class="fas fa-tools"></i></div>
+                <div class="card-title">Ferramentas</div>
+                <div class="card-subtitle">Utilitários gerais</div>
+                <div class="floating-decoration" style="animation-delay: 2.5s;">🛠️</div>
+            </a>
+
+            <!-- Link para ajuda de Ferramentas Avançadas -->
+            <a href="ferramentas-avancadas.html" class="app-card" style="color: #6366f1;">
+                <div class="card-icon"><i class="fas fa-screwdriver-wrench"></i></div>
+                <div class="card-title">Avançadas</div>
+                <div class="card-subtitle">Recursos avançados</div>
+                <div class="floating-decoration" style="animation-delay: 3s;">🚀</div>
+            </a>
+
+            <!-- Link para ajuda de Produtos -->
+            <a href="produtos.html" class="app-card" style="color: #f97316;">
+                <div class="card-icon"><i class="fas fa-boxes-stacked"></i></div>
+                <div class="card-title">Produtos</div>
+                <div class="card-subtitle">Gerenciar produtos</div>
+                <div class="floating-decoration" style="animation-delay: 3.5s;">🏭</div>
+            </a>
+            
+            <!-- Link para ajuda de Renegociação -->
+            <a href="renegociacao.html" class="app-card" style="color: #14b8a6;">
+                <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="card-title">Renegociação</div>
+                <div class="card-subtitle">Débitos e acordos</div>
+                <div class="floating-decoration" style="animation-delay: 4s;">🤝</div>
+            </a>
+
+            <!-- Link para ajuda de Veículos Automotores -->
+            <a href="veiculos-automotores.html" class="app-card" style="color: #ec4899;">
+                <div class="card-icon"><i class="fas fa-car-side"></i></div>
+                <div class="card-title">Automotores</div>
+                <div class="card-subtitle">Carros e motos</div>
+                <div class="floating-decoration" style="animation-delay: 4.5s;">🚗</div>
+            </a>
+
+            <!-- Link para ajuda de Veículos Elétricos -->
+            <a href="veiculos-eletricos.html" class="app-card" style="color: #0d9488;">
+                <div class="card-icon"><i class="fas fa-charging-station"></i></div>
+                <div class="card-title">Elétricos</div>
+                <div class="card-subtitle">Veículos ecológicos</div>
+                <div class="floating-decoration" style="animation-delay: 5s;">🔌</div>
+            </a>
+            
+             <!-- CARD VAZIO / ESPAÇO EXTRA (opcional para preencher a última linha) -->
+            <div class="app-card placeholder-card" style="color: rgba(255,255,255,0.2); background: none; border: 1px dashed rgba(255,255,255,0.1);">
+                <div class="card-icon"><i class="fas fa-question-circle"></i></div>
+                <div class="card-title">Mais Tópicos</div>
+                <div class="card-subtitle">Em breve</div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SHELL FOOTER GLOBAL -->
+    <div id="global-footer"></div> 
+
+    <!-- SCRIPTS GLOBAIS -->
+    <script src="../../global/config-manager.js"></script>
+    <script src="../../global/header-footer.js"></script>
+    <script src="../../global/matrix-background.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ConfigManager) {
+                ConfigManager.loadConfig();
+                ConfigManager.applyTheme();
+            }
+            // TÍTULO E ÍCONE ESPECÍFICOS DA AJUDA
+            loadGlobalHeaderFooter("Ajuda e Suporte", "fas fa-question-circle"); 
+            
+            if (window.MatrixBackground) MatrixBackground.init();
+        });
+    </script>
+</body>
+</html>

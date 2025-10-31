@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catálogo de Produtos</title>
+    
+    <!-- GLOBAIS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../global/theme.css">
+    <link rel="stylesheet" href="../../global/components.css">
+    
+    <style>
+        /* ESTRUTURA DE TELA FIXA E UNIFORME (Header/Footer Fixos, Conteúdo Fixo) */
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; /* Fixa a altura total do viewport */
+            overflow: hidden; /* IMPEDE QUALQUER ROLAGEM DO BODY */
+            box-sizing: border-box; /* Garante que padding/border são incluídos na altura/largura */
+        }
+        
+        .premium-header, .premium-footer {
+            flex-shrink: 0; /* Header e Footer têm altura fixa e não encolhem */
+            z-index: 1000; 
+        }
+
+        main.main-content { 
+            flex: 1; /* Ocupa todo o espaço restante entre Header e Footer */
+            overflow: hidden; /* O Conteúdo PRINCIPAL NÃO ROLA aqui. */
+            padding: 1rem; /* Padding geral para o main content */
+            background: transparent;
+            display: flex; 
+            justify-content: center; /* CENTRALIZA O module-grid HORIZONTALMENTE */
+            align-items: center; /* CENTRALIZA O module-grid VERTICALMENTE */
+            box-sizing: border-box;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* PADRÃO CATÁLOGO: 2 COLUNAS */
+            grid-auto-rows: minmax(140px, auto); /* Altura mínima razoável para os cards */
+            gap: 16px; /* Espaçamento entre os cards */
+            
+            /* REMOVIDO: padding-bottom: 100px; */ /* Agora centralizamos o grid, este padding não é mais necessário */
+            /* REMOVIDO: padding-top: 1rem; */ /* Usamos o padding do main.main-content */
+            
+            width: 100%; /* Ocupa a largura total disponível do main.main-content */
+            max-width: 450px; /* Limita a largura máxima da grade */
+            flex-shrink: 0; /* Impede que a grade encolha muito, mas também não cresça excessivamente */
+            
+            overflow-y: hidden; /* Garante que o grid não role */
+            /* align-content: start; */ /* Removido, pois queremos centralizar com align-items no main.main-content */
+            box-sizing: border-box;
+        }
+        
+        /* ESTILOS DE CARD (Estética Premium/Transparente) */
+        .app-card {
+            aspect-ratio: 1 / 1; /* Mantém a proporção quadrada */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            padding: 8px; /* Reduz um pouco o padding interno do card */
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+        }
+        
+        .app-card:hover, .app-card:focus {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .card-icon { 
+            font-size: 1.5rem; /* Levemente ajustado */
+            margin-bottom: 7px; /* Levemente ajustado */
+        }
+        .card-title { 
+            font-size: 0.8rem; 
+            font-weight: bold; 
+            margin-bottom: 4px; 
+            line-height: 1.1; 
+            white-space: nowrap; /* Evita que o título quebre linha */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Adiciona "..." se o título for muito longo */
+            max-width: 100%;
+        }
+        .card-subtitle { 
+            font-size: 0.7rem; 
+            opacity: 0.8; 
+            line-height: 1; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        
+        /* ANIMAÇÃO LENTA E ALEATÓRIA GARANTIDA COM DELAY */
+        .floating-decoration {
+            position: absolute;
+            bottom: 6px; /* Ajusta a posição */
+            right: 6px; /* Ajusta a posição */
+            font-size: 0.8rem; /* Ajusta o tamanho do emoji */
+            opacity: 0.5;
+            animation: floatRandom 8s infinite ease-in-out; 
+        }
+        
+        @keyframes floatRandom {
+            0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+            20%  { transform: translate(2px, -2px) rotate(5deg); opacity: 0.7; }
+            40%  { transform: translate(-2px, 2px) rotate(-3deg); opacity: 0.9; }
+            60%  { transform: translate(2px, 0px) rotate(5deg); opacity: 0.5; }
+            80%  { transform: translate(-2px, -4px) rotate(-8deg); opacity: 0.8; }
+            100% { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+        }
+
+        /* MEDIA QUERIES PARA AJUSTES EM TELAS PEQUENAS */
+        @media (max-height: 600px) {
+            main.main-content { padding: 0.8rem; }
+            .module-grid {
+                gap: 12px;
+                grid-auto-rows: minmax(120px, auto);
+            }
+            .card-icon { font-size: 1.3rem; margin-bottom: 5px; }
+            .card-title { font-size: 0.75rem; margin-bottom: 3px; }
+            .card-subtitle { font-size: 0.65rem; }
+            .floating-decoration { font-size: 0.7rem; bottom: 5px; right: 5px; }
+        }
+
+        @media (max-width: 350px) {
+            main.main-content { padding: 0.8rem; }
+            .module-grid { gap: 12px; }
+            .card-icon { font-size: 1.3rem; margin-bottom: 5px; }
+            .card-title { font-size: 0.75rem; margin-bottom: 3px; }
+            .card-subtitle { font-size: 0.65rem; }
+            .floating-decoration { font-size: 0.7rem; bottom: 5px; right: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SHELL HEADER GLOBAL -->
+    <div id="global-header"></div> 
+
+    <main class="main-content">
+        <div class="module-grid">
+            
+            <!-- APP 1: CATÁLOGO DE PRODUTOS NOVOS -->
+            <a href="catalogo-de-produtos-novos/index.html" class="app-card" style="color: #06b6d4">
+                <div class="card-icon"><i class="fas fa-box"></i></div>
+                <div class="card-title">Novos</div>
+                <div class="card-subtitle">Catálogo de Lançamentos</div>
+                <div class="floating-decoration" style="animation-delay: 0s;">⭐</div> 
+            </a>
+
+            <!-- APP 2: PRODUTOS USADOS -->
+            <a href="catalogo-de-produtos-usados/index.html" class="app-card" style="color: #f59e0b">
+                <div class="card-icon"><i class="fas fa-history"></i></div>
+                <div class="card-title">Usados</div>
+                <div class="card-subtitle">Seminovos e Usados</div>
+                <div class="floating-decoration" style="animation-delay: 0.5s;">🔄</div>
+            </a>
+
+            <!-- APP 3: PRONTA ENTREGA -->
+            <a href="catalogo-de-produtos-pronta-entrega/index.html" class="app-card" style="color: #8b5cf6">
+                <div class="card-icon"><i class="fas fa-truck"></i></div>
+                <div class="card-title">Pronta Entrega</div>
+                <div class="card-subtitle">Disponíveis Imediatamente</div>
+                <div class="floating-decoration" style="animation-delay: 1s;">📦</div>
+            </a>
+            
+            <!-- APP 4: CONFIGURAÇÕES -->
+            <a href="../../apps/CONFIGURACAO/index.html" class="app-card" style="color: #10b981">
+                <div class="card-icon"><i class="fas fa-cogs"></i></div>
+                <div class="card-title">Configurações</div>
+                <div class="card-subtitle">Sistema</div>
+                <div class="floating-decoration" style="animation-delay: 1.5s;">⚙️</div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- SHELL FOOTER PREMIUM -->
+    <div id="global-footer"></div> 
+
+    <!-- SCRIPTS GLOBAIS -->
+    <script src="../../global/config-manager.js"></script>
+    <script src="../../global/header-footer.js"></script>
+    <script src="../../global/matrix-background.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ConfigManager) {
+                ConfigManager.loadConfig();
+                ConfigManager.applyTheme();
+            }
+            // Título e Ícone específicos do Catálogo
+            loadGlobalHeaderFooter("Catálogo de Produtos", "fas fa-boxes"); 
+            
+            if (window.MatrixBackground) MatrixBackground.init();
+        });
+    </script>
+</body>
+</html>
