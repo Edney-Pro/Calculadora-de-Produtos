@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Renegociação</title>
+    
+    <!-- GLOBAIS -->
+    <link rel="stylesheet" href="../../global/theme.css">
+    <link rel="stylesheet" href="../../global/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+ <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; /* Garante altura total do viewport */
+            overflow: hidden; /* O BODY NÃO ROLA DE JEITO NENHUM */
+            box-sizing: border-box; /* Inclui padding e border na altura/largura total */
+        }
+        
+        .premium-header, .premium-footer {
+            flex-shrink: 0; /* Header e Footer não encolhem */
+            z-index: 1000; 
+        }
+
+        main.main-content { 
+            flex: 1; /* Ocupa todo o espaço restante entre Header e Footer */
+            overflow: hidden; /* IMPORTANTE: O CONTEÚDO PRINCIPAL TAMBÉM NÃO ROLA */
+            padding: 0.8rem; /* Reduz um pouco o padding geral para ganhar espaço */
+            background: transparent;
+            display: flex; /* Adicionado para gerenciar o conteúdo */
+            justify-content: center; /* Centraliza o grid horizontalmente */
+            align-items: center; /* Centraliza o grid verticalmente */
+            box-sizing: border-box;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Mantém 3 COLUNAS */
+            /* A altura das linhas é crucial aqui para 12 apps em 3 colunas (4 linhas) */
+            /* minmax para flexibilidade, mas com um mínimo agressivo */
+            grid-auto-rows: minmax(105px, auto); /* Altura mínima dos cards para caberem 4 linhas */
+            
+            gap: 10px; /* Reduz o espaçamento entre os cards para 12 apps */
+            width: 100%; /* Ocupa a largura total disponível do main-content (menos padding) */
+            max-width: 500px; /* Limita a largura máxima da grade em telas maiores */
+            height: 100%; /* Tenta preencher a altura total disponível do main-content */
+            box-sizing: border-box;
+            
+            /* Remove paddings superiores/inferiores que possam atrapalhar a centralização vertical */
+            padding: 0; 
+            overflow-y: hidden; /* O Grid TAMBÉM NÃO ROLA, todo o conteúdo deve caber */
+        }
+        
+        .app-card {
+            aspect-ratio: 1 / 1; /* Mantém a proporção quadrada */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            padding: 6px; /* Reduz o padding interno do card para ganhar espaço */
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+        }
+        
+        .app-card:hover, .app-card:focus {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .card-icon { 
+            font-size: 1.3rem; /* Reduz o tamanho do ícone */
+            margin-bottom: 5px; /* Reduz a margem inferior do ícone */
+        }
+        .card-title { 
+            font-size: 0.75rem; /* Reduz o tamanho da fonte do título */
+            font-weight: bold; 
+            margin-bottom: 3px; 
+            line-height: 1.1; 
+            white-space: nowrap; /* Tenta manter o título em uma linha */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Adiciona "..." se o título for muito longo */
+            max-width: 100%;
+        }
+        .card-subtitle { 
+            font-size: 0.65rem; /* Reduz o tamanho da fonte do subtítulo */
+            opacity: 0.8; 
+            line-height: 1; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .floating-decoration { 
+            position: absolute; 
+            bottom: 4px; /* Ajusta a posição do emoji */
+            right: 4px; /* Ajusta a posição do emoji */
+            font-size: 0.7rem; /* Reduz o tamanho do emoji */
+            opacity: 0.5; 
+            animation: floatRandom 8s infinite ease-in-out; 
+        }
+        
+        @keyframes floatRandom {
+            0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+            20%  { transform: translate(2px, -2px) rotate(5deg); opacity: 0.7; }
+            40%  { transform: translate(-2px, 2px) rotate(-3deg); opacity: 0.9; }
+            60%  { transform: translate(2px, 0px) rotate(5deg); opacity: 0.5; }
+            80%  { transform: translate(-2px, -4px) rotate(-8deg); opacity: 0.8; }
+            100% { transform: translate(0px, 0px) rotate(0deg); opacity: 0.5; }
+        }
+
+        /* MEDIA QUERIES PARA ADAPTAÇÃO EXTRA EM TELAS MUITO PEQUENAS */
+        @media (max-height: 650px) { /* Para alturas de tela um pouco mais apertadas */
+            .module-grid {
+                gap: 8px; /* Reduz ainda mais o espaçamento */
+                grid-auto-rows: minmax(95px, auto); /* Altura mínima ainda menor */
+            }
+            main.main-content { padding: 0.5rem; } /* Reduz ainda mais o padding principal */
+            .card-icon { font-size: 1.2rem; margin-bottom: 4px; }
+            .card-title { font-size: 0.7rem; margin-bottom: 2px; }
+            .card-subtitle { font-size: 0.6rem; }
+            .floating-decoration { font-size: 0.6rem; bottom: 3px; right: 3px; }
+        }
+
+        @media (max-width: 350px) { /* Para larguras de tela muito estreitas */
+            .module-grid {
+                gap: 8px; /* Reduz ainda mais o espaçamento */
+            }
+            main.main-content { padding: 0.5rem; } /* Reduz ainda mais o padding principal */
+            .card-icon { font-size: 1.2rem; margin-bottom: 4px; }
+            .card-title { font-size: 0.7rem; margin-bottom: 2px; }
+            .card-subtitle { font-size: 0.6rem; }
+            .floating-decoration { font-size: 0.6rem; bottom: 3px; right: 3px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SHELL HEADER GLOBAL -->
+    <div id="global-header"></div> 
+
+    <main class="main-content">
+        <div class="module-grid">
+            
+            <!-- APP 1: Renegociação Empréstimo Atrasado -->
+            <a href="renegociacao-de-emprestimo-atrasado/index.html" class="app-card" style="color: #ef4444">
+                <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                <div class="card-title">Empréstimo Atrasado</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">⏰</div>
+            </a>
+
+            <!-- APP 2: Renegociação Empréstimo a Vencer -->
+            <a href="renegociacao-de-emprestimo-avencer/index.html" class="app-card" style="color: #f59e0b">
+                <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
+                <div class="card-title">Empréstimo a Vencer</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">📅</div>
+            </a>
+
+            <!-- APP 3: Renegociação Empréstimo Combinado -->
+            <a href="renegociacao-de-emprestimo-combinado/index.html" class="app-card" style="color: #10b981">
+                <div class="card-icon"><i class="fas fa-compress-alt"></i></div>
+                <div class="card-title">Empréstimo Combinado</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">🔗</div>
+            </a>
+            
+            <!-- APP 4: Renegociação Produtos Atrasados -->
+            <a href="renegociacao-de-produtos-atrasados/index.html" class="app-card" style="color: #06b6d4">
+                <div class="card-icon"><i class="fas fa-boxes"></i></div>
+                <div class="card-title">Produtos Atrasados</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">📦</div>
+            </a>
+
+            <!-- APP 5: Renegociação Produtos a Vencer -->
+            <a href="renegociacao-de-produtos-avencer/index.html" class="app-card" style="color: #8b5cf6">
+                <div class="card-icon"><i class="fas fa-box-open"></i></div>
+                <div class="card-title">Produtos a Vencer</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">🛍️</div>
+            </a>
+            
+            <!-- APP 6: Renegociação Produtos Combinados -->
+            <a href="renegociacao-de-produtos-combinados/index.html" class="app-card" style="color: #2563eb">
+                <div class="card-icon"><i class="fas fa-cubes"></i></div>
+                <div class="card-title">Produtos Combinados</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">🧩</div>
+            </a>
+
+            <!-- APP 7: Renegociação Veículos Atrasados -->
+            <a href="renegociacao-de-veiculos-atrasados/index.html" class="app-card" style="color: #d97706">
+                <div class="card-icon"><i class="fas fa-car-crash"></i></div>
+                <div class="card-title">Veículos Atrasados</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">🚗</div>
+            </a>
+
+            <!-- APP 8: Renegociação Veículos a Vencer -->
+            <a href="renegociacao-de-veiculos-avencer/index.html" class="app-card" style="color: #6366f1">
+                <div class="card-icon"><i class="fas fa-car-side"></i></div>
+                <div class="card-title">Veículos a Vencer</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">🛣️</div>
+            </a>
+            
+            <!-- APP 9: Renegociação Veículos Combinados -->
+            <a href="renegociacao-de-veiculos-combinado/index.html" class="app-card" style="color: #f97316">
+                <div class="card-icon"><i class="fas fa-truck-loading"></i></div>
+                <div class="card-title">Veículos Combinados</div>
+                <div class="card-subtitle">Renegociação</div>
+                <div class="floating-decoration">🚚</div>
+            </a>
+            
+            <!-- APP 10: Renegociação Especial -->
+            <a href="renegociacao-especial/index.html" class="app-card" style="color: #34d399">
+                <div class="card-icon"><i class="fas fa-star"></i></div>
+                <div class="card-title">Renegociação Especial</div>
+                <div class="card-subtitle">Casos Pontuais</div>
+                <div class="floating-decoration">⭐</div>
+            </a>
+            
+            <!-- APP 11: Renegociação Advogado -->
+            <a href="renegociacao-advogado/index.html" class="app-card" style="color: #6366f1">
+                <div class="card-icon"><i class="fas fa-gavel"></i></div>
+                <div class="card-title">Renegociação Advogado</div>
+                <div class="card-subtitle">Assistência Jurídica</div>
+                <div class="floating-decoration">👨‍⚖️</div>
+            </a>
+            
+            <!-- APP 12: CONFIGURAÇÕES -->
+            <a href="../../apps/CONFIGURACAO/index.html" class="app-card" style="color: #475569">
+                <div class="card-icon"><i class="fas fa-cogs"></i></div>
+                <div class="card-title">Configurações</div>
+                <div class="card-subtitle">Sistema</div>
+                <div class="floating-decoration">⚙️</div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- SHELL FOOTER GLOBAL -->
+    <div id="global-footer"></div> 
+
+    <!-- SCRIPTS GLOBAIS -->
+    <script src="../../global/config-manager.js"></script>
+    <script src="../../global/header-footer.js"></script>
+    <script src="../../global/matrix-background.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ConfigManager) {
+                ConfigManager.loadConfig();
+                ConfigManager.applyTheme();
+            }
+            // TÍTULO ESPECÍFICO: "Renegociação" e ícone de Moeda/Empréstimo (fa-hand-holding-usd)
+            loadGlobalHeaderFooter("Renegociação", "fas fa-hand-holding-usd"); 
+            
+            if (window.MatrixBackground) MatrixBackground.init();
+        });
+    </script>
+</body>
+</html>
